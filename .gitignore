@@ -1,0 +1,27 @@
+# WordPress .gitignore
+*.log
+.htaccess
+wp-config.php
+wp-content/advanced-cache.php
+wp-content/backup-db/
+wp-content/backups/
+wp-content/blogs.dir/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/uploads/
+wp-content/wp-cache-config.php
+wp-content/plugins/
+!wp-content/plugins/index.php
+# Ignore all themes except our custom theme (we'll add exception later if needed, but for now ignore all default themes to keep repo clean)
+# wp-content/themes/
+# !wp-content/themes/index.php
+# !wp-content/themes/dprd-purbalingga/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
