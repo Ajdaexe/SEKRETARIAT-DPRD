@@ -43,6 +43,9 @@ function dprd_purbalingga_scripts() {
     
     // FontAwesome for Icons
     wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', array(), '6.4.0' );
+
+    // Enqueue Main Theme Stylesheet (Tailwind CSS)
+    wp_enqueue_style( 'dprd-purbalingga-style', get_stylesheet_uri(), array(), filemtime( get_template_directory() . '/style.css' ) );
 }
 add_action( 'wp_enqueue_scripts', 'dprd_purbalingga_scripts' );
 
@@ -52,3 +55,18 @@ function dprd_mime_types($mimes) {
     return $mimes;
 }
 add_filter('upload_mimes', 'dprd_mime_types');
+
+// Register ACF Options Page
+if( function_exists('acf_add_options_page') ) {
+    acf_add_options_page(array(
+        'page_title'    => 'Pengaturan Website',
+        'menu_title'    => 'Pengaturan Tema',
+        'menu_slug'     => 'acf-options-pengaturan',
+        'capability'    => 'edit_posts',
+        'redirect'      => false
+    ));
+}
+
+// Load ACF Fields Definition
+require_once get_template_directory() . '/acf-fields.php';
+
