@@ -44,8 +44,11 @@ function dprd_purbalingga_scripts() {
     // FontAwesome for Icons
     wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', array(), '6.4.0' );
 
-    // Enqueue Main Theme Stylesheet (Tailwind CSS)
+    // Enqueue Main Theme Stylesheet
     wp_enqueue_style( 'dprd-purbalingga-style', get_stylesheet_uri(), array(), filemtime( get_template_directory() . '/style.css' ) );
+
+    // Enqueue Theme JS
+    wp_enqueue_script( 'dprd-purbalingga-script', get_template_directory_uri() . '/js/script.js', array(), filemtime( get_template_directory() . '/js/script.js' ), true );
 }
 add_action( 'wp_enqueue_scripts', 'dprd_purbalingga_scripts' );
 

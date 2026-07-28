@@ -1,98 +1,101 @@
+<?php
+/**
+ * The header for our theme
+ *
+ * @package dprd-purbalingga
+ */
+?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="profile" href="https://gmpg.org/xfn/11">
     <?php wp_head(); ?>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'maroon': {
-                            DEFAULT: '#8B1E1E',
-                            'dark': '#A61C1C',
-                        },
-                        'krem': '#FBEAEA',
-                        'krem-light': '#FDF3F0',
-                    },
-                    fontFamily: {
-                        'sans': ['Inter', 'sans-serif'],
+</head>
+
+<body <?php body_class(); ?> data-page="<?php echo is_front_page() ? 'beranda' : (is_page() ? get_post_field('post_name') : ''); ?>">
+<?php wp_body_open(); ?>
+
+<header class="site-header">
+    <nav class="nav">
+        <a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>">
+            <img src="<?php echo esc_url( get_template_directory_uri() . '/images/logo-header.png' ); ?>" alt="<?php bloginfo( 'name' ); ?>">
+        </a>
+        
+        <div class="nav-links" id="navLinks">
+            <?php
+            // We use a custom loop to output <a> tags directly to match the frontend CSS.
+            // wp_nav_menu() is not used here because it generates <li> tags by default.
+            $locations = get_nav_menu_locations();
+            if ( isset( $locations['menu-1'] ) ) {
+                $menu = wp_get_nav_menu_object( $locations['menu-1'] );
+                if ( $menu ) {
+                    $menu_items = wp_get_nav_menu_items( $menu->term_id );
+                    foreach ( (array) $menu_items as $key => $menu_item ) {
+                        $title = $menu_item->title;
+                        
+                        // Abaikan "Laman Contoh" jika terbawa otomatis oleh WordPress
+                        if ( strtolower($title) === 'laman contoh' ) {
+                            continue;
+                        }
+
+                        $is_active = ($menu_item->object_id == get_queried_object_id()) ? 'active' : '';
+                        $url = $menu_item->url;
+                        
+                        // Handle dropdown for SAKIP if needed
+                        if(strtolower($title) == 'sakip') {
+                            echo '<div class="dropdown">';
+                            echo '<a class="' . esc_attr($is_active) . '" href="' . esc_url($url) . '">' . esc_html($title) . ' ▾</a>';
+                            echo '<div class="dropdown-menu">';
+                            echo '<a href="' . esc_url(site_url('/sakip')) . '">Dokumen SAKIP</a>';
+                            echo '<a href="' . esc_url(site_url('/sakip#perencanaan')) . '">Perencanaan</a>';
+                            echo '<a href="' . esc_url(site_url('/sakip#pelaporan')) . '">Pelaporan</a>';
+                            echo '</div></div>';
+                        } else {
+                            echo '<a class="' . esc_attr($is_active) . '" href="' . esc_url($url) . '">' . esc_html($title) . '</a>';
+                        }
+                    }
+                } else {
+                    dprd_default_nav_fallback();
+                }
+            } else {
+                dprd_default_nav_fallback();
+            }
+            
+            function dprd_default_nav_fallback() {
+                $page_slug = is_page() ? get_post_field('post_name') : (is_front_page() ? 'beranda' : '');
+                $navItems = array(
+                    'beranda' => array('Beranda', site_url('/')),
+                    'profil' => array('Profil', site_url('/profil')),
+                    'kontak' => array('Kontak', site_url('/kontak')),
+                    'ppid' => array('PPID', site_url('/ppid')),
+                    'sakip' => array('SAKIP', site_url('/sakip')),
+                    'dlantunan' => array('D\'Lantunan', site_url('/dlantunan'))
+                );
+                
+                foreach($navItems as $id => $data) {
+                    $active = ($page_slug == $id) ? 'active' : '';
+                    if($id == 'sakip') {
+                        echo '<div class="dropdown">';
+                        echo '<a class="' . $active . '" href="' . $data[1] . '">' . $data[0] . ' ▾</a>';
+                        echo '<div class="dropdown-menu">';
+                        echo '<a href="' . site_url('/sakip') . '">Dokumen SAKIP</a>';
+                        echo '<a href="' . site_url('/sakip#perencanaan') . '">Perencanaan</a>';
+                        echo '<a href="' . site_url('/sakip#pelaporan') . '">Pelaporan</a>';
+                        echo '</div></div>';
+                    } else {
+                        echo '<a class="' . $active . '" href="' . $data[1] . '">' . $data[0] . '</a>';
                     }
                 }
             }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @layer components {
-            .btn-primary {
-                @apply bg-maroon text-white font-bold py-2 px-6 rounded-full hover:bg-maroon-dark transition duration-300 inline-flex items-center;
-            }
-            .card {
-                @apply bg-white rounded-xl shadow-md p-6;
-            }
-        }
-    </style>
-</head>
-<body <?php body_class('bg-gray-50 text-gray-800 font-sans antialiased'); ?>>
-<?php wp_body_open(); ?>
-
-<header class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-        <!-- Logo -->
-        <div class="flex items-center gap-3">
-            <!-- Asumsi ada logo dprd di media library, atau kita pakai custom logo wp -->
-            <?php if (has_custom_logo()) : ?>
-                <?php the_custom_logo(); ?>
-            <?php else : ?>
-                <div class="w-10 h-12 bg-maroon rounded-md flex items-center justify-center text-white font-bold text-xs">LOGO</div>
-            <?php endif; ?>
-            <div class="leading-tight">
-                <h1 class="text-maroon font-bold text-lg md:text-xl m-0"><a href="<?php echo esc_url(home_url('/')); ?>">Sekretariat DPRD</a></h1>
-                <p class="text-gray-500 text-xs md:text-sm m-0">Kabupaten Purbalingga</p>
-            </div>
-        </div>
-
-        <!-- Desktop Navigation -->
-        <nav class="hidden md:flex items-center gap-6">
-            <?php
-            wp_nav_menu(array(
-                'theme_location' => 'menu-1',
-                'container' => false,
-                'menu_class' => 'flex gap-6 text-sm font-semibold text-gray-700',
-                'fallback_cb' => false,
-                'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s</ul>'
-            ));
             ?>
-            <button class="text-maroon hover:text-maroon-dark focus:outline-none">
-                <i class="fas fa-search"></i>
-            </button>
-        </nav>
-
-        <!-- Mobile Menu Button -->
-        <button id="mobile-menu-btn" class="md:hidden text-gray-700 focus:outline-none text-2xl">
-            <i class="fas fa-bars"></i>
-        </button>
-    </div>
-
-    <!-- Mobile Navigation (Hidden by default) -->
-    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 py-2">
-        <?php
-        wp_nav_menu(array(
-            'theme_location' => 'menu-1',
-            'container' => false,
-            'menu_class' => 'flex flex-col gap-3 text-sm font-semibold text-gray-700 pb-4',
-            'fallback_cb' => false,
-        ));
-        ?>
-    </div>
+        </div>
+        
+        <div class="nav-tools">
+            <button class="icon-btn" id="searchBtn" aria-label="Cari">⌕</button>
+            <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+        </div>
+    </nav>
 </header>
-<script>
-    document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-        var menu = document.getElementById('mobile-menu');
-        menu.classList.toggle('hidden');
-    });
-</script>
-<main id="primary" class="site-main">
+<main>
