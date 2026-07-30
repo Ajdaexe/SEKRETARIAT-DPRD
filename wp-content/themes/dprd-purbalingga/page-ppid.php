@@ -1,152 +1,166 @@
 <?php
-/**
- * Template Name: PPID
- *
- * @package dprd-purbalingga
- */
+/* Template Name: PPID Page */
+get_header(); ?>
 
-get_header();
-?>
-
-<section class="hero" data-title="PPID" data-subtitle="Pusat informasi publik Sekretariat DPRD Kabupaten Purbalingga.">
-    <div class="hero-copy">
-        <h1>PPID</h1>
-        <p>Pusat informasi publik Sekretariat DPRD Kabupaten Purbalingga.</p>
+  <!-- Hero Section -->
+  <section class="hero" id="heroSection" onclick="openLightbox()">
+    <img id="heroImage" src="https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png" alt="Gedung Sekretariat DPRD">
+    <div class="hero-text" id="heroText">
+      <h2>PPID</h2>
+      <p>Layanan informasi publik yang terbuka, cepat, dan transparan. Sekretariat DPRD Kabupaten Purbalingga
+        berkomitmen memberikan informasi yang akurat untuk masyarakat.</p>
     </div>
-</section>
+  </section>
 
-<section class="container section reveal">
-    <div class="info-band">
-        <div>ℹ️</div>
+  <!-- Modal Lightbox -->
+  <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightboxImg" src="" alt="Zoom Foto">
+  </div>
+
+  <div class="container">
+
+    <div class="info-card">
+      <div class="info-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/informasi.png" alt=""></div>
+      <div>
+        <h3>Informasi</h3>
+        <p>PPID Sekretariat DPRD Kabupaten Purbalingga adalah portal layanan informasi publik untuk mewujudkan
+          transparansi, akuntabilitas, dan keterbukaan informasi sesuai dengan UU No. 14 Tahun 2008 tentang Keterbukaan
+          Informasi Publik.</p>
+      </div>
+    </div>
+
+    <div class="type-grid">
+      <div class="type-card">
+        <div class="type-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/informasi berkala.png" alt=""></div>
+        <h5>Informasi Berkala</h5>
+        <p>Informasi yang wajib disediakan dan diumumkan secara berkala oleh Sekretariat DPRD.</p>
+        <button class="btn-red-sm" onclick="filterByCategory('Informasi Berkala')">Lihat Informasi &rsaquo;</button>
+      </div>
+      <div class="type-card">
+        <div class="type-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/informasi serta merta.png" alt=""></div>
+        <h5>Informasi Serta Merta</h5>
+        <p>Informasi yang harus disampaikan segera karena berkaitan dengan hajat hidup orang banyak.</p>
+        <button class="btn-red-sm" onclick="filterByCategory('Informasi Serta Merta')">Lihat Informasi &rsaquo;</button>
+      </div>
+      <div class="type-card">
+        <div class="type-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/search merah.png" alt=""></div>
+        <h5>Informasi Setiap Saat</h5>
+        <p>Informasi yang tersedia setiap saat dan dapat diakses oleh publik kapan pun dibutuhkan.</p>
+        <button class="btn-red-sm" onclick="filterByCategory('Informasi Setiap Saat')">Lihat Informasi &rsaquo;</button>
+      </div>
+      <div class="type-card">
+        <div class="type-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/laporan ppid.png" alt=""></div>
+        <h5>Laporan PPID</h5>
+        <p>Laporan layanan informasi publik dan kinerja PPID Sekretariat DPRD Kabupaten Purbalingga.</p>
+        <button class="btn-red-sm" onclick="filterByCategory('Laporan PPID')">Lihat Informasi &rsaquo;</button>
+      </div>
+    </div>
+
+    <!-- STATISTIK / OVERVIEW -->
+    <div class="stats" id="statsOverviewGrid">
+      <div class="stat-item">
+        <div class="stat-icon"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/document.png" alt=""></div>
         <div>
-            <h2>Informasi</h2>
-            <p>PPID menyediakan informasi berkala, serta-merta, tersedia setiap saat, dan layanan permohonan informasi publik.</p>
+          <div class="stat-num" id="stat-dokumen">0</div>
+          <div class="stat-label">Dokumen / Informasi Tersedia untuk publik</div>
         </div>
-        <div class="info-points">
-            <span>Transparansi Informasi</span>
-            <span>Klasifikasi Informasi</span>
-            <span>Cepat & Tepat</span>
-            <span>Pelayanan Akuntabel</span>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/user account.png" alt=""></div>
+        <div>
+          <div class="stat-num" id="stat-permintaan">0</div>
+          <div class="stat-label">Permintaan Informasi Tahun Ini</div>
         </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/layanan cepat.png" alt=""></div>
+        <div>
+          <div class="stat-num" id="stat-layanan">100%</div>
+          <div class="stat-label">Layanan Cepat Sesuai SOP</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Protect.png" alt=""></div>
+        <div>
+          <div class="stat-num" id="stat-komitmen">100%</div>
+          <div class="stat-label">Komitmen Transparan &amp; Akuntabel</div>
+        </div>
+      </div>
     </div>
-</section>
 
-<section class="container section reveal">
-    <div class="service-grid ppid-services">
-        <article class="service-card">
-            <span>📘</span>
-            <h3>Informasi Berkala</h3>
-            <p>Informasi yang wajib diumumkan secara rutin.</p>
-        </article>
-        <article class="service-card">
-            <span>⚡</span>
-            <h3>Informasi Serta-Merta</h3>
-            <p>Informasi yang menyangkut kepentingan luas.</p>
-        </article>
-        <article class="service-card">
-            <span>🔎</span>
-            <h3>Informasi Setiap Saat</h3>
-            <p>Informasi yang tersedia dan dapat diakses.</p>
-        </article>
-        <article class="service-card">
-            <span>📑</span>
-            <h3>Laporan Layanan</h3>
-            <p>Rekapitulasi pelayanan informasi publik.</p>
-        </article>
+    <div class="doc-card" id="docCard">
+      <div class="doc-head">
+        <h3>Dokumen / Informasi Terbaru</h3>
+        <a class="lihat" id="top-lihat-semua" onclick="toggleLihatSemua()">Lihat Semua &rsaquo;</a>
+      </div>
+
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Cari Dokumen....." oninput="applyFilters()">
+        <span class="sic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/search merah.png" alt=""></span>
+      </div>
+
+      <div class="filter-row">
+        <button class="pill-btn" id="btn-semua" onclick="resetFilter()">Semua</button>
+        <select class="filter-select" id="filter-kategori" onchange="applyFilters()">
+          <option value="">Dokumen (Semua Kategori)</option>
+          <option value="Informasi Berkala">Informasi Berkala</option>
+          <option value="Informasi Serta Merta">Informasi Serta Merta</option>
+          <option value="Informasi Setiap Saat">Informasi Setiap Saat</option>
+          <option value="Laporan PPID">Laporan PPID</option>
+        </select>
+        <!-- DROPDOWN TAHUN (2020 - 2026) -->
+        <select class="filter-select" id="filter-tahun" onchange="applyFilters()">
+          <option value="">Tahun (Semua Tahun)</option>
+          <option value="2026">2026</option>
+          <option value="2025">2025</option>
+          <option value="2024">2024</option>
+          <option value="2023">2023</option>
+          <option value="2022">2022</option>
+          <option value="2021">2021</option>
+          <option value="2020">2020</option>
+        </select>
+      </div>
+
+      <table>
+        <thead>
+        <tr>
+          <th style="width:60px;">Nomor</th>
+          <th style="width:40%;">Judul Dokumen</th>
+          <th style="width:220px; text-align: left; padding-left: 12px;">Kategori</th>
+          <th style="width:160px;">Tanggal</th>
+          <th style="width:170px; text-align: center;">Unduh</th>
+        </tr>
+      </thead>
+        <tbody id="doc-table-body">
+          <!-- otomatis diisi JS -->
+        </tbody>
+      </table>
+      <div class="no-result" id="no-result" style="display:none;">Tidak ada dokumen yang cocok dengan pencarian/filter.</div>
+
+      <div class="lihat-semua"><a id="bottom-lihat-semua" onclick="toggleLihatSemua()">Lihat Semua Dokumen &rsaquo;</a></div>
     </div>
-</section>
 
-<section class="stats-strip container reveal">
-    <?php
-    $stat_dokumen = get_field('stat_dokumen', 'option') ?: '250+';
-    ?>
-    <article><span class="stat-icon">📄</span><div><strong class="stat-counter"><?php echo esc_html($stat_dokumen); ?></strong><small>Dokumen Publik</small></div></article>
-    <article><span class="stat-icon">👥</span><div><strong class="stat-counter">150+</strong><small>Permohonan</small></div></article>
-    <article><span class="stat-icon">🕘</span><div><strong class="stat-counter">100%</strong><small>Tepat Waktu</small></div></article>
-    <article><span class="stat-icon">🛡️</span><div><strong class="stat-counter">100%</strong><small>Transparan</small></div></article>
-</section>
+    <!-- CTA BANNER -->
+    <section class="cta-section">
+      <div class="cta-banner">
+        <div class="cta-left">
+          <div class="cta-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Headphones.png" alt=""></div>
+          <div>
+            <h4>Butuh Informasi Lain?</h4>
+            <p>Ajukan permohonan informasi jika data yang anda cari belum terdata</p>
+          </div>
+        </div>
+        <a
+        href="https://mail.google.com/mail/?view=cm&fs=1&to=sekretariat@dprd.purbalingga.go.id&su=Permohonan%20Informasi"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-outline">
+        Ajukan Permohonan
+      </a>
+      </div>
+    </section>
 
-<section class="container section reveal">
-    <div class="document-panel">
-        <div class="section-heading">
-            <div><span class="eyebrow">Dokumen</span><h2>Informasi Terbaru</h2></div>
-            <div class="search-box">
-                <input id="ppidSearch" type="search" placeholder="Cari dokumen..."><span>⌕</span>
-            </div>
-        </div>
-        
-        <div class="filter-tabs">
-            <button class="active" data-filter="all">Semua</button>
-            <button data-filter="informasi-berkala">Berkala</button>
-            <button data-filter="informasi-setiap-saat">Setiap Saat</button>
-            <button data-filter="informasi-serta-merta">Serta-Merta</button>
-            <button data-filter="laporan-ppid">Laporan</button>
-        </div>
-        
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Dokumen</th>
-                        <th>Kategori</th>
-                        <th>Tanggal</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="ppidTable">
-                    <?php
-                    $args = array(
-                        'post_type'      => 'dokumen',
-                        'posts_per_page' => -1,
-                        'tax_query'      => array(
-                            array(
-                                'taxonomy' => 'kategori_dokumen',
-                                'field'    => 'slug',
-                                'terms'    => array('informasi-berkala', 'informasi-setiap-saat', 'informasi-serta-merta', 'laporan-ppid'),
-                                'operator' => 'IN',
-                            ),
-                        ),
-                    );
-                    
-                    $query = new WP_Query($args);
-                    if ($query->have_posts()) :
-                        $i = 1;
-                        while ($query->have_posts()) : $query->the_post();
-                            $kategori = wp_get_post_terms(get_the_ID(), 'kategori_dokumen');
-                            $cat_slug = !empty($kategori) ? $kategori[0]->slug : 'all';
-                            $cat_name = !empty($kategori) ? $kategori[0]->name : '-';
-                            $file = get_field('file_dokumen');
-                            $file_url = $file ? esc_url($file['url']) : '#';
-                            $tanggal = get_field('tanggal_dokumen') ?: get_the_date('d M Y');
-                    ?>
-                        <tr data-category="<?php echo esc_attr($cat_slug); ?>">
-                            <td><?php echo $i++; ?></td>
-                            <td><strong><?php the_title(); ?></strong></td>
-                            <td><span class="badge"><?php echo esc_html($cat_name); ?></span></td>
-                            <td><?php echo esc_html($tanggal); ?></td>
-                            <td>
-                                <a href="<?php echo $file_url; ?>" class="action-btn" target="_blank" rel="noopener">⬇ Unduh</a>
-                            </td>
-                        </tr>
-                    <?php
-                        endwhile;
-                        wp_reset_postdata();
-                    else :
-                    ?>
-                        <tr class="no-results" style="display:none;"><td colspan="5">Dokumen tidak ditemukan.</td></tr>
-                        <tr><td colspan="5">Belum ada dokumen yang tersedia.</td></tr>
-                    <?php endif; ?>
-                    <tr class="no-results" style="display:none;"><td colspan="5">Dokumen tidak ditemukan.</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</section>
-
-<section class="container callout reveal">
-    <div><span class="callout-icon">📢</span><div><strong>Butuh Informasi Lain?</strong><small>Ajukan permohonan informasi publik melalui layanan PPID.</small></div></div>
-    <a href="<?php echo esc_url(site_url('/kontak')); ?>" class="btn btn-light">Ajukan Permohonan</a>
-</section>
+  </div>
 
 <?php get_footer(); ?>

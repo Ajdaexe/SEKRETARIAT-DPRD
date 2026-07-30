@@ -49,6 +49,36 @@ function dprd_purbalingga_scripts() {
 
     // Enqueue Theme JS
     wp_enqueue_script( 'dprd-purbalingga-script', get_template_directory_uri() . '/js/script.js', array(), filemtime( get_template_directory() . '/js/script.js' ), true );
+
+    // Enqueue SAKIP CSS and JS
+    if ( is_page_template('page-sakip.php') || is_page('sakip') || true ) { // keeping true for global styles if needed, wait let's just leave it unconditional as it was.
+        wp_enqueue_style( 'sakip-style', get_template_directory_uri() . '/assets/css/sakip.css', array(), '1.0.0' );
+        
+        wp_enqueue_script( 'sakip-script', get_template_directory_uri() . '/assets/js/sakip.js', array(), '1.0.0', true );
+        wp_localize_script( 'sakip-script', 'themeData', array(
+            'templateUrl' => get_template_directory_uri()
+        ) );
+    }
+
+    // Enqueue Beranda CSS and JS
+    if ( is_front_page() || is_home() ) {
+        wp_enqueue_style( 'beranda-style', get_template_directory_uri() . '/assets/css/beranda.css', array(), '1.0.0' );
+        
+        wp_enqueue_script( 'beranda-script', get_template_directory_uri() . '/assets/js/beranda.js', array(), '1.0.0', true );
+        wp_localize_script( 'beranda-script', 'themeData', array(
+            'templateUrl' => get_template_directory_uri()
+        ) );
+    }
+
+    // Enqueue PPID CSS and JS
+    if ( is_page_template('page-ppid.php') || is_page('ppid') ) {
+        wp_enqueue_style( 'ppid-style', get_template_directory_uri() . '/assets/css/ppid.css', array(), '1.0.0' );
+        
+        wp_enqueue_script( 'ppid-script', get_template_directory_uri() . '/assets/js/ppid.js', array(), '1.0.0', true );
+        wp_localize_script( 'ppid-script', 'themeData', array(
+            'templateUrl' => get_template_directory_uri()
+        ) );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'dprd_purbalingga_scripts' );
 

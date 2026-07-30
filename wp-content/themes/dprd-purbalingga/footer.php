@@ -1,67 +1,69 @@
-<?php
-/**
- * The template for displaying the footer
- *
- * @package dprd-purbalingga
- */
-?>
-</main>
-<footer class="site-footer">
-    <div class="footer-inner">
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <img src="<?php echo esc_url( get_template_directory_uri() . '/images/logo-header.png' ); ?>" alt="Sekretariat DPRD">
-                <p>Mendukung pelaksanaan tugas dan fungsi DPRD Kabupaten Purbalingga melalui pelayanan yang profesional, transparan, dan akuntabel.</p>
-                <div class="social-row">
-                    <?php 
-                    $facebook = get_field('link_facebook', 'option') ?: '#';
-                    $instagram = get_field('link_instagram', 'option') ?: '#';
-                    $youtube = get_field('link_youtube', 'option') ?: '#';
-                    $twitter = get_field('link_twitter', 'option') ?: '#';
-                    ?>
-                    <a href="<?php echo esc_url($facebook); ?>" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="<?php echo esc_url($instagram); ?>" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="<?php echo esc_url($youtube); ?>" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                    <a href="<?php echo esc_url($twitter); ?>" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
-            
-            <div class="footer-col">
-                <h3>Kontak Kami</h3>
-                <?php
-                $alamat = get_field('alamat_kantor', 'option') ?: 'Jl. Onje No. 2A, Purbalingga';
-                $telepon = get_field('nomor_telepon', 'option') ?: '(0281) 891234';
-                $email = get_field('alamat_email', 'option') ?: 'sekretariat@dprd.purbalingga.go.id';
-                ?>
-                <p><?php echo esc_html($alamat); ?></p>
-                <p><?php echo esc_html($telepon); ?></p>
-                <p><?php echo esc_html($email); ?></p>
-            </div>
-            
-            <div class="footer-col">
-                <h3>Jam Layanan</h3>
-                <?php
-                $jam_senin_kamis = get_field('jam_senin_kamis', 'option') ?: '08.00 - 15.30 WIB';
-                $jam_jumat = get_field('jam_jumat', 'option') ?: '08.00 - 11.00 WIB';
-                ?>
-                <p>Senin–Kamis<br><?php echo esc_html($jam_senin_kamis); ?></p>
-                <p>Jumat<br><?php echo esc_html($jam_jumat); ?></p>
-            </div>
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Lambang_Kabupaten_Purbalingga.png" alt="Logo">
+          <div>
+            <h3>Sekretariat DPRD</h3>
+            <p>Kabupaten Purbalingga</p>
+          </div>
         </div>
-        <div class="copyright">
-            © <?php echo date('Y'); ?> Sekretariat DPRD Kabupaten Purbalingga
+        <p class="footer-desc">Mendukung kelancaran tugas dan wewenang DPRD melalui pelayanan yang profesional, transparan, dan akuntabel.</p>
+        <div class="socials">
+          <span><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/facebook.png" alt="Facebook"></span>
+          <span><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/instagram.png" alt="Instagram"></span>
+          <span>
+            <svg class="icon-img" viewBox="0 0 24 24" fill="#ffffff" width="16" height="16">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+          </span>
+          <span><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/email.png" alt="Email"></span>
         </div>
-    </div>
-</footer>
+      </div>
 
-<!-- Modals -->
-<dialog id="videoModal" class="modal">
-    <button class="modal-close" data-modal-close aria-label="Tutup">×</button>
-    <div class="video-placeholder">
-        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Q0CbN8sfihY" title="Video Rapat Paripurna" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>
-    </div>
-</dialog>
+      <div class="footer-col-border">
+        <h6>Kontak Kami</h6>
+        <div class="contact-item">
+          <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/maps.png" alt="Maps">
+          <span>Jl. Onje No.2A Purbalingga, Jawa Tengah</span>
+        </div>
+        <div class="contact-item">
+          <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/phone.png" alt="Phone">
+          <span>Telp. (0281) 8951058</span>
+        </div>
+        <div class="contact-item">
+          <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/website.png" alt="Website">
+          <span>www.dprd.purbalingga.go.id</span>
+        </div>
+        <div class="contact-item">
+          <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/email merah.png" alt="Email">
+          <span>sekretariat@dprd.purbalingga.go.id</span>
+        </div>
+      </div>
 
-<?php wp_footer(); ?>
+      <div class="footer-col-border">
+        <h6>Jam Layanan</h6>
+        <div class="jam-item">
+          <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/clock tipis.png" alt="Clock">
+          <div>
+            <b>Senin - Kamis</b>
+            <span>08:00 - 16:00 WIB</span>
+          </div>
+        </div>
+        <div class="jam-item">
+          <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/clock tipis.png" alt="Clock">
+          <div>
+            <b>Jumat</b>
+            <span>08:00 - 14:30 WIB</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="copyright">&copy; 2026 Sekretariat DPRD Kabupaten Purbalingga. All rights reserved.</div>
+
+  <?php wp_footer(); ?>
 </body>
+
 </html>
