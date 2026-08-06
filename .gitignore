@@ -26,3 +26,34 @@ wp-content/themes/dprd-purbalingga/tailwindcss.exe
 .Trashes
 ehthumbs.db
 Thumbs.db
+# Abaikan file koneksi/test database lokal agar tidak ikut ter-upload
+test-db.php
+*.local.php
+config.php
+database.php
+
+ca.pem
+*.pem
+
+# Environment variables (jika pakai file .env)
+.env
+.env.*
+
+# WordPress config & database rahasia
+wp-config.php
+test-db.php
+*.local.php
+
+# Kunci & Sertifikat
+*.pem
+*.key
+.env
+.env.*
+
+# Folder besar & sistem
+node_modules/
+vendor/
+wp-content/uploads/
+.DS_Store
+Thumbs.db
+*.log
