@@ -16,7 +16,8 @@ wp-content/plugins/
 # wp-content/themes/
 # !wp-content/themes/index.php
 # !wp-content/themes/dprd-purbalingga/
-
+# Abaikan file compiler tailwind yang besar
+wp-content/themes/dprd-purbalingga/tailwindcss.exe
 # OS generated files
 .DS_Store
 .DS_Store?

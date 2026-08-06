@@ -34,6 +34,32 @@ if ( ! function_exists( 'dprd_purbalingga_setup' ) ) :
 endif;
 add_action( 'after_setup_theme', 'dprd_purbalingga_setup' );
 
+// Auto-create necessary pages if they don't exist
+function auto_create_theme_pages() {
+    $pages = array(
+        'profil' => 'Profil',
+        'kontak' => 'Kontak',
+        'ppid' => 'PPID',
+        'sakip' => 'Sakip',
+        'dlantunan' => 'D\'Lantunan'
+    );
+    foreach ($pages as $slug => $title) {
+        $page_check = get_page_by_path($slug);
+        if (!isset($page_check->ID)) {
+            $new_page = array(
+                'post_type' => 'page',
+                'post_title' => $title,
+                'post_name' => $slug,
+                'post_status' => 'publish',
+                'post_author' => 1,
+            );
+            $new_page_id = wp_insert_post($new_page);
+            update_post_meta($new_page_id, '_wp_page_template', 'page-'.$slug.'.php');
+        }
+    }
+}
+add_action('init', 'auto_create_theme_pages');
+
 /**
  * Enqueue scripts and styles.
  */
@@ -48,13 +74,13 @@ function dprd_purbalingga_scripts() {
     wp_enqueue_style( 'dprd-purbalingga-style', get_stylesheet_uri(), array(), filemtime( get_template_directory() . '/style.css' ) );
 
     // Enqueue Theme JS
-    wp_enqueue_script( 'dprd-purbalingga-script', get_template_directory_uri() . '/js/script.js', array(), filemtime( get_template_directory() . '/js/script.js' ), true );
+    wp_enqueue_script( 'dprd-purbalingga-script', get_template_directory_uri() . '/script.js', array(), filemtime( get_template_directory() . '/script.js' ), true );
 
     // Enqueue SAKIP CSS and JS
-    if ( is_page_template('page-sakip.php') || is_page('sakip') || true ) { // keeping true for global styles if needed, wait let's just leave it unconditional as it was.
-        wp_enqueue_style( 'sakip-style', get_template_directory_uri() . '/assets/css/sakip.css', array(), '1.0.0' );
+    if ( is_page_template('page-sakip.php') || is_page('sakip') ) {
+        wp_enqueue_style( 'sakip-style', get_template_directory_uri() . '/sakip.css', array(), '1.0.0' );
         
-        wp_enqueue_script( 'sakip-script', get_template_directory_uri() . '/assets/js/sakip.js', array(), '1.0.0', true );
+        wp_enqueue_script( 'sakip-script', get_template_directory_uri() . '/sakip.js', array(), '1.0.0', true );
         wp_localize_script( 'sakip-script', 'themeData', array(
             'templateUrl' => get_template_directory_uri()
         ) );
@@ -62,9 +88,9 @@ function dprd_purbalingga_scripts() {
 
     // Enqueue Beranda CSS and JS
     if ( is_front_page() || is_home() ) {
-        wp_enqueue_style( 'beranda-style', get_template_directory_uri() . '/assets/css/beranda.css', array(), '1.0.0' );
+        wp_enqueue_style( 'beranda-style', get_template_directory_uri() . '/beranda.css', array(), '1.0.0' );
         
-        wp_enqueue_script( 'beranda-script', get_template_directory_uri() . '/assets/js/beranda.js', array(), '1.0.0', true );
+        wp_enqueue_script( 'beranda-script', get_template_directory_uri() . '/beranda.js', array(), '1.0.0', true );
         wp_localize_script( 'beranda-script', 'themeData', array(
             'templateUrl' => get_template_directory_uri()
         ) );
@@ -72,12 +98,33 @@ function dprd_purbalingga_scripts() {
 
     // Enqueue PPID CSS and JS
     if ( is_page_template('page-ppid.php') || is_page('ppid') ) {
-        wp_enqueue_style( 'ppid-style', get_template_directory_uri() . '/assets/css/ppid.css', array(), '1.0.0' );
+        wp_enqueue_style( 'ppid-style', get_template_directory_uri() . '/ppid.css', array(), '1.0.0' );
         
-        wp_enqueue_script( 'ppid-script', get_template_directory_uri() . '/assets/js/ppid.js', array(), '1.0.0', true );
+        wp_enqueue_script( 'ppid-script', get_template_directory_uri() . '/ppid.js', array(), '1.0.0', true );
         wp_localize_script( 'ppid-script', 'themeData', array(
             'templateUrl' => get_template_directory_uri()
         ) );
+    }
+
+    // Enqueue D'Lantunan CSS and JS
+    if ( is_page_template('page-dlantunan.php') || is_page('dlantunan') ) {
+        wp_enqueue_style( 'dlantunan-style', get_template_directory_uri() . '/dlantunan-style.css', array(), '1.0.0' );
+        
+        wp_enqueue_script( 'dlantunan-script', get_template_directory_uri() . '/dlantunan-script.js', array(), '1.0.0', true );
+    }
+
+    // Enqueue Kontak CSS and JS
+    if ( is_page_template('page-kontak.php') || is_page('kontak') ) {
+        wp_enqueue_style( 'kontak-style', get_template_directory_uri() . '/kontak-style.css', array(), '1.0.0' );
+        
+        wp_enqueue_script( 'kontak-script', get_template_directory_uri() . '/kontak-script.js', array(), '1.0.0', true );
+    }
+
+    // Enqueue Profil CSS and JS
+    if ( is_page_template('page-profil.php') || is_page('profil') ) {
+        wp_enqueue_style( 'profil-style', get_template_directory_uri() . '/profile-style.css', array(), '1.0.0' );
+        
+        wp_enqueue_script( 'profil-script', get_template_directory_uri() . '/profile-script.js', array(), '1.0.0', true );
     }
 }
 add_action( 'wp_enqueue_scripts', 'dprd_purbalingga_scripts' );

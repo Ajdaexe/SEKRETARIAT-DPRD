@@ -1,8 +1,10 @@
 <?php
-/* Template Name: SAKIP */
+/*
+Template Name: Sakip Template
+*/
 get_header(); ?>
 
-  <!-- Hero Section -->
+<!-- Hero Section -->
   <section class="hero" id="heroSection" onclick="openLightbox()">
     <img id="heroImage" src="https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png"
       alt="Gedung Sekretariat DPRD">
@@ -19,11 +21,20 @@ get_header(); ?>
     <img id="lightboxImg" src="" alt="Zoom Foto">
   </div>
 
+  <!-- ===== BATIK DIVIDER CENTER SECTION ===== -->
+  <div class="batik-user-divider-container">
+    <div class="batik-user-divider-inner">
+      <img src="<?php echo get_template_directory_uri(); ?>/images/garis kiri.svg" alt="Garis Kiri" class="batik-line-img">
+      <img src="<?php echo get_template_directory_uri(); ?>/images/motif tengah.svg" alt="Motif Batik Tengah" class="batik-img-center">
+      <img src="<?php echo get_template_directory_uri(); ?>/images/garis kanan.svg" alt="Garis Kanan" class="batik-line-img">
+    </div>
+  </div>
+
   <div class="container">
 
     <div class="stats-grid" id="statsOverviewGrid">
       <div class="stat-card">
-        <div class="stat-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/document.png" alt=""></div>
+        <div class="stat-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/images/document.svg" alt=""></div>
         <div>
           <div class="label-top">Jumlah Dokumen</div>
           <div class="value" id="stat-jumlah-dokumen">0</div>
@@ -31,7 +42,7 @@ get_header(); ?>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/kategori.png" alt=""></div>
+        <div class="stat-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/images/kategori.png" alt=""></div>
         <div>
           <div class="label-top">Kategori Aktif</div>
           <div class="value" id="stat-kategori-aktif">0</div>
@@ -39,7 +50,7 @@ get_header(); ?>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-ic green"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Calendar.png" alt=""></div>
+        <div class="stat-ic green"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/images/Calendar.png" alt=""></div>
         <div>
           <div class="label-top">Update Terbaru</div>
           <div class="value" id="stat-update-terbaru">-</div>
@@ -47,7 +58,7 @@ get_header(); ?>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-ic blue"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Download biru.png" alt=""></div>
+        <div class="stat-ic blue"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/images/Download biru.png" alt=""></div>
         <div>
           <div class="label-top">Total Unduhan</div>
           <div class="value" id="stat-total-unduhan">0</div>
@@ -81,7 +92,7 @@ get_header(); ?>
     <section class="cta-section">
       <div class="cta-banner">
         <div class="cta-left">
-          <div class="cta-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/user account.png" alt=""></div>
+          <div class="cta-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/images/user account.svg" alt=""></div>
           <div>
             <h4>Butuh Informasi SAKIP Lainnya?</h4>
             <p>Hubungi kami untuk layanan dan konsultasi akuntabilitas kinerja</p>

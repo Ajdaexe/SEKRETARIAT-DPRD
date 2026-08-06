@@ -1,82 +1,63 @@
 <?php
 define('WP_USE_THEMES', false);
-require_once( dirname( __FILE__ ) . '/wp-load.php' );
+require_once('wp-load.php');
 
-$pages_to_create = array(
-    'Beranda' => 'front-page.php', // Actually, front-page.php works automatically if set as static front page, but we'll assign it anyway or just default
-    'Profil' => 'page-profil.php',
-    'Kontak' => 'page-kontak.php',
-    'PPID' => 'page-ppid.php',
-    'Sakip' => 'page-sakip.php',
-    'D\'Lantunan' => 'page-dlantunan.php',
-);
+$pages = [
+    ['title' => 'Beranda', 'slug' => 'beranda', 'template' => 'page-beranda.php'],
+    ['title' => 'Profil', 'slug' => 'profile', 'template' => 'page-profile.php'],
+    ['title' => 'Kontak', 'slug' => 'kontak', 'template' => 'page-kontak.php'],
+    ['title' => 'PPID', 'slug' => 'ppid', 'template' => 'page-ppid.php'],
+    ['title' => 'Sakip', 'slug' => 'sakip', 'template' => 'page-sakip.php'],
+    ['title' => "D'Lantunan", 'slug' => 'dlantunan', 'template' => 'page-dlantunan.php'],
+];
 
-$front_page_id = 0;
+foreach ($pages as $p) {
+    $page_check = get_page_by_path($p['slug']);
+    if (!isset($page_check->ID)) {
+        // Try to get by title just in case it was created with wrong slug
+        $page_by_title = get_page_by_title($p['title']);
+        if ($page_by_title) {
+            $page_check = $page_by_title;
+            // update slug
+            wp_update_post([
+                'ID' => $page_check->ID,
+                'post_name' => $p['slug']
+            ]);
+        }
+    }
 
-foreach ($pages_to_create as $title => $template) {
-    $page = get_page_by_title($title);
-    if (!$page) {
-        $post_id = wp_insert_post(array(
-            'post_title' => $title,
+    if (!isset($page_check->ID)) {
+        $page_id = wp_insert_post([
+            'post_title' => $p['title'],
+            'post_name' => $p['slug'],
             'post_type' => 'page',
             'post_status' => 'publish',
-        ));
-        
-        if ($post_id) {
-            echo "Halaman dibuat: $title\n";
-            // Assign template
-            if ($template !== 'front-page.php') {
-                update_post_meta($post_id, '_wp_page_template', $template);
-            }
-            if ($title === 'Beranda') {
-                $front_page_id = $post_id;
-            }
+        ]);
+        if ($page_id && !is_wp_error($page_id)) {
+            update_post_meta($page_id, '_wp_page_template', $p['template']);
+            echo "Created {$p['title']} with slug '{$p['slug']}' and template {$p['template']}\n";
         }
     } else {
-        echo "Halaman sudah ada: $title\n";
-        if ($title === 'Beranda') {
-            $front_page_id = $page->ID;
-        }
+        update_post_meta($page_check->ID, '_wp_page_template', $p['template']);
+        echo "Updated {$p['title']} with slug '{$p['slug']}' and template {$p['template']}\n";
     }
 }
 
-// Set Beranda as Homepage
-if ($front_page_id) {
+// Set Front Page
+$beranda = get_page_by_path('beranda');
+if ($beranda) {
     update_option('show_on_front', 'page');
-    update_option('page_on_front', $front_page_id);
-    echo "Beranda diset sebagai halaman depan statis.\n";
+    update_option('page_on_front', $beranda->ID);
+    echo "Front page set to Beranda\n";
 }
 
-// Setup Menu Utama
-$menu_name = 'Menu Utama';
-$menu_exists = wp_get_nav_menu_object($menu_name);
+// Ensure theme is active
+switch_theme('nama-tema-kustom');
+echo "Theme 'nama-tema-kustom' activated\n";
 
-if (!$menu_exists) {
-    $menu_id = wp_create_nav_menu($menu_name);
-    
-    // Add pages to menu
-    $pages = get_pages();
-    foreach ($pages as $page) {
-        // Skip default sample page
-        if ($page->post_title === 'Sample Page') continue;
-        
-        wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title' => $page->post_title,
-            'menu-item-object-id' => $page->ID,
-            'menu-item-object' => 'page',
-            'menu-item-status' => 'publish',
-            'menu-item-type' => 'post_type',
-        ));
-    }
-    
-    // Assign to Primary Menu location
-    $locations = get_theme_mod('nav_menu_locations');
-    $locations['menu-1'] = $menu_id;
-    set_theme_mod('nav_menu_locations', $locations);
-    
-    echo "Menu Utama dibuat dan ditugaskan ke header.\n";
-} else {
-    echo "Menu Utama sudah ada.\n";
-}
-
-echo "Setup Halaman selesai.\n";
+// Ensure permalink structure is /%postname%/
+global $wp_rewrite;
+$wp_rewrite->set_permalink_structure('/%postname%/');
+$wp_rewrite->flush_rules();
+echo "Permalink structure set and rules flushed\n";
+?>

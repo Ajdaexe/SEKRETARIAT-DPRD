@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontak - Sekretariat DPRD Kabupaten Purbalingga</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="kontak-style.css">
+</head>
+
+<body>
+
+<!-- Motif Batik Full Viewport Desktop Edge -->
+<img src="images/motif kiri.svg" alt="Motif Batik Kiri Desktop" class="batik-desktop-edge batik-desktop-edge-left">
+<img src="images/motif kanan.svg" alt="Motif Batik Kanan Desktop" class="batik-desktop-edge batik-desktop-edge-right">
+
+<!-- ===== HEADER ===== -->
+<header id="mainHeader">
+  <div class="logo-wrap">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Lambang_Kabupaten_Purbalingga.png" alt="Logo Purbalingga">
+    <div>
+      <h1>Sekretariat DPRD</h1>
+      <p>Kabupaten Purbalingga</p>
+    </div>
+  </div>
+  <nav>
+      <a href="beranda.html">Beranda</a>
+      <a href="profile.html">Profil</a>
+      <a href="kontak.html" class="active">Kontak</a>
+      <a href="ppid.html">PPID</a>
+      <a href="sakip.html">Sakip</a>
+      <a href="dlantunan.html">D'Lantunan</a>
+    </nav>
+  <div class="search-container">
+    <div class="search-box-animated" id="searchBoxAnimated" onclick="toggleSearchBox()">
+      <button class="search-btn-icon" type="button"><img class="icon-img" src="images/search.svg" alt="Cari"></button>
+      <input type="text" id="globalSearchInput" placeholder="Cari..." autocomplete="off">
+    </div>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="heroSection" onclick="openLightbox()">
+  <img id="heroImage" src="https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png" alt="Gedung Sekretariat DPRD">
+  <div class="hero-text" id="heroText">
+    <h2>Kontak</h2>
+    <p>Informasi lengkap mengenai alamat, kontak, jam layanan, dan cara menghubungi Sekretariat DPRD Kabupaten Purbalingga.</p>
+  </div>
+</section>
+
+<!-- Modal Lightbox untuk Foto Hero -->
+<div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox()">
+  <span class="lightbox-close">&times;</span>
+  <img id="lightboxImg" src="" alt="Zoom Foto">
+</div>
+
+<!-- ===== BATIK DIVIDER CENTER SECTION ===== -->
+<div class="batik-user-divider-container">
+  <div class="batik-user-divider-inner">
+    <img src="images/garis kiri.svg" alt="Garis Kiri" class="batik-line-img">
+    <img src="images/motif tengah.svg" alt="Motif Batik Tengah" class="batik-img-center">
+    <img src="images/garis kanan.svg" alt="Garis Kanan" class="batik-line-img">
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ===== KONTAK SECTION ===== -->
+<section class="kontak-section">
+  <div class="wrap kontak-grid" style="padding:0;">
+
+    <!-- LEFT COLUMN -->
+    <div class="kontak-left">
+      <div class="card-panel">
+        <h2 class="section-title">Informasi Kontak</h2>
+        <p class="info-lede">Silahkan hubungi kami untuk informasi dan layanan publik.</p>
+
+        <div class="info-item">
+          <div class="ic"><img class="icon-img icon-maps" src="images/maps.svg" alt="Alamat"></div>
+          <div>
+            <strong>Alamat Sekretariat DPRD Kabupaten Purbalingga</strong>
+            <p>Jl. Onje No.2a, Purbalingga, Purbalingga Lor, Kec. Purbalingga, Kabupaten Purbalingga, Jawa Tengah 53311</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="ic"><img class="icon-img" src="images/phone.svg" alt="Telepon"></div>
+          <div>
+            <strong>Telp.</strong>
+            <p>(0281) 891058</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="ic"><img class="icon-img" src="images/email.svg" alt="Email"></div>
+          <div>
+            <strong>Email</strong>
+            <p>sekretariat@dprd.purbalingga.go.id</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="ic"><img class="icon-img icon-website" src="images/website.svg" alt="Website"></div>
+          <div>
+            <strong>Website</strong>
+            <p>www.dprd.purbalingga.go.id</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="ic"><img class="icon-img" src="images/clock tebel.svg" alt="Jam Layanan"></div>
+          <div>
+            <strong>Jam Layanan</strong>
+            <p>Senin - Jum'at<br>08.00 - 16.00 WIB</p>
+            <p class="note">*Kecuali hari libur nasional</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="kontak-right">
+      <div class="card-panel">
+        <h2 class="section-title">Lokasi Kantor</h2>
+        <div class="lokasi-frame">
+          <iframe
+            src="https://www.google.com/maps?q=Kantor+DPRD+Kabupaten+Purbalingga&z=17&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Lokasi Sekretariat DPRD Kabupaten Purbalingga">
+          </iframe>
+          <div class="lokasi-card">
+            <div class="pin"><img class="icon-img icon-maps" src="images/maps.svg" alt="Lokasi"></div>
+            <div>
+              <strong>Sekretariat DPRD Kabupaten Purbalingga</strong>
+              <span>Jl. Onje No.2a, Purbalingga, Purbalingga Lor, Kec. Purbalingga, Kabupaten Purbalingga, Jawa Tengah 53311</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-panel ikuti-kami">
+        <h2 class="section-title">Ikuti Kami</h2>
+        <p>Dapatkan informasi terbaru dan kegiatan Sekretariat DPRD Kabupaten Purbalingga melalui kanal resmi kami.</p>
+        <div class="socials">
+          <a href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+            <span><img class="icon-img" src="images/facebook.svg" alt="Facebook"></span>
+          </a>
+          <a href="https://www.instagram.com/sekretariatdprd_pbg?igsh=MXQ2ZGQwenA2a2NxYw==" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+            <span><img class="icon-img" src="images/instagram.svg" alt="Instagram"></span>
+          </a>
+          <a href="https://youtube.com/@dprdpurbalingga?si=SaazLFY6H9PvVLw1" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+            <span>
+              <svg class="icon-img" viewBox="0 0 24 24" fill="#ffffff" width="16" height="16">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+            </span>
+          </a>
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sekretariat@dprd.purbalingga.go.id" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+            <span><img class="icon-img" src="images/email.svg" alt="Email"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</div>
+
+<!-- ===== CTA BANNER (HUBUNGI KAMI) ===== -->
+<section class="cta-section">
+  <div class="wrap">
+    <div class="cta-banner">
+      <div class="cta-left">
+        <div class="icon-circle"><img class="icon-img" src="images/user account.svg" alt=""></div>
+        <h3>Bersama Mewujudkan DPRD yang Berkinerja<br>Tinggi dan Melayani Masyarakat</h3>
+      </div>
+      <a
+        href="https://mail.google.com/mail/?view=cm&fs=1&to=sekretariat@dprd.purbalingga.go.id&su=Permohonan%20Informasi"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-outline">
+        Hubungi Kami
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Lambang_Kabupaten_Purbalingga.png" alt="Logo">
+        <div>
+          <h3>Sekretariat DPRD</h3>
+          <p>Kabupaten Purbalingga</p>
+        </div>
+      </div>
+      <p class="footer-desc">Mendukung kelancaran tugas dan wewenang DPRD melalui pelayanan yang profesional, transparan, dan akuntabel.</p>
+      <div class="socials">
+        <a href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+          <span><img class="icon-img" src="images/facebook.svg" alt="Facebook"></span>
+        </a>
+        <a href="https://www.instagram.com/sekretariatdprd_pbg?igsh=MXQ2ZGQwenA2a2NxYw==" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+          <span><img class="icon-img" src="images/instagram.svg" alt="Instagram"></span>
+        </a>
+        <a href="https://youtube.com/@dprdpurbalingga?si=SaazLFY6H9PvVLw1" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+          <span>
+            <svg class="icon-img" viewBox="0 0 24 24" fill="#ffffff" width="13" height="13">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+          </span>
+        </a>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sekretariat@dprd.purbalingga.go.id" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+          <span><img class="icon-img" src="images/email.svg" alt="Email"></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-col-border">
+      <h6>Kontak Kami</h6>
+      <div class="contact-item">
+        <div class="ic-foot"><img class="icon-img" src="images/maps.svg" alt="Maps"></div>
+        <span>Jl. Onje No.2A Purbalingga, Jawa Tengah</span>
+      </div>
+      <div class="contact-item">
+        <div class="ic-foot"><img class="icon-img" src="images/phone.svg" alt="Phone"></div>
+        <span><a href="tel:02818951058" style="color:inherit;text-decoration:none;">Telp. (0281) 8951058</a></span>
+      </div>
+      <div class="contact-item">
+        <div class="ic-foot"><img class="icon-img" src="images/website.svg" alt="Website"></div>
+        <span><a href="https://dprd.purbalinggakab.go.id" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;">www.dprd.purbalingga.go.id</a></span>
+      </div>
+      <div class="contact-item">
+        <div class="ic-foot"><img class="icon-img" src="images/email.svg" alt="Email"></div>
+        <span><a href="https://mail.google.com/mail/?view=cm&fs=1&to=sekretariat@dprd.purbalingga.go.id" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;">sekretariat@dprd.purbalingga.go.id</a></span>
+      </div>
+    </div>
+
+    <div class="footer-col-border">
+      <h6>Jam Layanan</h6>
+      <div class="jam-item">
+        <div class="ic-foot"><img class="icon-img" src="images/clock tipis.svg" alt="Clock"></div>
+        <div>
+          <b>Senin - Kamis</b>
+          <span>08:00 - 16:00 WIB</span>
+        </div>
+      </div>
+      <div class="jam-item">
+        <div class="ic-foot"><img class="icon-img" src="images/clock tipis.svg" alt="Clock"></div>
+        <div>
+          <b>Jumat</b>
+          <span>08:00 - 14:30 WIB</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="copyright">&copy; 2026 Sekretariat DPRD Kabupaten Purbalingga. All rights reserved.</div>
+
+<script src="kontak-script.js" defer></script>
+
+</body>
+</html>
