@@ -76,7 +76,7 @@ get_header();
         dan tata kerjanya ditetapkan dengan perda dan personilnya terdiri atas pegawai negeri sipil.</p>
       <p>Sekretariat DPRD dipimpin oleh seorang Sekretariat DPRD yang diangkat dan diberhentikan dengan keputusan bupati
         atas persetujuan pimpinan DPRD.</p>
-      <a href="<?php echo home_url('/profile'); ?>"><button class="btn-red">Lebih Lanjut &rarr;</button></a>
+      <a href="<?php echo dprd_get_page_url('profile'); ?>"><button class="btn-red">Lebih Lanjut &rarr;</button></a>
     </div>
 
     <!-- Video Card -->
@@ -92,7 +92,7 @@ get_header();
       <div class="info-head">
         <span class="card-tag" style="margin-bottom:0;"><span class="ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/document.png"
               alt=""></span> Informasi Terbaru</span>
-        <a href="<?php echo home_url('/ppid'); ?>#docCard" class="lihat">Lihat Semua &rsaquo;</a>
+        <a href="<?php echo dprd_get_page_url('ppid', 'docCard'); ?>" class="lihat">Lihat Semua &rsaquo;</a>
       </div>
       <div class="info-item" onclick="window.location.href='<?php echo get_template_directory_uri(); ?>/assets/pdf/DOR.pdf'">
         <div class="doc-ic">PDF</div>
@@ -134,28 +134,28 @@ get_header();
   <!-- QUICK ACCESS -->
   <h3 class="quick-title">4 Akses Cepat Layanan</h3>
   <div class="quick-grid">
-    <div class="quick-card c1" onclick="window.location.href='<?php echo home_url('/profile'); ?>'">
+    <div class="quick-card c1" onclick="window.location.href='<?php echo dprd_get_page_url('profile'); ?>'">
       <div class="quick-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/university.png" alt=""></div>
       <div>
         <h5>Profil</h5>
         <p>Mengenal lebih dekat Sekretariat DPRD Purbalingga.</p>
       </div>
     </div>
-    <div class="quick-card c2" onclick="window.location.href='<?php echo home_url('/ppid'); ?>'">
+    <div class="quick-card c2" onclick="window.location.href='<?php echo dprd_get_page_url('ppid'); ?>'">
       <div class="quick-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/document.png" alt=""></div>
       <div>
         <h5>PPID</h5>
         <p>Akses informasi publik secara terbuka & transparan.</p>
       </div>
     </div>
-    <div class="quick-card c3" onclick="window.location.href='<?php echo home_url('/sakip'); ?>'">
+    <div class="quick-card c3" onclick="window.location.href='<?php echo dprd_get_page_url('sakip'); ?>'">
       <div class="quick-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Protect.png" alt=""></div>
       <div>
         <h5>Sakip</h5>
         <p>Dokumen Sistem Akuntabilitas Kinerja Instansi Pemerintah.</p>
       </div>
     </div>
-    <div class="quick-card c4" onclick="window.location.href='<?php echo home_url('/dlantunan'); ?>'">
+    <div class="quick-card c4" onclick="window.location.href='<?php echo dprd_get_page_url('dlantunan'); ?>'">
       <div class="quick-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/user account.png" alt=""></div>
       <div>
         <h5>D'Lantunan</h5>

@@ -583,14 +583,27 @@
     line-height: 1.5;
   }
 
+  /* Footer Jam Layanan Layout Baru */
   .jam-item {
     display: flex;
     gap: 12px;
-    align-items: flex-start;
+    align-items: center;
     margin-bottom: 16px;
     font-size: 13.5px;
     color: #333;
     line-height: 1.5;
+  }
+
+  .jam-item img.icon-img,
+  .jam-item img[alt="Clock"],
+  .jam-item .icon-img {
+    width: 22px !important;
+    height: 22px !important;
+    max-width: 22px !important;
+    max-height: 22px !important;
+    flex-shrink: 0 !important;
+    object-fit: contain !important;
+    margin-top: 0 !important;
   }
 
   .contact-item .ic-foot,
@@ -824,25 +837,25 @@
   }
 
   /* ===== BATIK ORNAMENT STYLES ===== */
-  /* Full Viewport Desktop Edge Batik Motifs */
+  /* Full Viewport Desktop Edge Batik Motifs (TOP: 380px - Titik Tengah Ideal) */
   .batik-desktop-edge {
-    position: absolute;
-    top: 260px;
-    height: 420px;
-    width: auto;
-    object-fit: contain;
-    z-index: 2;
-    pointer-events: none;
-    opacity: 0.96;
-    overflow: visible;
+    position: absolute !important;
+    top: 380px !important;
+    height: 480px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    z-index: 2 !important;
+    pointer-events: none !important;
+    opacity: 0.96 !important;
+    overflow: visible !important;
   }
 
   .batik-desktop-edge-left {
-    left: 0;
+    left: 0 !important;
   }
 
   .batik-desktop-edge-right {
-    right: 0;
+    right: 0 !important;
   }
 
   /* Central Batik Divider Center Bar */

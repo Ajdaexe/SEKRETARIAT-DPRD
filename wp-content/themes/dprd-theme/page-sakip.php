@@ -93,7 +93,7 @@ get_header();
             <p>Hubungi kami untuk layanan dan konsultasi akuntabilitas kinerja</p>
           </div>
         </div>
-        <a href="<?php echo home_url('/kontak'); ?>" class="btn-outline">Hubungi Kami</a>
+        <a href="<?php echo dprd_get_page_url('kontak'); ?>" class="btn-outline">Hubungi Kami</a>
       </div>
     </section>
 

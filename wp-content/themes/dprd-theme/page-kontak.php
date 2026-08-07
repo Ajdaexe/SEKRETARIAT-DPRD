@@ -8,6 +8,122 @@
 get_header();
 ?>
 
+<style>
+/* ===== HERO (DISAMAKAN PERSIS SEPERTI HALAMAN PROFIL) ===== */
+.hero {
+  position: relative !important;
+  width: 100% !important;
+  margin-top: 96px !important;
+  margin-bottom: 0 !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  height: calc(100vh - 96px) !important;
+  min-height: 540px !important;
+  cursor: pointer !important;
+  transition: height 0.2s ease-out !important;
+}
+
+.hero img#heroImage {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center 60% !important;
+  transform: scale(1.05) !important;
+  transition: transform 0.5s ease !important;
+}
+
+.hero:hover img#heroImage {
+  transform: scale(1.1) !important;
+}
+
+.hero::after {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(90deg, rgba(0, 0, 0, .65) 0%, rgba(0, 0, 0, .3) 50%, rgba(0, 0, 0, 0) 70%) !important;
+}
+
+.hero-text {
+  position: absolute !important;
+  left: 60px !important;
+  bottom: 60px !important;
+  color: #fff !important;
+  max-width: 600px !important;
+  z-index: 2 !important;
+}
+
+.hero-text h2 {
+  font-size: 44px !important;
+  font-weight: 800 !important;
+  margin-bottom: 16px !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4) !important;
+}
+
+.hero-text p {
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  opacity: .95 !important;
+  text-shadow: 0 1px 5px rgba(0,0,0,0.4) !important;
+}
+
+/* ===== BATIK DIVIDER CENTER SECTION (DISAMAKAN PERSIS SEPERTI HALAMAN PROFIL) ===== */
+.batik-user-divider-container {
+  width: calc(100% - 80px) !important;
+  max-width: 1180px !important;
+  margin: 24px auto !important;
+  padding: 0 !important;
+  position: relative !important;
+  z-index: 3 !important;
+  overflow: visible !important;
+}
+
+.batik-user-divider-inner {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  gap: 12px !important;
+  padding: 0 4px !important;
+}
+
+.batik-line-img {
+  flex-grow: 1 !important;
+  height: 14px !important;
+  width: 100% !important;
+  object-fit: fill !important;
+  display: block !important;
+}
+
+.batik-img-center {
+  height: 80px !important;
+  width: auto !important;
+  object-fit: contain !important;
+  flex-shrink: 0 !important;
+  display: block !important;
+}
+
+/* BACKGROUND BATIK MOTIF PINGGIR KIRI & KANAN (TOP: 380PX - TITIK TENGAH IDEAL DISAMAKAN 100% PROFIL) */
+.batik-desktop-edge {
+  position: absolute !important;
+  top: 380px !important;
+  height: 480px !important;
+  width: auto !important;
+  object-fit: contain !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+  opacity: 0.96 !important;
+  overflow: visible !important;
+}
+
+.batik-desktop-edge-left {
+  left: 0 !important;
+}
+
+.batik-desktop-edge-right {
+  right: 0 !important;
+}
+</style>
+
 <!-- ===== HERO ===== -->
 <section class="hero" id="heroSection" onclick="openLightbox()">
   <img id="heroImage" src="https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png" alt="Gedung Sekretariat DPRD">
