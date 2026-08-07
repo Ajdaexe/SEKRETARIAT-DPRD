@@ -511,7 +511,7 @@
 
   /* ===== FOOTER (DISAMAKAN PERSIS SEPERTI DI HALAMAN PROFIL) ===== */
   footer {
-    margin-top: 40px;
+    margin-top: 56px;
     padding: 50px 40px 30px;
     background: #fff;
     border-top: 1px solid var(--border);
@@ -564,6 +564,38 @@
     line-height: 1.6;
     margin-bottom: 24px;
     max-width: 360px;
+  }
+
+  .socials {
+    display: flex;
+    gap: 12px;
+  }
+
+  .socials span {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--merah);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+    cursor: pointer;
+  }
+
+  .socials span:hover {
+    transform: scale(1.08);
+  }
+
+  .socials .icon-img {
+    width: 16px;
+    height: 16px;
+    filter: brightness(0) invert(1);
+  }
+
+  .socials svg.icon-img {
+    width: 13px !important;
+    height: 13px !important;
   }
 
   footer h6 {
@@ -627,7 +659,7 @@
   }
 
   .jam-item .ic-foot img {
-    margin-top: 3px;
+    margin-top: 2px;
   }
 
   footer .contact-item .ic-foot img[alt="Website"] {

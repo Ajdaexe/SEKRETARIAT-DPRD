@@ -1034,7 +1034,7 @@
       transform: translateY(-2px);
     }
 
-    /* FOOTER */
+    /* FOOTER (DISAMAKAN PERSIS SEPERTI DI HALAMAN PROFIL) */
     footer {
       margin-top: 56px;
       padding: 50px 40px 30px;
@@ -1118,6 +1118,11 @@
       filter: brightness(0) invert(1);
     }
 
+    .socials svg.icon-img {
+      width: 13px !important;
+      height: 13px !important;
+    }
+
     footer h6 {
       font-size: 18px;
       font-weight: 700;
@@ -1125,24 +1130,75 @@
       margin-bottom: 20px;
     }
 
-    .contact-item,
-    .jam-item {
+    .contact-item {
       display: flex;
       gap: 12px;
-      align-items: flex-start;
+      align-items: center;
       margin-bottom: 16px;
       font-size: 13.5px;
       color: #333;
       line-height: 1.5;
     }
 
-    .contact-item .icon-img,
+    /* Footer Jam Layanan Layout Baru */
+    .jam-item {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+      font-size: 13.5px;
+      color: #333;
+      line-height: 1.5;
+    }
+
+    .jam-item img.icon-img,
+    .jam-item img[alt="Clock"],
     .jam-item .icon-img {
+      width: 22px !important;
+      height: 22px !important;
+      max-width: 22px !important;
+      max-height: 22px !important;
+      flex-shrink: 0 !important;
+      object-fit: contain !important;
+      margin-top: 0 !important;
+    }
+
+    .contact-item .ic-foot,
+    .jam-item .ic-foot {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-item .ic-foot img,
+    .jam-item .ic-foot img {
       width: 16px;
       height: 16px;
-      margin-top: 3px;
-      flex-shrink: 0;
+      max-width: 16px;
+      max-height: 16px;
+      object-fit: contain;
       filter: brightness(0) saturate(100%) invert(18%) sepia(85%) saturate(4500%) hue-rotate(340deg) brightness(85%) contrast(90%);
+    }
+
+    .jam-item .ic-foot img {
+      margin-top: 2px;
+    }
+
+    footer .contact-item .ic-foot img[alt="Website"] {
+      width: 22px !important;
+      height: 22px !important;
+      max-width: 22px !important;
+      max-height: 22px !important;
+    }
+
+    footer .contact-item .ic-foot img[alt="Maps"] {
+      width: 20px !important;
+      height: 20px !important;
+      max-width: 20px !important;
+      max-height: 20px !important;
     }
 
     .jam-item b {
