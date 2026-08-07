@@ -65,8 +65,8 @@ function tema_kustom_dprd_scripts() {
         wp_enqueue_script( 'tema-kustom-profile-script', get_template_directory_uri() . '/assets/profile-script.js', array(), null, true );
     }
     if ( is_page_template('page-beranda.php') || is_front_page() ) {
-        wp_enqueue_style( 'tema-kustom-beranda', get_template_directory_uri() . '/assets/beranda-style.css', array(), null );
-        wp_enqueue_script( 'tema-kustom-beranda-script', get_template_directory_uri() . '/assets/beranda-script.js', array(), null, true );
+        wp_enqueue_style( 'tema-kustom-beranda', get_template_directory_uri() . '/assets/beranda-style.css', array(), '1.2' );
+        wp_enqueue_script( 'tema-kustom-beranda-script', get_template_directory_uri() . '/assets/beranda-script.js', array(), '1.2', true );
     }
 }
 add_action( 'wp_enqueue_scripts', 'tema_kustom_dprd_scripts' );

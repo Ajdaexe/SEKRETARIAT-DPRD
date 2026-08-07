@@ -25,6 +25,15 @@ get_header();
     <img id="lightboxImg" src="" alt="Zoom Foto">
   </div>
 
+  <!-- ===== BATIK DIVIDER CENTER SECTION ===== -->
+  <div class="batik-user-divider-container">
+    <div class="batik-user-divider-inner">
+      <img src="<?php echo get_template_directory_uri(); ?>/assets/images/garis kiri.svg" alt="Garis Kiri" class="batik-line-img">
+      <img src="<?php echo get_template_directory_uri(); ?>/assets/images/motif tengah.svg" alt="Motif Batik Tengah" class="batik-img-center">
+      <img src="<?php echo get_template_directory_uri(); ?>/assets/images/garis kanan.svg" alt="Garis Kanan" class="batik-line-img">
+    </div>
+  </div>
+
   <div class="container">
 
     <div class="stats-grid" id="statsOverviewGrid">
@@ -93,7 +102,7 @@ get_header();
             <p>Hubungi kami untuk layanan dan konsultasi akuntabilitas kinerja</p>
           </div>
         </div>
-        <a href="<?php echo home_url('/kontak'); ?>" class="btn-outline">Hubungi Kami</a>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sekretariat@dprd.purbalingga.go.id&su=Konsultasi+SAKIP+Sekretariat+DPRD&body=Halo+Admin+Sekretariat+DPRD+Kabupaten+Purbalingga%2C%0A%0ASaya+ingin+berkonsultasi+terkait+layanan+atau+informasi+SAKIP.%0A%0ATerima+kasih." target="_blank" rel="noopener noreferrer" class="btn-outline">Hubungi Kami &rsaquo;</a>
       </div>
     </section>
 

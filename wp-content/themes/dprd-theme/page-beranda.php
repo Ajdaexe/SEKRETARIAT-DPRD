@@ -104,63 +104,135 @@ get_header();
     </div>
   </div>
 
-  <!-- HASIL IKM -->
-  <div class="ikm-card-new">
-    <div class="ikm-top">
-      <div class="ikm-top-left">
-        <div class="ikm-title">Hasil Survey Indeks Kepuasan Masyarakat<br>Sekretariat DPRD Kabupaten
-          Purbalingga<strong>SEMESTER I TAHUN 2026</strong></div>
-        <div class="ikm-score">93.275</div>
-        <div class="ikm-skala">Skala : 0 - 100</div>
-      </div>
-      <div class="ikm-top-right">
-        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/badge a.png" alt="Sangat Baik" class="ikm-badge">
-      </div>
-    </div>
-    <div class="ikm-bottom">
-      <div class="ikm-bottom-left">
-        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/QR Code.png" alt="QR Code" class="ikm-qr">
-      </div>
-      <div class="ikm-bottom-right">
-        <div class="ikm-bottom-text">
-          <h4>Berikan Penilaian Anda</h4>
-          <p>Scan QR code di samping untuk mengisi Survey Kepuasan Masyarakat.<br>Masukan Anda sangat berarti demi
-            peningkatan kualitas layanan kami.</p>
+  <!-- HASIL IKM CAROUSEL -->
+  <div class="ikm-carousel-wrapper">
+    <button id="prevBtn" class="ikm-nav-btn" onclick="prevSurvey()">&#10094;</button>
+    <div class="ikm-carousel-overflow">
+      <div id="surveyTrack" class="ikm-track">
+        
+        <!-- Slide 0 (Current) -->
+        <div class="survey-card-item active">
+          <div class="ikm-card-new">
+            <div class="ikm-top">
+              <div class="ikm-top-left">
+                <div class="ikm-title">Hasil Survey Indeks Kepuasan Masyarakat<br>Sekretariat DPRD Kabupaten
+                  Purbalingga<strong>SEMESTER I TAHUN 2026</strong></div>
+                <div class="ikm-score">93.275</div>
+                <div class="ikm-skala">Skala : 0 - 100</div>
+              </div>
+              <div class="ikm-top-right">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/badge a.png" alt="Sangat Baik" class="ikm-badge">
+              </div>
+            </div>
+            <div class="ikm-bottom">
+              <div class="ikm-bottom-left">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/QR Code.png" alt="QR Code" class="ikm-qr">
+              </div>
+              <div class="ikm-bottom-right">
+                <div class="ikm-bottom-text">
+                  <h4>Berikan Penilaian Anda</h4>
+                  <p>Scan QR code di samping untuk mengisi Survey Kepuasan Masyarakat.<br>Masukan Anda sangat berarti demi peningkatan kualitas layanan kami.</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- Slide 1 -->
+        <div class="survey-card-item">
+          <div class="ikm-card-new">
+            <div class="ikm-top">
+              <div class="ikm-top-left">
+                <div class="ikm-title">Hasil Survey Indeks Kepuasan Masyarakat<br>Sekretariat DPRD Kabupaten
+                  Purbalingga<strong>SEMESTER II TAHUN 2025</strong></div>
+                <div class="ikm-score">92.150</div>
+                <div class="ikm-skala">Skala : 0 - 100</div>
+              </div>
+              <div class="ikm-top-right">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/badge a.png" alt="Sangat Baik" class="ikm-badge">
+              </div>
+            </div>
+            <div class="ikm-bottom">
+              <div class="ikm-bottom-left">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/QR Code.png" alt="QR Code" class="ikm-qr">
+              </div>
+              <div class="ikm-bottom-right">
+                <div class="ikm-bottom-text">
+                  <h4>Berikan Penilaian Anda</h4>
+                  <p>Scan QR code di samping untuk mengisi Survey Kepuasan Masyarakat.<br>Masukan Anda sangat berarti demi peningkatan kualitas layanan kami.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="survey-card-item">
+          <div class="ikm-card-new">
+            <div class="ikm-top">
+              <div class="ikm-top-left">
+                <div class="ikm-title">Hasil Survey Indeks Kepuasan Masyarakat<br>Sekretariat DPRD Kabupaten
+                  Purbalingga<strong>SEMESTER I TAHUN 2025</strong></div>
+                <div class="ikm-score">91.500</div>
+                <div class="ikm-skala">Skala : 0 - 100</div>
+              </div>
+              <div class="ikm-top-right">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/badge a.png" alt="Sangat Baik" class="ikm-badge">
+              </div>
+            </div>
+            <div class="ikm-bottom">
+              <div class="ikm-bottom-left">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/QR Code.png" alt="QR Code" class="ikm-qr">
+              </div>
+              <div class="ikm-bottom-right">
+                <div class="ikm-bottom-text">
+                  <h4>Berikan Penilaian Anda</h4>
+                  <p>Scan QR code di samping untuk mengisi Survey Kepuasan Masyarakat.<br>Masukan Anda sangat berarti demi peningkatan kualitas layanan kami.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
+    <button id="nextBtn" class="ikm-nav-btn" onclick="nextSurvey()">&#10095;</button>
   </div>
 
   <!-- QUICK ACCESS -->
-  <h3 class="quick-title">4 Akses Cepat Layanan</h3>
+  <h3 class="quick-title">Akses Cepat Layanan</h3>
   <div class="quick-grid">
     <div class="quick-card c1" onclick="window.location.href='<?php echo home_url('/profile'); ?>'">
-      <div class="quick-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/university.png" alt=""></div>
-      <div>
+      <div class="quick-card-top">
+        <div class="quick-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/user account.png" style="filter: brightness(0) saturate(100%) invert(24%) sepia(51%) saturate(2331%) hue-rotate(345deg) brightness(98%) contrast(92%);" alt=""></div>
         <h5>Profil</h5>
-        <p>Mengenal lebih dekat Sekretariat DPRD Purbalingga.</p>
       </div>
+      <p>Informasi profil dan struktur organisasi Sekretariat DPRD.</p>
+      <div class="quick-arrow arrow-c1">&rarr;</div>
     </div>
     <div class="quick-card c2" onclick="window.location.href='<?php echo home_url('/ppid'); ?>'">
-      <div class="quick-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/document.png" alt=""></div>
-      <div>
+      <div class="quick-card-top">
+        <div class="quick-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Protect.png" style="filter: brightness(0) saturate(100%) invert(29%) sepia(87%) saturate(1478%) hue-rotate(192deg) brightness(96%) contrast(100%);" alt=""></div>
         <h5>PPID</h5>
-        <p>Akses informasi publik secara terbuka & transparan.</p>
       </div>
+      <p>Akses informasi publik secara transparan.</p>
+      <div class="quick-arrow arrow-c2">&rarr;</div>
     </div>
     <div class="quick-card c3" onclick="window.location.href='<?php echo home_url('/sakip'); ?>'">
-      <div class="quick-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Protect.png" alt=""></div>
-      <div>
+      <div class="quick-card-top">
+        <div class="quick-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Combo Chart.png" style="filter: brightness(0) saturate(100%) invert(43%) sepia(21%) saturate(1443%) hue-rotate(97deg) brightness(93%) contrast(91%);" alt=""></div>
         <h5>Sakip</h5>
-        <p>Dokumen Sistem Akuntabilitas Kinerja Instansi Pemerintah.</p>
       </div>
+      <p>Sistem Akuntabilitas Kinerja Instansi Pemerintah.</p>
+      <div class="quick-arrow arrow-c3">&rarr;</div>
     </div>
     <div class="quick-card c4" onclick="window.location.href='<?php echo home_url('/dlantunan'); ?>'">
-      <div class="quick-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/user account.png" alt=""></div>
-      <div>
+      <div class="quick-card-top">
+        <div class="quick-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Musical Note.png" style="filter: brightness(0) saturate(100%) invert(35%) sepia(26%) saturate(1636%) hue-rotate(248deg) brightness(90%) contrast(87%);" alt=""></div>
         <h5>D'Lantunan</h5>
-        <p>Layanan terpadu, dari magang hingga penelitian.</p>
       </div>
+      <p>Portal aspirasi dan pengaduan masyarakat.</p>
+      <div class="quick-arrow arrow-c4">&rarr;</div>
     </div>
   </div>
 

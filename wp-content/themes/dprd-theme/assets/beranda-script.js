@@ -22,7 +22,7 @@ const siteData = {
       requestAnimationFrame(tick);
     }
 
-    let currentSurveyIndex = 2;
+    let currentSurveyIndex = 0;
     const totalSurveys = 3;
 
     function updateSurveyCarousel() {

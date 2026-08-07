@@ -729,6 +729,82 @@
       }
     }
 
+    /* IKM CAROUSEL */
+    .ikm-carousel-wrapper {
+      position: relative;
+      max-width: 1180px;
+      width: calc(100% - 80px);
+      margin: 44px auto 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .ikm-carousel-overflow {
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .ikm-track {
+      display: flex;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .survey-card-item {
+      flex: 0 0 100%;
+      width: 100%;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .survey-card-item.active {
+      opacity: 1;
+    }
+
+    .survey-card-item .ikm-card-new {
+      margin: 0 !important;
+      width: 100% !important;
+      max-width: none !important;
+    }
+
+    .ikm-nav-btn {
+      background: #fff;
+      border: 1px solid #c9a3a6;
+      color: #8c1c1c;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: all 0.2s;
+    }
+
+    .ikm-nav-btn:hover {
+      background: #8c1c1c;
+      color: #fff;
+    }
+
+    #prevBtn {
+      left: -22px;
+    }
+
+    #nextBtn {
+      right: -22px;
+    }
+
+    @media (max-width: 1240px) {
+      #prevBtn { left: -10px; }
+      #nextBtn { right: -10px; }
+    }
+
     /* QUICK ACCESS */
     .quick-title {
       font-size: 20px;
@@ -756,6 +832,7 @@
       justify-content: space-between;
       transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
+      position: relative;
     }
 
     .quick-card:hover {
@@ -764,57 +841,77 @@
     }
 
     .quick-card.c1 {
-      background: #FDEEEE;
+      background: #FDF3F3;
     }
 
     .quick-card.c2 {
-      background: #EAF2FE;
+      background: #F4F8FD;
     }
 
     .quick-card.c3 {
-      background: #EAF8EE;
+      background: #F3FAF5;
     }
 
     .quick-card.c4 {
-      background: #F3EDFB;
+      background: #F9F4FD;
+    }
+    
+    .quick-card-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
     }
 
     .quick-ic {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, .7);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.06);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 14px;
       font-size: 18px;
     }
 
+    .quick-card.c1 .quick-ic { background: #F5B7B1; }
+    .quick-card.c2 .quick-ic { background: #AED6F1; }
+    .quick-card.c3 .quick-ic { background: #ABEBC6; }
+    .quick-card.c4 .quick-ic { background: #D7BDE2; }
+
     .quick-card h5 {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 700;
-      margin-bottom: 6px;
+      color: #111;
+      margin: 0;
     }
 
     .quick-card p {
-      font-size: 13px;
-      color: #555;
+      font-size: 13.5px;
+      color: #666;
       line-height: 1.5;
       margin-bottom: 16px;
     }
 
     .quick-arrow {
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       background: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
+      font-size: 18px;
       transition: transform 0.2s ease;
+      align-self: flex-end;
+      border: 1px solid #eaeaea;
     }
+    
+    .arrow-c1 { color: #C0392B; }
+    .arrow-c2 { color: #2980B9; }
+    .arrow-c3 { color: #27AE60; }
+    .arrow-c4 { color: #8E44AD; }
 
     .quick-card:hover .quick-arrow {
       transform: translateX(4px);

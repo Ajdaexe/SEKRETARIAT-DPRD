@@ -24,6 +24,15 @@ get_header();
     <img id="lightboxImg" src="" alt="Zoom Foto">
   </div>
 
+  <!-- ===== BATIK DIVIDER CENTER SECTION ===== -->
+  <div class="batik-user-divider-container">
+    <div class="batik-user-divider-inner">
+      <img src="<?php echo get_template_directory_uri(); ?>/assets/images/garis kiri.svg" alt="Garis Kiri" class="batik-line-img">
+      <img src="<?php echo get_template_directory_uri(); ?>/assets/images/motif tengah.svg" alt="Motif Batik Tengah" class="batik-img-center">
+      <img src="<?php echo get_template_directory_uri(); ?>/assets/images/garis kanan.svg" alt="Garis Kanan" class="batik-line-img">
+    </div>
+  </div>
+
   <div class="container">
 
     <div class="info-card">
