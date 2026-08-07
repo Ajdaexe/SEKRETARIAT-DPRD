@@ -42,10 +42,10 @@ function tema_kustom_dprd_scripts() {
         wp_enqueue_style( 'tema-kustom-profile', get_template_directory_uri() . '/assets/profile-style.css', array(), time() );
     }
     if ( is_page_template('page-ppid.php') || is_page('ppid') ) {
-        wp_enqueue_style( 'tema-kustom-ppid', get_template_directory_uri() . '/assets/ppid-style.css', array(), null );
+        wp_enqueue_style( 'tema-kustom-ppid', get_template_directory_uri() . '/assets/ppid-style.css', array(), time() );
     }
     if ( is_page_template('page-sakip.php') || is_page('sakip') ) {
-        wp_enqueue_style( 'tema-kustom-sakip', get_template_directory_uri() . '/assets/sakip-style.css', array(), null );
+        wp_enqueue_style( 'tema-kustom-sakip', get_template_directory_uri() . '/assets/sakip-style.css', array(), time() );
     }
 
     // Scripts

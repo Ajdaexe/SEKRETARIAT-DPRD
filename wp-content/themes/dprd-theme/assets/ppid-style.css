@@ -336,6 +336,9 @@
       text-align: center;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .type-card:hover {
@@ -370,6 +373,7 @@
       color: #555;
       line-height: 1.6;
       margin-bottom: 20px;
+      flex-grow: 1;
     }
 
     .btn-red-sm {
