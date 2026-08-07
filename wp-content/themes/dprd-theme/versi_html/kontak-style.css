@@ -824,25 +824,25 @@
   }
 
   /* ===== BATIK ORNAMENT STYLES ===== */
-  /* Full Viewport Desktop Edge Batik Motifs */
+  /* Full Viewport Desktop Edge Batik Motifs (TOP: 280px - Titik Tengah Ideal Disamakan dengan Profil) */
   .batik-desktop-edge {
-    position: absolute;
-    top: 260px;
-    height: 420px;
-    width: auto;
-    object-fit: contain;
-    z-index: 2;
-    pointer-events: none;
-    opacity: 0.96;
-    overflow: visible;
+    position: absolute !important;
+    top: 280px !important;
+    height: 480px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    z-index: 2 !important;
+    pointer-events: none !important;
+    opacity: 0.96 !important;
+    overflow: visible !important;
   }
 
   .batik-desktop-edge-left {
-    left: 0;
+    left: 0 !important;
   }
 
   .batik-desktop-edge-right {
-    right: 0;
+    right: 0 !important;
   }
 
   /* Central Batik Divider Center Bar */

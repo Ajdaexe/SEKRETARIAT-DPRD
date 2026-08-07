@@ -76,7 +76,7 @@ get_header();
         dan tata kerjanya ditetapkan dengan perda dan personilnya terdiri atas pegawai negeri sipil.</p>
       <p>Sekretariat DPRD dipimpin oleh seorang Sekretariat DPRD yang diangkat dan diberhentikan dengan keputusan bupati
         atas persetujuan pimpinan DPRD.</p>
-      <a href="<?php echo home_url('/profile'); ?>"><button class="btn-red">Lebih Lanjut &rarr;</button></a>
+      <a href="<?php echo dprd_get_page_url('profile'); ?>"><button class="btn-red">Lebih Lanjut &rarr;</button></a>
     </div>
 
     <!-- Video Card -->
@@ -92,7 +92,7 @@ get_header();
       <div class="info-head">
         <span class="card-tag" style="margin-bottom:0;"><span class="ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/document.png"
               alt=""></span> Informasi Terbaru</span>
-        <a href="<?php echo home_url('/ppid'); ?>#docCard" class="lihat">Lihat Semua &rsaquo;</a>
+        <a href="<?php echo dprd_get_page_url('ppid', 'docCard'); ?>" class="lihat">Lihat Semua &rsaquo;</a>
       </div>
       <div class="info-item" onclick="window.location.href='<?php echo get_template_directory_uri(); ?>/assets/pdf/DOR.pdf'">
         <div class="doc-ic">PDF</div>

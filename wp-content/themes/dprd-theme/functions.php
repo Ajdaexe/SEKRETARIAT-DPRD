@@ -29,22 +29,22 @@ add_action( 'after_setup_theme', 'tema_kustom_dprd_setup' );
  */
 function tema_kustom_dprd_scripts() {
     // Styles
-    wp_enqueue_style( 'tema-kustom-dprd-style', get_stylesheet_uri(), array(), wp_get_theme()->get( 'Version' ) );
+    wp_enqueue_style( 'tema-kustom-dprd-style', get_stylesheet_uri(), array(), time() );
     
     // Page specific styles
-    if ( is_page_template('page-dlantunan.php') ) {
-        wp_enqueue_style( 'tema-kustom-dlantunan', get_template_directory_uri() . '/assets/dlantunan-style.css', array(), null );
+    if ( is_page_template('page-dlantunan.php') || is_page('dlantunan') || is_page('d-lantunan') ) {
+        wp_enqueue_style( 'tema-kustom-dlantunan', get_template_directory_uri() . '/assets/dlantunan-style.css', array(), time() );
     }
-    if ( is_page_template('page-kontak.php') ) {
-        wp_enqueue_style( 'tema-kustom-kontak', get_template_directory_uri() . '/assets/kontak-style.css', array(), null );
+    if ( is_page_template('page-kontak.php') || is_page('kontak') ) {
+        wp_enqueue_style( 'tema-kustom-kontak', get_template_directory_uri() . '/assets/kontak-style.css', array(), time() );
     }
-    if ( is_page_template('page-profile.php') ) {
-        wp_enqueue_style( 'tema-kustom-profile', get_template_directory_uri() . '/assets/profile-style.css', array(), null );
+    if ( is_page_template('page-profile.php') || is_page('profile') || is_page('profil') ) {
+        wp_enqueue_style( 'tema-kustom-profile', get_template_directory_uri() . '/assets/profile-style.css', array(), time() );
     }
-    if ( is_page_template('page-ppid.php') ) {
+    if ( is_page_template('page-ppid.php') || is_page('ppid') ) {
         wp_enqueue_style( 'tema-kustom-ppid', get_template_directory_uri() . '/assets/ppid-style.css', array(), null );
     }
-    if ( is_page_template('page-sakip.php') ) {
+    if ( is_page_template('page-sakip.php') || is_page('sakip') ) {
         wp_enqueue_style( 'tema-kustom-sakip', get_template_directory_uri() . '/assets/sakip-style.css', array(), null );
     }
 
@@ -128,7 +128,7 @@ function tema_kustom_live_search() {
         $results[] = array(
             'title' => 'Layanan D\'Lantunan',
             'desc'  => 'Halaman Pengajuan Layanan Publik',
-            'url'   => home_url( '/dlantunan/' )
+            'url'   => dprd_get_page_url( 'dlantunan' )
         );
     }
     
@@ -137,7 +137,7 @@ function tema_kustom_live_search() {
         $results[] = array(
             'title' => 'Dokumen ' . ucwords( $keyword ),
             'desc'  => 'Lihat dokumen selengkapnya di tabel dokumen PPID',
-            'url'   => home_url( '/ppid/' )
+            'url'   => dprd_get_page_url( 'ppid' )
         );
     }
     
@@ -149,3 +149,16 @@ function tema_kustom_live_search() {
 }
 add_action( 'wp_ajax_live_search', 'tema_kustom_live_search' );
 add_action( 'wp_ajax_nopriv_live_search', 'tema_kustom_live_search' );
+
+/**
+ * Helper function to get robust page URL
+ */
+function dprd_get_page_url( $slug, $anchor = '' ) {
+    $page = get_page_by_path( $slug );
+    $url = $page ? get_permalink( $page ) : home_url( '/' . ltrim( $slug, '/' ) );
+    if ( $anchor ) {
+        $url .= '#' . ltrim( $anchor, '#' );
+    }
+    return $url;
+}
+

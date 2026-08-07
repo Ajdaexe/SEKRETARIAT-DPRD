@@ -18,19 +18,19 @@
   <header id="mainHeader">
     <div class="logo-wrap">
       <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Lambang_Kabupaten_Purbalingga.png"
-        alt="Logo Purbalingga">
-      <div>
+        alt="Logo Purbalingga" class="logo-img">
+      <div class="logo-text">
         <h1>Sekretariat DPRD</h1>
         <p>Kabupaten Purbalingga</p>
       </div>
     </div>
     <nav>
       <a href="<?php echo home_url('/'); ?>" class="<?php echo (is_front_page() || is_home()) ? 'active' : ''; ?>">Beranda</a>
-      <a href="<?php echo home_url('/profile'); ?>" class="<?php echo is_page('profile') ? 'active' : ''; ?>">Profil</a>
-      <a href="<?php echo home_url('/kontak'); ?>" class="<?php echo is_page('kontak') ? 'active' : ''; ?>">Kontak</a>
-      <a href="<?php echo home_url('/ppid'); ?>" class="<?php echo is_page('ppid') ? 'active' : ''; ?>">PPID</a>
-      <a href="<?php echo home_url('/sakip'); ?>" class="<?php echo is_page('sakip') ? 'active' : ''; ?>">Sakip</a>
-      <a href="<?php echo home_url('/dlantunan'); ?>" class="<?php echo is_page('dlantunan') ? 'active' : ''; ?>">D'Lantunan</a>
+      <a href="<?php echo dprd_get_page_url('profile'); ?>" class="<?php echo is_page('profile') ? 'active' : ''; ?>">Profil</a>
+      <a href="<?php echo dprd_get_page_url('kontak'); ?>" class="<?php echo is_page('kontak') ? 'active' : ''; ?>">Kontak</a>
+      <a href="<?php echo dprd_get_page_url('ppid'); ?>" class="<?php echo is_page('ppid') ? 'active' : ''; ?>">PPID</a>
+      <a href="<?php echo dprd_get_page_url('sakip'); ?>" class="<?php echo is_page('sakip') ? 'active' : ''; ?>">Sakip</a>
+      <a href="<?php echo dprd_get_page_url('dlantunan'); ?>" class="<?php echo is_page('dlantunan') ? 'active' : ''; ?>">D'Lantunan</a>
     </nav>
     <div class="search-container">
       <div class="search-box-animated" id="searchBoxAnimated" onclick="triggerSearchFocus()">
