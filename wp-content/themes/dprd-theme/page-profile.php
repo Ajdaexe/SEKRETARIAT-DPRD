@@ -262,14 +262,30 @@ get_header();
   </div>
 </section>
 
-<!-- ===== STRUKTUR ORGANISASI ===== -->
-<section class="struktur-organisasi">
+<!-- ===== STRUKTUR ORGANISASI (DINAMIS DARI WP ADMIN) ===== -->
+<section class="struktur-organisasi" id="struktur-organisasi">
   <div class="card-panel">
     <h2 class="section-title">Struktur Organisasi</h2>
-    <div class="struktur-box">
-      Bagan struktur organisasi akan ditampilkan di sini.<br>
-      (Unggah gambar/diagram bagan organisasi Sekretariat DPRD)
-    </div>
+    <?php 
+      $struktur_img  = get_option( 'dprd_struktur_organisasi_img', '' );
+      $struktur_desc = get_option( 'dprd_struktur_organisasi_desc', '' );
+    ?>
+    <?php if ( $struktur_img ) : ?>
+      <div class="struktur-box-dynamic" style="text-align:center; margin-top:16px;">
+        <a href="<?php echo esc_url( $struktur_img ); ?>" target="_blank" title="Klik untuk memperbesar bagan struktur organisasi" style="display:inline-block; max-width:100%;">
+          <img src="<?php echo esc_url( $struktur_img ); ?>" alt="Bagan Struktur Organisasi Sekretariat DPRD" style="max-width:100%; height:auto; border-radius:12px; box-shadow:0 4px 18px rgba(0,0,0,0.06); border:1px solid #ECE8E4; transition:transform 0.3s ease;">
+        </a>
+        <?php if ( $struktur_desc ) : ?>
+          <p style="margin-top:14px; font-size:14px; color:#555555; font-weight:500;"><?php echo esc_html( $struktur_desc ); ?></p>
+        <?php endif; ?>
+      </div>
+    <?php else : ?>
+      <div class="struktur-box" style="text-align:center; padding:32px; background:#fafafa; border:2px dashed #e2e8f0; border-radius:12px; color:#64748b;">
+        <span class="dashicons dashicons-networking" style="font-size:36px; width:36px; height:36px; color:#cbd5e1; margin-bottom:8px;"></span>
+        <p style="font-size:14px; margin-bottom:4px;">Bagan Struktur Organisasi Sekretariat DPRD belum diunggah.</p>
+        <small style="color:#94a3b8;">(Dapat diunggah & diperbarui secara langsung melalui <strong>WP Admin &gt; Struktur Organisasi</strong>)</small>
+      </div>
+    <?php endif; ?>
   </div>
 </section>
 
@@ -312,14 +328,19 @@ get_header();
       </ul>
       <p class="kelompok">C. Kelompok Jabatan Fungsional.</p>
     </div>
-    <div class="susunan-photo-wrap">
-      <img
-        src="https://www.purbalinggakab.go.id/wp-content/uploads/2024/08/50-Anggota-DPRD-Purbalingga-Periode-2024-2029-Dilantik-1280x640.jpeg"
-        alt="Foto anggota Sekretariat DPRD Kabupaten Purbalingga"
-        class="susunan-photo-img"
-      >
-      <div class="susunan-photo-fade"></div>
-    </div>
+    <?php 
+      $susunan_photo = get_option( 'dprd_susunan_organisasi_photo', 'https://www.purbalinggakab.go.id/wp-content/uploads/2024/08/50-Anggota-DPRD-Purbalingga-Periode-2024-2029-Dilantik-1280x640.jpeg' );
+    ?>
+    <?php if ( $susunan_photo ) : ?>
+      <div class="susunan-photo-wrap">
+        <img
+          src="<?php echo esc_url( $susunan_photo ); ?>"
+          alt="Foto anggota Sekretariat DPRD Kabupaten Purbalingga"
+          class="susunan-photo-img"
+        >
+        <div class="susunan-photo-fade"></div>
+      </div>
+    <?php endif; ?>
   </div>
 </section>
 
