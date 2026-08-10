@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Template Name: Dlantunan
  *
@@ -211,11 +211,16 @@ get_header();
           <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-11 9c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm4 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm4 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
         </svg>
       </div>
-      <h3>Selamat Datang di<br>D'Lantunan</h3>
+      <?php
+      $welcome_title_raw = get_option('dprd_dlantunan_welcome_title', "Selamat Datang di\nD'Lantunan");
+      $welcome_title_clean = str_replace(array('<br>', '<br/>', '<br />'), "\n", $welcome_title_raw);
+      ?>
+      <h3><?php echo wp_kses_post( nl2br($welcome_title_clean) ); ?></h3>
     </div>
-    <p>D'Lantunan adalah portal layanan dan aspirasi masyarakat Sekretariat DPRD Kabupaten Purbalingga.</p>
-    <p>Melalui portal ini, Anda dapat mengajukan berbagai permohonan layanan dengan mudah secara daring.</p>
-    <p>Kami berkomitmen memberikan pelayanan yang cepat, transparan, dan akuntabel.</p>
+    <?php
+    $default_welcome = "<p>D'Lantunan adalah portal layanan dan aspirasi masyarakat Sekretariat DPRD Kabupaten Purbalingga.</p>\n<p>Melalui portal ini, Anda dapat mengajukan berbagai permohonan layanan dengan mudah secara daring.</p>\n<p>Kami berkomitmen memberikan pelayanan yang cepat, transparan, dan akuntabel.</p>";
+    echo wp_kses_post( wpautop( get_option('dprd_dlantunan_welcome_text', $default_welcome) ) );
+    ?>
   </div>
 </section>
 
@@ -253,7 +258,50 @@ get_header();
 <!-- ===== 3 LAYANAN CARDS ===== -->
 <section class="layanan-section">
   <div class="wrap layanan-grid" style="padding:0; max-width:none;">
+    
+    <?php
+    $layanan_query = new WP_Query(array(
+        'post_type'      => 'layanan_dlantunan',
+        'posts_per_page' => 3,
+        'order'          => 'ASC',
+        'orderby'        => 'date'
+    ));
 
+    $icons = array('tas kerja.svg', 'document.svg', 'user account.svg');
+    $icons_fallback = array('user account.png', 'document.png', 'user account.png');
+    $i = 0;
+
+    if ( $layanan_query->have_posts() ) :
+        while ( $layanan_query->have_posts() ) : $layanan_query->the_post();
+            $icon = isset($icons[$i]) ? $icons[$i] : 'document.svg';
+            $fallback = isset($icons_fallback[$i]) ? $icons_fallback[$i] : 'document.png';
+            $url = get_post_meta( get_the_ID(), '_dprd_layanan_url', true );
+            if ( empty($url) ) $url = '#';
+            
+            // Mengubah spasi menjadi baris baru pada judul jika panjang (opsional) atau biarkan admin menggunakan HTML di konten
+            // Di desain lama: "Layanan<br>Permohonan Magang"
+            $title = get_the_title();
+            $title = str_replace(array('<br>', '<br/>', '<br />'), '<br>', $title); // allow manual <br> in title if needed
+            ?>
+            <div class="card-panel layanan-card">
+              <div class="icon-circle">
+                <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/<?php echo $icon; ?>" alt="<?php echo esc_attr( wp_strip_all_tags($title) ); ?> Icon" onerror="this.onerror=null; this.src='<?php echo get_template_directory_uri(); ?>/assets/images/<?php echo $fallback; ?>';">
+              </div>
+              <h3><?php echo wp_kses_post($title); ?></h3>
+              <div style="font-size: 14px; line-height: 1.6; color: #555; margin-bottom: 24px; flex-grow: 1;">
+                <?php echo wp_kses_post( wpautop( get_the_content() ) ); ?>
+              </div>
+              <a class="btn-ajukan" href="<?php echo esc_url($url); ?>" target="_blank" rel="noopener">
+                Ajukan Sekarang <span class="arrow-icon">&rsaquo;</span>
+              </a>
+            </div>
+            <?php
+            $i++;
+        endwhile;
+        wp_reset_postdata();
+    else:
+    ?>
+    <!-- Fallback Hardcoded jika CPT kosong -->
     <!-- Layanan Magang -->
     <div class="card-panel layanan-card">
       <div class="icon-circle">
@@ -289,6 +337,7 @@ get_header();
         Ajukan Sekarang <span class="arrow-icon">&rsaquo;</span>
       </a>
     </div>
+    <?php endif; ?>
 
   </div>
 </section>

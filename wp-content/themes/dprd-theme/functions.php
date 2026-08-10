@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Tema Kustom DPRD functions and definitions
  *
@@ -595,216 +595,7 @@ function dprd_render_struktur_options_page() {
             $('#dprd_susunan_photo_preview').html('<p style="color:#64748b; margin:20px 0; font-size:14px;">Belum ada foto Susunan Organisasi yang diunggah.</p>');
             $(this).hide();
         });
-=======
-            <hr style="margin: 30px 0;">
-            <h2>Pengaturan Hasil Survey IKM (Slide Dinamis)</h2>
-            <p>Anda dapat menambah, menghapus, atau mengubah urutan slide IKM di bawah ini. Anda juga bisa mengganti gambar QR Code per-slide.</p>
-            
-            <?php
-            $default_slides = json_encode([
-                ['title' => 'SEMESTER I TAHUN 2026', 'score' => '93.275', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png'],
-                ['title' => 'SEMESTER II TAHUN 2025', 'score' => '92.150', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png'],
-                ['title' => 'SEMESTER I TAHUN 2025', 'score' => '91.500', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png']
-            ]);
-            $saved_slides = get_option('dprd_ikm_slides_data', '');
-            if (empty($saved_slides) || $saved_slides === '[]' || $saved_slides === 'false') {
-                $saved_slides = $default_slides;
-            }
-            ?>
-            <input type="hidden" name="dprd_ikm_slides_data" id="dprd_ikm_slides_data" value="<?php echo esc_attr($saved_slides); ?>">
-            
-            <div id="ikm_repeater_container"></div>
-            
-            <button type="button" class="button button-primary" id="btn_add_ikm_slide" style="margin-top: 10px;">+ Tambah Slide Baru</button>
 
-            
-
-            <br><br>
-            <?php submit_button(); ?>
-        </form>
-    </div>
-    
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var inputImage = document.getElementById('video_image_input');
-        var imageToCrop = document.getElementById('image_to_crop');
-        var cropperContainer = document.getElementById('cropper-container');
-        var btnApplyCrop = document.getElementById('btn_apply_crop');
-        var hiddenBase64 = document.getElementById('dprd_video_thumbnail_base64');
-        var croppedPreview = document.getElementById('cropped_preview');
-        var croppedPreviewContainer = document.getElementById('cropped_preview_container');
-        var cropper;
-
-        if(inputImage) {
-            inputImage.addEventListener('change', function(e) {
-                var files = e.target.files;
-                if (files && files.length > 0) {
-                    var reader = new FileReader();
-                    reader.onload = function(event) {
-                        imageToCrop.src = event.target.result;
-                        cropperContainer.style.display = 'block';
-                        if (cropper) { cropper.destroy(); }
-                        cropper = new Cropper(imageToCrop, {
-                            aspectRatio: 16 / 9,
-                            viewMode: 1,
-                        });
-                    };
-                    reader.readAsDataURL(files[0]);
-                }
-            });
-        }
-
-        if(btnApplyCrop) {
-            btnApplyCrop.addEventListener('click', function() {
-                if (cropper) {
-                    var canvas = cropper.getCroppedCanvas({ width: 1280, height: 720 });
-                    var base64 = canvas.toDataURL('image/jpeg', 0.8);
-                    hiddenBase64.value = base64;
-                    croppedPreview.src = base64;
-                    croppedPreviewContainer.style.display = 'block';
-                    cropperContainer.style.display = 'none';
-                    alert("Gambar berhasil dicrop! Jangan lupa klik 'Save Changes' di bawah untuk menyimpan pengaturan.");
-                }
-            });
-        }
-
-        // Media Uploader for Informasi Terbaru File
-        var btnUploadInfoFile = document.getElementById('btn_upload_info_file');
-        var inputInfoFileUrl = document.getElementById('dprd_info_file_url');
-        var mediaUploader;
-
-        if (btnUploadInfoFile) {
-            btnUploadInfoFile.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (mediaUploader) {
-                    mediaUploader.open();
-                    return;
-                }
-                mediaUploader = wp.media({
-                    title: 'Pilih atau Unggah File',
-                    button: { text: 'Gunakan File Ini' },
-                    multiple: false
-                });
-                mediaUploader.on('select', function() {
-                    var attachment = mediaUploader.state().get('selection').first().toJSON();
-                    inputInfoFileUrl.value = attachment.url;
-                });
-                mediaUploader.open();
-            });
-        }
-
-        
-
-
-        // --- JSON REPEATER LOGIC FOR IKM SLIDES ---
-        var ikmSlidesData = [];
-        try {
-            var rawVal = document.getElementById('dprd_ikm_slides_data').value;
-            ikmSlidesData = JSON.parse(rawVal || '[]');
-        } catch(e) { console.error('Failed parsing IKM JSON data'); }
-
-        var ikmContainer = document.getElementById('ikm_repeater_container');
-
-        function renderIkmRow(slide, index) {
-            var html = `
-            <div class="ikm-slide-row" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background: #fafafa; position: relative;">
-                <h4 style="margin-top:0;">Slide \${index + 1}</h4>
-                <button type="button" class="button button-link-delete btn_remove_ikm_slide" style="position:absolute; top:15px; right:15px; color:#a00;">Hapus Slide</button>
-                <table class="form-table">
-                    <tr>
-                        <th scope="row">Semester & Tahun</th>
-                        <td><input type="text" class="ikm_input_title" value="\${slide.title || ''}" style="width:100%; max-width:300px;"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Skor (Nilai)</th>
-                        <td><input type="text" class="ikm_input_score" value="\${slide.score || ''}" style="width:150px;"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Huruf Mutu (Grade)</th>
-                        <td><input type="text" class="ikm_input_grade" value="\${slide.grade || ''}" style="width:50px;" maxlength="2"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Teks Predikat (Badge)</th>
-                        <td><input type="text" class="ikm_input_predicate" value="\${slide.predicate || ''}" style="width:100%; max-width:150px;"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Gambar QR Code</th>
-                        <td>
-                            <input type="url" class="ikm_input_qr" value="\${slide.qr || ''}" style="width:100%; max-width:300px;">
-                            <button type="button" class="button btn_upload_ikm_qr">Pilih Gambar</button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            `;
-            ikmContainer.insertAdjacentHTML('beforeend', html);
-        }
-
-        function renderAllIkmRows() {
-            ikmContainer.innerHTML = '';
-            ikmSlidesData.forEach(function(slide, idx) {
-                renderIkmRow(slide, idx);
-            });
-        }
-        renderAllIkmRows();
-
-        var btnAddIkm = document.getElementById('btn_add_ikm_slide');
-        if (btnAddIkm) {
-            btnAddIkm.addEventListener('click', function() {
-                ikmSlidesData.push({title:'', score:'', grade:'', predicate:'', qr:''});
-                renderAllIkmRows();
-            });
-        }
-
-        ikmContainer.addEventListener('click', function(e) {
-            if (e.target.classList.contains('btn_remove_ikm_slide')) {
-                if(confirm('Hapus slide ini?')) {
-                    var row = e.target.closest('.ikm-slide-row');
-                    var index = Array.from(ikmContainer.children).indexOf(row);
-                    if (index > -1) {
-                        ikmSlidesData.splice(index, 1);
-                        renderAllIkmRows();
-                    }
-                }
-            }
-            
-            if (e.target.classList.contains('btn_upload_ikm_qr')) {
-                e.preventDefault();
-                var inputQr = e.target.previousElementSibling;
-                var uploader = wp.media({
-                    title: 'Pilih Gambar QR Code',
-                    button: { text: 'Gunakan Gambar Ini' },
-                    multiple: false
-                });
-                uploader.on('select', function() {
-                    var attachment = uploader.state().get('selection').first().toJSON();
-                    inputQr.value = attachment.url;
-                });
-                uploader.open();
-            }
-        });
-
-        // Update JSON before saving
-        var form = document.querySelector('form[action="options.php"]');
-        if (form) {
-            form.addEventListener('submit', function() {
-                var rows = ikmContainer.querySelectorAll('.ikm-slide-row');
-                var newData = [];
-                rows.forEach(function(row) {
-                    newData.push({
-                        title: row.querySelector('.ikm_input_title').value,
-                        score: row.querySelector('.ikm_input_score').value,
-                        grade: row.querySelector('.ikm_input_grade').value,
-                        predicate: row.querySelector('.ikm_input_predicate').value,
-                        qr: row.querySelector('.ikm_input_qr').value
-                    });
-                });
-                document.getElementById('dprd_ikm_slides_data').value = JSON.stringify(newData);
-            });
-        }
-    });
-    </script>
-    <?php
 }
 
 // ==========================================
@@ -1635,3 +1426,166 @@ function dprd_ppid_settings_page_html() {
     </div>
     <?php
 }
+
+// ==========================================
+// PENGATURAN HALAMAN D'LANTUNAN
+// ==========================================
+
+function dprd_dlantunan_settings_menu() {
+    add_menu_page(
+        'Pengaturan D\'Lantunan', 
+        'Pengaturan D\'Lantunan', 
+        'manage_options', 
+        'dprd-dlantunan-settings', 
+        'dprd_dlantunan_settings_page_html', 
+        'dashicons-format-aside', 
+        29
+    );
+}
+add_action( 'admin_menu', 'dprd_dlantunan_settings_menu' );
+
+function dprd_dlantunan_settings_init() {
+    register_setting( 'dprd_dlantunan_settings_group', 'dprd_dlantunan_welcome_title' );
+    register_setting( 'dprd_dlantunan_settings_group', 'dprd_dlantunan_welcome_text' );
+}
+add_action( 'admin_init', 'dprd_dlantunan_settings_init' );
+
+function dprd_dlantunan_settings_page_html() {
+    if ( ! current_user_can( 'manage_options' ) ) return;
+    ?>
+    <div class="wrap">
+        <h1>Pengaturan Halaman D'Lantunan</h1>
+        <p>Silakan isi teks judul dan deskripsi untuk kartu "Selamat Datang" di halaman D'Lantunan.</p>
+        <form action="options.php" method="post">
+            <?php
+            settings_fields( 'dprd_dlantunan_settings_group' );
+            do_settings_sections( 'dprd_dlantunan_settings_group' );
+            ?>
+            <table class="form-table">
+                <tr valign="top">
+                    <th scope="row">Judul Kartu Selamat Datang</th>
+                    <td>
+                        <?php 
+                        $welcome_title_raw = get_option('dprd_dlantunan_welcome_title', "Selamat Datang di\nD'Lantunan");
+                        $welcome_title_clean = str_replace(array('<br>', '<br/>', '<br />'), "\n", $welcome_title_raw);
+                        ?>
+                        <textarea name="dprd_dlantunan_welcome_title" rows="2" class="regular-text" style="width: 400px;"><?php echo esc_textarea( $welcome_title_clean ); ?></textarea>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Isi Teks Kartu</th>
+                    <td>
+                        <?php
+                        $default_content = "<p>D'Lantunan adalah portal layanan dan aspirasi masyarakat Sekretariat DPRD Kabupaten Purbalingga.</p>\n<p>Melalui portal ini, Anda dapat mengajukan berbagai permohonan layanan dengan mudah secara daring.</p>\n<p>Kami berkomitmen memberikan pelayanan yang cepat, transparan, dan akuntabel.</p>";
+                        $content = get_option('dprd_dlantunan_welcome_text', $default_content);
+                        wp_editor($content, 'dprd_dlantunan_welcome_text', array(
+                            'textarea_name' => 'dprd_dlantunan_welcome_text',
+                            'media_buttons' => false,
+                            'textarea_rows' => 10,
+                            'teeny' => true,
+                            'quicktags' => true
+                        ));
+                        ?>
+                    </td>
+                </tr>
+            </table>
+            <?php submit_button(); ?>
+        </form>
+    </div>
+    <?php
+}
+
+// ==========================================
+// CUSTOM FIELD (META BOX) UNTUK LAYANAN D'LANTUNAN
+// ==========================================
+
+function dprd_add_layanan_dlantunan_metabox() {
+    add_meta_box(
+        'dprd_layanan_dlantunan_meta', // ID
+        'Tautan (URL) Layanan', // Title
+        'dprd_layanan_dlantunan_meta_callback', // Callback
+        'layanan_dlantunan', // Post Type
+        'normal', // Context
+        'default' // Priority
+    );
+}
+add_action( 'add_meta_boxes', 'dprd_add_layanan_dlantunan_metabox' );
+
+function dprd_layanan_dlantunan_meta_callback( $post ) {
+    wp_nonce_field( 'dprd_layanan_dlantunan_meta_nonce_action', 'dprd_layanan_dlantunan_meta_nonce' );
+    $url_layanan = get_post_meta( $post->ID, '_dprd_layanan_url', true );
+
+    echo '<p><label for="dprd_layanan_url"><strong>URL / Link Tujuan Layanan:</strong></label></p>';
+    echo '<p><input type="url" id="dprd_layanan_url" name="dprd_layanan_url" value="' . esc_attr( $url_layanan ) . '" class="widefat" placeholder="Contoh: https://docs.google.com/forms/..." /></p>';
+    echo '<p class="description">Masukkan tautan formulir eksternal (seperti Google Forms) atau URL internal tujuan layanan ini.</p>';
+}
+
+function dprd_save_layanan_dlantunan_meta( $post_id ) {
+    if ( ! isset( $_POST['dprd_layanan_dlantunan_meta_nonce'] ) || ! wp_verify_nonce( $_POST['dprd_layanan_dlantunan_meta_nonce'], 'dprd_layanan_dlantunan_meta_nonce_action' ) ) {
+        return;
+    }
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+        return;
+    }
+
+    if ( isset( $_POST['dprd_layanan_url'] ) ) {
+        $url_data = sanitize_url( wp_unslash( $_POST['dprd_layanan_url'] ) );
+        update_post_meta( $post_id, '_dprd_layanan_url', $url_data );
+    }
+}
+add_action( 'save_post_layanan_dlantunan', 'dprd_save_layanan_dlantunan_meta' );
+
+// ==========================================
+// SIMPLIFY & AUTO-POPULATE LAYANAN D'LANTUNAN
+// ==========================================
+
+function dprd_simplify_layanan_dlantunan_supports() {
+    // Hapus elemen yang tidak perlu agar admin fokus ke Judul, Deskripsi, dan URL saja
+    remove_post_type_support( 'layanan_dlantunan', 'thumbnail' );
+    remove_post_type_support( 'layanan_dlantunan', 'excerpt' );
+    remove_post_type_support( 'layanan_dlantunan', 'custom-fields' );
+    remove_post_type_support( 'layanan_dlantunan', 'comments' );
+    remove_post_type_support( 'layanan_dlantunan', 'author' );
+    remove_post_type_support( 'layanan_dlantunan', 'page-attributes' );
+}
+add_action( 'init', 'dprd_simplify_layanan_dlantunan_supports', 99 );
+
+function dprd_seed_layanan_dlantunan() {
+    $count = wp_count_posts('layanan_dlantunan');
+    // Jika belum ada pos sama sekali, buat 3 layanan default secara otomatis
+    if ( isset($count->publish) && $count->publish == 0 && isset($count->draft) && $count->draft == 0 && isset($count->trash) && $count->trash == 0 ) {
+        $defaults = array(
+            array(
+                'title' => 'Layanan Permohonan Magang',
+                'content' => 'Ajukan permohonan magang di lingkungan Sekretariat DPRD Kabupaten Purbalingga untuk mahasiswa dan pelajar.',
+                'url' => 'https://docs.google.com/forms/d/e/1FAIpQLSf-kexVgXar7DEOPdKhB_IZgfoWEb4F-QFBYa5kD9wRmf4AjA/viewform'
+            ),
+            array(
+                'title' => 'Layanan Permohonan Ijin Penelitian',
+                'content' => 'Ajukan permohonan izin penelitian untuk keperluan akademik maupun lembaga terkait di Sekretariat DPRD.',
+                'url' => 'https://docs.google.com/forms/d/e/1FAIpQLSd4pWbgYw7ySztddt3luzmxw4Vume_BxQRk3h1Et5bpEyg2mg/viewform'
+            ),
+            array(
+                'title' => 'Layanan Permohonan Ijin Kunjungan',
+                'content' => 'Ajukan permohonan kunjungan kerja atau studi banding ke Sekretariat DPRD Kabupaten Purbalingga.',
+                'url' => 'https://docs.google.com/forms/d/e/1FAIpQLSdOgg9-L2MaLKOKobYc7KblGJDvuTbvs_9L7RZDxg61Ww6tog/viewform'
+            )
+        );
+
+        foreach ($defaults as $item) {
+            $post_id = wp_insert_post(array(
+                'post_title' => $item['title'],
+                'post_content' => $item['content'],
+                'post_status' => 'publish',
+                'post_type' => 'layanan_dlantunan'
+            ));
+            if ($post_id && !is_wp_error($post_id)) {
+                update_post_meta($post_id, '_dprd_layanan_url', $item['url']);
+            }
+        }
+    }
+}
+add_action('admin_init', 'dprd_seed_layanan_dlantunan');
