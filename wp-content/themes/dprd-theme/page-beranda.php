@@ -31,28 +31,28 @@ get_header();
       <div class="stat-icon"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/user account.png" alt="Pegawai"></div>
       <div>
         <div class="stat-num" id="stat-pegawai">0</div>
-        <div class="stat-label">Pegawai Profesional</div>
+        <div class="stat-label"><?php echo esc_html( get_option('dprd_stat_label_pegawai', 'Pegawai Profesional') ); ?></div>
       </div>
     </div>
     <div class="stat-item">
       <div class="stat-icon"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/university.png" alt="Agenda"></div>
       <div>
         <div class="stat-num" id="stat-agenda">0</div>
-        <div class="stat-label">Agenda DPRD Tahun Ini</div>
+        <div class="stat-label"><?php echo esc_html( get_option('dprd_stat_label_agenda', 'Agenda DPRD Tahun Ini') ); ?></div>
       </div>
     </div>
     <div class="stat-item">
       <div class="stat-icon"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/document.png" alt="Dokumen"></div>
       <div>
         <div class="stat-num" id="stat-dokumen">0</div>
-        <div class="stat-label">Dokumen Tersedia</div>
+        <div class="stat-label"><?php echo esc_html( get_option('dprd_stat_label_dokumen', 'Dokumen Tersedia') ); ?></div>
       </div>
     </div>
     <div class="stat-item">
       <div class="stat-icon"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Protect.png" alt="Transparan"></div>
       <div>
         <div class="stat-num" id="stat-transparan">0%</div>
-        <div class="stat-label">Pelayanan Transparan</div>
+        <div class="stat-label"><?php echo esc_html( get_option('dprd_stat_label_transparan', 'Pelayanan Transparan') ); ?></div>
       </div>
     </div>
   </div>
@@ -81,10 +81,9 @@ get_header();
 
     <!-- Video Card -->
     <div class="card video-card">
-      <div class="card-tag"><span class="ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Video Call.png" alt=""></span>PERSETUJUAN
-        BERSAMA RAPERTA PERTANGGUNGJAWABAN APBD TA 2025 DAN PENYAMPAIAN KUA PPAS TA 2027</div>
-      <a href="https://youtu.be/uRZvKm-5YuE?si=0XHt5Nl5IPKieJRO" target="_blank" class="video-thumb">
-        <img src="https://www.purbalinggakab.go.id/wp-content/uploads/2025/08/DSC00352-1280x640.jpg"
+      <div class="card-tag"><span class="ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Video Call.png" alt=""></span><?php echo esc_html( get_option('dprd_video_title', 'PERSETUJUAN BERSAMA RAPERTA PERTANGGUNGJAWABAN APBD TA 2025 DAN PENYAMPAIAN KUA PPAS TA 2027') ); ?></div>
+      <a href="<?php echo esc_url( get_option('dprd_video_url', 'https://youtu.be/uRZvKm-5YuE?si=0XHt5Nl5IPKieJRO') ); ?>" target="_blank" class="video-thumb">
+        <img src="<?php echo esc_url( get_option('dprd_video_thumbnail_url', 'https://www.purbalinggakab.go.id/wp-content/uploads/2025/08/DSC00352-1280x640.jpg') ); ?>"
           alt="Rapat Paripurna">
         <div class="youtube-play-btn"></div>
         <div class="youtube-watch-badge">Tonton di <span>YouTube</span></div>

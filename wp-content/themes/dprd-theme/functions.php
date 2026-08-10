@@ -67,6 +67,14 @@ function tema_kustom_dprd_scripts() {
     if ( is_page_template('page-beranda.php') || is_front_page() ) {
         wp_enqueue_style( 'tema-kustom-beranda', get_template_directory_uri() . '/assets/beranda-style.css', array(), '1.2' );
         wp_enqueue_script( 'tema-kustom-beranda-script', get_template_directory_uri() . '/assets/beranda-script.js', array(), '1.2', true );
+        
+        // Pass dynamic data from options
+        wp_localize_script( 'tema-kustom-beranda-script', 'siteData', array(
+            'totalPegawai'     => intval( get_option('dprd_stat_pegawai', 150) ),
+            'totalAgenda'      => intval( get_option('dprd_stat_agenda', 45) ),
+            'totalDokumen'     => intval( get_option('dprd_stat_dokumen', 250) ),
+            'persenTransparan' => intval( get_option('dprd_stat_transparan', 100) )
+        ) );
     }
 }
 add_action( 'wp_enqueue_scripts', 'tema_kustom_dprd_scripts' );
@@ -161,4 +169,203 @@ function dprd_get_page_url( $slug, $anchor = '' ) {
     }
     return $url;
 }
+
+// ==========================================
+// PENGATURAN BERANDA & VIDEO (WP-ADMIN)
+// ==========================================
+
+function dprd_theme_admin_scripts($hook) {
+    if ( $hook != 'toplevel_page_dprd-statistik-beranda' ) {
+        return;
+    }
+    wp_enqueue_style( 'cropper-css', 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css' );
+    wp_enqueue_script( 'cropper-js', 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js', array(), '1.5.13', true );
+}
+add_action( 'admin_enqueue_scripts', 'dprd_theme_admin_scripts' );
+
+function dprd_handle_video_thumb_base64( $base64 ) {
+    if ( empty( $base64 ) ) {
+        return '';
+    }
+    if ( preg_match('/^data:image\/(\w+);base64,/', $base64, $type) ) {
+        $data = substr($base64, strpos($base64, ',') + 1);
+        $type = strtolower($type[1]);
+        if (in_array($type, [ 'jpg', 'jpeg', 'gif', 'png', 'webp' ])) {
+            $data = base64_decode($data);
+            if ($data !== false) {
+                $filename = 'video-thumb-' . time() . '.' . $type;
+                $upload = wp_upload_bits($filename, null, $data);
+                if ( ! $upload['error'] ) {
+                    update_option( 'dprd_video_thumbnail_url', $upload['url'] );
+                }
+            }
+        }
+    }
+    return '';
+}
+
+function dprd_theme_settings_menu() {
+    add_menu_page(
+        'Pengaturan Beranda', 
+        'Pengaturan Beranda', 
+        'manage_options', 
+        'dprd-statistik-beranda', 
+        'dprd_theme_settings_page_html', 
+        'dashicons-admin-home', 
+        25
+    );
+}
+add_action( 'admin_menu', 'dprd_theme_settings_menu' );
+
+function dprd_theme_settings_init() {
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_stat_pegawai' );
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_stat_agenda' );
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_stat_dokumen' );
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_stat_transparan' );
+    
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_stat_label_pegawai' );
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_stat_label_agenda' );
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_stat_label_dokumen' );
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_stat_label_transparan' );
+    
+    // Video Settings
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_video_title' );
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_video_url' );
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_video_thumbnail_base64', array( 'sanitize_callback' => 'dprd_handle_video_thumb_base64' ) );
+}
+add_action( 'admin_init', 'dprd_theme_settings_init' );
+
+function dprd_theme_settings_page_html() {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        return;
+    }
+    ?>
+    <div class="wrap">
+        <h1>Pengaturan Statistik Beranda</h1>
+        <p>Silakan isi teks label dan angka untuk ditampilkan pada bagian statistik di halaman Beranda.</p>
+        <form action="options.php" method="post">
+            <?php
+            settings_fields( 'dprd_statistik_beranda_group' );
+            do_settings_sections( 'dprd_statistik_beranda_group' );
+            ?>
+            <table class="form-table">
+                <tr valign="top">
+                    <th scope="row">Statistik 1</th>
+                    <td>
+                        <input type="text" name="dprd_stat_label_pegawai" value="<?php echo esc_attr( get_option('dprd_stat_label_pegawai', 'Pegawai Profesional') ); ?>" placeholder="Teks Label" style="width: 250px; margin-right: 10px;" />
+                        <input type="number" name="dprd_stat_pegawai" value="<?php echo esc_attr( get_option('dprd_stat_pegawai', 150) ); ?>" placeholder="Angka" style="width: 100px;" />
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Statistik 2</th>
+                    <td>
+                        <input type="text" name="dprd_stat_label_agenda" value="<?php echo esc_attr( get_option('dprd_stat_label_agenda', 'Agenda DPRD Tahun Ini') ); ?>" placeholder="Teks Label" style="width: 250px; margin-right: 10px;" />
+                        <input type="number" name="dprd_stat_agenda" value="<?php echo esc_attr( get_option('dprd_stat_agenda', 45) ); ?>" placeholder="Angka" style="width: 100px;" />
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Statistik 3</th>
+                    <td>
+                        <input type="text" name="dprd_stat_label_dokumen" value="<?php echo esc_attr( get_option('dprd_stat_label_dokumen', 'Dokumen Tersedia') ); ?>" placeholder="Teks Label" style="width: 250px; margin-right: 10px;" />
+                        <input type="number" name="dprd_stat_dokumen" value="<?php echo esc_attr( get_option('dprd_stat_dokumen', 250) ); ?>" placeholder="Angka" style="width: 100px;" />
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Statistik 4</th>
+                    <td>
+                        <input type="text" name="dprd_stat_label_transparan" value="<?php echo esc_attr( get_option('dprd_stat_label_transparan', 'Pelayanan Transparan') ); ?>" placeholder="Teks Label" style="width: 250px; margin-right: 10px;" />
+                        <input type="number" name="dprd_stat_transparan" value="<?php echo esc_attr( get_option('dprd_stat_transparan', 100) ); ?>" max="100" placeholder="Angka" style="width: 100px;" /> %
+                    </td>
+                </tr>
+            </table>
+            
+            <hr style="margin: 30px 0;">
+            <h2>Pengaturan Video Beranda</h2>
+            <table class="form-table">
+                <tr valign="top">
+                    <th scope="row">Judul Video</th>
+                    <td><input type="text" name="dprd_video_title" value="<?php echo esc_attr( get_option('dprd_video_title', 'PERSETUJUAN BERSAMA RAPERTA PERTANGGUNGJAWABAN APBD TA 2025 DAN PENYAMPAIAN KUA PPAS TA 2027') ); ?>" style="width: 100%; max-width: 600px;" /></td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Link YouTube</th>
+                    <td><input type="url" name="dprd_video_url" value="<?php echo esc_url( get_option('dprd_video_url', 'https://youtu.be/uRZvKm-5YuE?si=0XHt5Nl5IPKieJRO') ); ?>" style="width: 100%; max-width: 600px;" /></td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Thumbnail Saat Ini</th>
+                    <td>
+                        <?php $thumb = get_option('dprd_video_thumbnail_url', 'https://www.purbalinggakab.go.id/wp-content/uploads/2025/08/DSC00352-1280x640.jpg'); ?>
+                        <img src="<?php echo esc_url($thumb); ?>" style="max-width: 400px; height: auto; border: 1px solid #ccc; border-radius: 8px;" />
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Unggah Thumbnail Baru</th>
+                    <td>
+                        <p>Pilih gambar baru, lalu sesuaikan (crop) sebelum disimpan.</p>
+                        <input type="file" id="video_image_input" accept="image/*" />
+                        <div id="cropper-container" style="max-width: 600px; margin-top: 10px; display: none;">
+                            <img id="image_to_crop" src="" style="max-width: 100%;" />
+                            <br><br>
+                            <button type="button" class="button button-secondary" id="btn_apply_crop">Terapkan Crop</button>
+                        </div>
+                        <div id="cropped_preview_container" style="margin-top: 15px; display: none;">
+                            <h4>Preview Crop:</h4>
+                            <img id="cropped_preview" src="" style="max-width: 400px; border-radius: 8px;" />
+                        </div>
+                        <input type="hidden" name="dprd_video_thumbnail_base64" id="dprd_video_thumbnail_base64" value="" />
+                    </td>
+                </tr>
+            </table>
+
+            <?php submit_button(); ?>
+        </form>
+    </div>
+    
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var inputImage = document.getElementById('video_image_input');
+        var imageToCrop = document.getElementById('image_to_crop');
+        var cropperContainer = document.getElementById('cropper-container');
+        var btnApplyCrop = document.getElementById('btn_apply_crop');
+        var hiddenBase64 = document.getElementById('dprd_video_thumbnail_base64');
+        var croppedPreview = document.getElementById('cropped_preview');
+        var croppedPreviewContainer = document.getElementById('cropped_preview_container');
+        var cropper;
+
+        if(inputImage) {
+            inputImage.addEventListener('change', function(e) {
+                var files = e.target.files;
+                if (files && files.length > 0) {
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        imageToCrop.src = event.target.result;
+                        cropperContainer.style.display = 'block';
+                        if (cropper) { cropper.destroy(); }
+                        cropper = new Cropper(imageToCrop, {
+                            aspectRatio: 16 / 9,
+                            viewMode: 1,
+                        });
+                    };
+                    reader.readAsDataURL(files[0]);
+                }
+            });
+        }
+
+        if(btnApplyCrop) {
+            btnApplyCrop.addEventListener('click', function() {
+                if (cropper) {
+                    var canvas = cropper.getCroppedCanvas({ width: 1280, height: 720 });
+                    var base64 = canvas.toDataURL('image/jpeg', 0.8);
+                    hiddenBase64.value = base64;
+                    croppedPreview.src = base64;
+                    croppedPreviewContainer.style.display = 'block';
+                    cropperContainer.style.display = 'none';
+                    alert("Gambar berhasil dicrop! Jangan lupa klik 'Save Changes' di bawah untuk menyimpan pengaturan.");
+                }
+            });
+        }
+    });
+    </script>
+    <?php
+}
+
 
