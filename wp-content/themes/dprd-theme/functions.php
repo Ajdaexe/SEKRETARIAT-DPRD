@@ -2720,6 +2720,68 @@ function dprd_upload_dokumentasi_dlantunan_page_html() {
 }
 
 // ==========================================
+// CUSTOMIZE ADMIN COLUMNS FOR DOKUMEN CPT
+// ==========================================
+function dprd_dokumen_columns($columns) {
+    $new_columns = array(
+        'cb' => $columns['cb'],
+        'title' => 'Judul Dokumen',
+    );
+    
+    if (isset($columns['taxonomy-kategori_dokumen'])) {
+        $new_columns['taxonomy-kategori_dokumen'] = 'Kategori';
+    } else {
+        $new_columns['kategori_dokumen_custom'] = 'Kategori';
+    }
+    
+    $new_columns['dokumen_grup'] = 'Grup (Lokasi)';
+    $new_columns['dokumen_tahun'] = 'Tahun';
+    $new_columns['dokumen_file'] = 'File PDF';
+    
+    return $new_columns;
+}
+add_filter('manage_dokumen_posts_columns', 'dprd_dokumen_columns', 99); // 99 to override SEO plugins
+
+function dprd_dokumen_custom_column($column, $post_id) {
+    switch ($column) {
+        case 'kategori_dokumen_custom':
+            $terms = get_the_terms($post_id, 'kategori_dokumen');
+            if (!empty($terms) && !is_wp_error($terms)) {
+                $out = array();
+                foreach ($terms as $term) {
+                    $out[] = $term->name;
+                }
+                echo join(', ', $out);
+            } else {
+                echo '-';
+            }
+            break;
+        case 'dokumen_grup':
+            $grup = get_post_meta($post_id, '_dokumen_grup', true);
+            if ($grup == 'PPID') {
+                echo '<span style="background:#e0f2fe; color:#0369a1; padding:4px 10px; border-radius:12px; font-weight:600; font-size:11px;">Halaman PPID</span>';
+            } elseif ($grup == 'SAKIP') {
+                echo '<span style="background:#fef08a; color:#854d0e; padding:4px 10px; border-radius:12px; font-weight:600; font-size:11px;">Halaman SAKIP</span>';
+            } else {
+                echo esc_html($grup);
+            }
+            break;
+        case 'dokumen_tahun':
+            echo '<strong>' . esc_html(get_post_meta($post_id, '_dokumen_tahun', true)) . '</strong>';
+            break;
+        case 'dokumen_file':
+            $file = get_post_meta($post_id, '_dokumen_file_url', true);
+            if ($file) {
+                echo '<a href="'.esc_url($file).'" target="_blank" class="button button-small"><span class="dashicons dashicons-media-document" style="margin-top:3px; color:#A5182B;"></span> Lihat File</a>';
+            } else {
+                echo '<span style="color:#94a3b8; font-style:italic;">Belum ada file</span>';
+            }
+            break;
+    }
+}
+add_action('manage_dokumen_posts_custom_column', 'dprd_dokumen_custom_column', 10, 2);
+
+// ==========================================
 // CPT DOKUMEN & CUSTOM TAXONOMY
 // ==========================================
 
