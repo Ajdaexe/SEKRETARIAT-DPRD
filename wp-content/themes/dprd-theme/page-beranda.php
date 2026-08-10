@@ -136,7 +136,7 @@ get_header();
                   <img src="<?php echo get_template_directory_uri(); ?>/assets/images/badge.png" alt="Badge IKM" class="ikm-badge">
                   <span class="badge-grade"><?php echo esc_html($grade); ?></span>
                   <svg viewBox="0 0 180 180" class="badge-svg-text">
-                    <path id="curve-<?php echo $i; ?>" d="M 15,160 Q 90,128 165,160" fill="transparent" />
+                    <path id="curve-<?php echo $i; ?>" d="M 15,151 Q 90,127 165,151" fill="transparent" />
                     <text width="180">
                       <textPath href="#curve-<?php echo $i; ?>" startOffset="50%" text-anchor="middle">
                         <?php echo esc_html($predicate); ?>
