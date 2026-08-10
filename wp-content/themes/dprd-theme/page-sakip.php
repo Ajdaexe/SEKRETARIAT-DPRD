@@ -348,14 +348,6 @@ get_header();
         heroText.style.opacity = opacity;
         heroText.style.transform = `translateY(${scrollY * 0.3}px)`;
       }
-
-      if (heroSection) {
-        if (scrollY <= 0) {
-          heroSection.style.height = 'calc(100vh - 96px)';
-        } else {
-          heroSection.style.height = '460px';
-        }
-      }
     });
 
     function openLightbox() {
