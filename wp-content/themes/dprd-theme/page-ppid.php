@@ -181,18 +181,55 @@ get_header();
 
   <script>
     <?php
-    $docs_json = get_option('dprd_ppid_documents_data', '');
-    $dokumen_array = json_decode($docs_json, true);
+    $dokumen_array = array();
+    $args = array(
+        'post_type'      => 'dokumen',
+        'posts_per_page' => -1,
+        'post_status'    => 'publish',
+        'meta_query'     => array(
+            'relation' => 'OR',
+            array(
+                'key'     => '_dokumen_grup',
+                'value'   => 'PPID',
+                'compare' => '='
+            ),
+            array(
+                'key'     => '_dokumen_grup',
+                'compare' => 'NOT EXISTS' // Fallback for old/default posts
+            )
+        )
+    );
+    $query = new WP_Query( $args );
+    if ( $query->have_posts() ) {
+        while ( $query->have_posts() ) {
+            $query->the_post();
+            
+            $kategori_terms = get_the_terms( get_the_ID(), 'kategori_dokumen' );
+            $kategori = !empty($kategori_terms) && !is_wp_error($kategori_terms) ? $kategori_terms[0]->name : 'Informasi Berkala';
+            
+            $file_url = get_post_meta( get_the_ID(), '_dokumen_file_url', true );
+            $tanggal = get_post_meta( get_the_ID(), '_dokumen_tanggal', true );
+            $tahun = get_post_meta( get_the_ID(), '_dokumen_tahun', true );
+            
+            if(empty($file_url)) $file_url = '#';
+            if(empty($tanggal)) $tanggal = get_the_date('d F Y');
+            if(empty($tahun)) $tahun = get_the_date('Y');
+            
+            $dokumen_array[] = array(
+                "judul"    => get_the_title(),
+                "kategori" => $kategori,
+                "tanggal"  => $tanggal,
+                "tahun"    => $tahun,
+                "file"     => $file_url
+            );
+        }
+        wp_reset_postdata();
+    }
     
-    if (empty($dokumen_array) || !is_array($dokumen_array)) {
-        // Dummy data fallback
+    // Fallback if no documents found at all
+    if (empty($dokumen_array)) {
         $dokumen_array = array(
-            array("judul" => "3 Renja Sekretariat DPRD Tahun 2026", "kategori" => get_option('dprd_ppid_card_title_1', 'Informasi Berkala'), "tanggal" => "12 Januari 2026", "tahun" => 2026, "file" => "#"),
-            array("judul" => "Laporan Kinerja Instansi Pemerintah (LKjIP) 2025", "kategori" => get_option('dprd_ppid_card_title_1', 'Informasi Berkala'), "tanggal" => "15 Februari 2025", "tahun" => 2025, "file" => "#"),
-            array("judul" => "Ringkasan DPA Sekretariat DPRD Tahun 2025", "kategori" => get_option('dprd_ppid_card_title_1', 'Informasi Berkala'), "tanggal" => "10 Januari 2025", "tahun" => 2025, "file" => "#"),
-            array("judul" => "Kebijakan Pelayanan Informasi Publik 2026", "kategori" => get_option('dprd_ppid_card_title_3', 'Informasi Setiap Saat'), "tanggal" => "05 Maret 2026", "tahun" => 2026, "file" => "#"),
-            array("judul" => "Daftar Informasi Publik (DIP) Tahun 2025", "kategori" => get_option('dprd_ppid_card_title_3', 'Informasi Setiap Saat'), "tanggal" => "20 Desember 2025", "tahun" => 2025, "file" => "#"),
-            array("judul" => "Laporan Layanan Informasi Publik Semester I 2026", "kategori" => get_option('dprd_ppid_card_title_4', 'Laporan PPID'), "tanggal" => "30 Juni 2026", "tahun" => 2026, "file" => "#")
+            array("judul" => "Belum ada dokumen PPID", "kategori" => "Informasi Berkala", "tanggal" => date('d F Y'), "tahun" => date('Y'), "file" => "#")
         );
     }
     ?>
@@ -273,7 +310,7 @@ get_header();
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${i + 1}.</td>
-          <td>${doc.judul}</td>
+          <td><a href="${doc.file}" target="_blank" style="color: inherit; text-decoration: none;">${doc.judul}</a></td>
           <td><span class="kategori-tag ${tagClass}">${doc.kategori}</span></td>
           <td>${doc.tanggal}</td>
           <td><a href="${doc.file}" class="unduh-ic" download><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/unduh merah.png" alt="Unduh"></a></td>

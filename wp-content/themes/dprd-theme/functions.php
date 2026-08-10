@@ -2516,6 +2516,201 @@ function dprd_upload_dokumentasi_dlantunan_page_html() {
                         caption: row.querySelector('.foto_input_caption').value
                     });
                 });
+                            <div style="margin-bottom: 10px;">
+                                <img src="${foto.url || ''}" class="foto_preview_img" style="max-width: 250px; display: ${foto.url ? 'block' : 'none'}; border: 1px solid #ddd; border-radius: 4px;" />
+                            </div>
+                            <input type="hidden" class="foto_input_url" value="${foto.url || ''}">
+                            <input type="file" class="hidden_file_input_foto" accept="image/*" style="display:none;">
+                            <button type="button" class="button btn_upload_foto">Pilih/Unggah Gambar (Lalu Crop)</button>
+                            <span class="upload-status-foto" style="margin-left: 10px; color: #0073aa; font-weight: bold; display: none;">Memproses...</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Deskripsi / Caption</th>
+                        <td><textarea class="foto_input_caption" rows="3" style="width:100%; max-width:500px;">${foto.caption || ''}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function renderAll() {
+            container.innerHTML = '';
+            fotoData.forEach(function(foto, idx) {
+                renderRow(foto, idx);
+            });
+        }
+        renderAll();
+
+        document.getElementById('btn_add_foto_slide').addEventListener('click', function() {
+            fotoData.push({url:'', caption:''});
+            renderAll();
+        });
+
+        container.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn_remove_foto')) {
+                if(confirm('Hapus foto ini?')) {
+                    var row = e.target.closest('.foto-slide-row');
+                    var index = Array.from(container.children).indexOf(row);
+                    if (index > -1) {
+                        fotoData.splice(index, 1);
+                        renderAll();
+                    }
+                }
+            }
+            if (e.target.classList.contains('btn_upload_foto')) {
+                e.preventDefault();
+                var row = e.target.closest('.foto-slide-row');
+                var fileInput = row.querySelector('.hidden_file_input_foto');
+                if (fileInput) fileInput.click();
+            }
+        });
+
+        container.addEventListener('change', function(e) {
+            if (e.target.classList.contains('hidden_file_input_foto')) {
+                var file = e.target.files[0];
+                if (!file) return;
+                
+                activeRow = e.target.closest('.foto-slide-row');
+                var reader = new FileReader();
+                reader.onload = function(evt) {
+                    cropperModal.style.display = 'block';
+                    cropperImage.src = evt.target.result;
+                    
+                    setTimeout(function() {
+                        if (cropper) {
+                            cropper.destroy();
+                            cropper = null;
+                        }
+                        
+                        var initCropper = function() {
+                            cropper = new Cropper(cropperImage, {
+                                viewMode: 2,
+                                aspectRatio: 1,
+                                dragMode: 'move',
+                                autoCropArea: 1,
+                                restore: false,
+                                guides: true,
+                                center: true,
+                                highlight: true,
+                                cropBoxMovable: true,
+                                cropBoxResizable: true,
+                                toggleDragModeOnDblclick: false,
+                                zoomOnWheel: false,
+                                responsive: true,
+                                preview: '.cropper-preview'
+                            });
+                        };
+
+                        if (typeof Cropper !== 'undefined') {
+                            initCropper();
+                        } else {
+                            // Fallback: Dynamically inject script if enqueue failed
+                            var script = document.createElement('script');
+                            script.src = "<?php echo get_template_directory_uri(); ?>/assets/js/cropper.min.js?v=" + new Date().getTime();
+                            script.onload = function() {
+                                if (typeof Cropper !== 'undefined') {
+                                    initCropper();
+                                } else {
+                                    alert("Pustaka Cropper.js masih gagal dimuat (Internal Error).");
+                                }
+                            };
+                            script.onerror = function() {
+                                alert("Pustaka Cropper.js gagal dimuat secara fatal! Periksa koneksi atau lokasi file.");
+                            };
+                            document.head.appendChild(script);
+                            
+                            // Also inject CSS
+                            var link = document.createElement('link');
+                            link.rel = 'stylesheet';
+                            link.href = "<?php echo get_template_directory_uri(); ?>/assets/css/cropper.min.css?v=" + new Date().getTime();
+                            document.head.appendChild(link);
+                        }
+                    }, 250);
+                };
+                reader.readAsDataURL(file);
+                e.target.value = ''; 
+            }
+        });
+
+        btnCloseCropper.addEventListener('click', function() {
+            cropperModal.style.display = 'none';
+            if (cropper) cropper.destroy();
+            activeRow = null;
+        });
+
+        btnApplyCrop.addEventListener('click', function() {
+            if (!cropper || !activeRow) return;
+            
+            var canvas = cropper.getCroppedCanvas({
+                maxWidth: 1200,
+                maxHeight: 1200
+            });
+            
+            if (!canvas) {
+                alert('Gagal memotong gambar.');
+                return;
+            }
+
+            var base64Data = canvas.toDataURL('image/jpeg', 0.85);
+            var statusEl = activeRow.querySelector('.upload-status-foto');
+            var inputUrl = activeRow.querySelector('.foto_input_url');
+            var previewEl = activeRow.querySelector('.foto_preview_img');
+
+            cropperModal.style.display = 'none';
+            if (cropper) cropper.destroy();
+
+            statusEl.style.display = 'inline-block';
+            statusEl.textContent = 'Menyimpan...';
+
+            var formData = new FormData();
+            formData.append('action', 'dprd_upload_base64_image');
+            formData.append('image_base64', base64Data);
+
+            jQuery.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // response is already parsed JSON if server sends application/json
+                    if (typeof response === 'string') {
+                        try { response = JSON.parse(response); } catch(e) {}
+                    }
+                    if (response && response.success) {
+                        statusEl.style.display = 'inline-block';
+                        statusEl.textContent = 'Berhasil!';
+                        inputUrl.value = response.data.url;
+                        previewEl.src = response.data.url;
+                        previewEl.style.display = 'block';
+                        setTimeout(() => statusEl.style.display = 'none', 2000);
+                    } else {
+                        statusEl.style.display = 'inline-block';
+                        var err = response && response.data ? response.data : 'Tidak diketahui (Server merespons: ' + JSON.stringify(response) + ')';
+                        statusEl.textContent = 'Gagal: ' + err;
+                    }
+                },
+                error: function(xhr, status, error) {
+                    statusEl.style.display = 'inline-block';
+                    statusEl.textContent = 'Server Error: ' + error;
+                    console.error("AJAX Error: ", xhr.responseText);
+                }
+            });
+        });
+
+        var form = document.querySelector('form[action="options.php"]');
+        if (form) {
+            form.addEventListener('submit', function() {
+                var rows = container.querySelectorAll('.foto-slide-row');
+                var newData = [];
+                rows.forEach(function(row) {
+                    newData.push({
+                        url: row.querySelector('.foto_input_url').value,
+                        caption: row.querySelector('.foto_input_caption').value
+                    });
+                });
                 document.getElementById('dprd_dlantunan_foto_data').value = JSON.stringify(newData);
             });
         }
@@ -2523,3 +2718,182 @@ function dprd_upload_dokumentasi_dlantunan_page_html() {
     </script>
     <?php
 }
+
+// ==========================================
+// CPT DOKUMEN & CUSTOM TAXONOMY
+// ==========================================
+
+function dprd_register_dokumen_cpt() {
+    $labels = array(
+        'name'                  => _x( 'Dokumen', 'Post type general name', 'textdomain' ),
+        'singular_name'         => _x( 'Dokumen', 'Post type singular name', 'textdomain' ),
+        'menu_name'             => _x( 'Dokumen', 'Admin Menu text', 'textdomain' ),
+        'name_admin_bar'        => _x( 'Dokumen', 'Add New on Toolbar', 'textdomain' ),
+        'add_new'               => __( 'Tambah Baru', 'textdomain' ),
+        'add_new_item'          => __( 'Tambah Dokumen Baru', 'textdomain' ),
+        'new_item'              => __( 'Dokumen Baru', 'textdomain' ),
+        'edit_item'             => __( 'Edit Dokumen', 'textdomain' ),
+        'view_item'             => __( 'Lihat Dokumen', 'textdomain' ),
+        'all_items'             => __( 'Semua Dokumen', 'textdomain' ),
+        'search_items'          => __( 'Cari Dokumen', 'textdomain' ),
+    );
+
+    $args = array(
+        'labels'             => $labels,
+        'public'             => true,
+        'publicly_queryable' => true,
+        'show_ui'            => true,
+        'show_in_menu'       => true,
+        'query_var'          => true,
+        'rewrite'            => array( 'slug' => 'dokumen' ),
+        'capability_type'    => 'post',
+        'has_archive'        => true,
+        'hierarchical'       => false,
+        'menu_position'      => 5,
+        'menu_icon'          => 'dashicons-media-document',
+        'supports'           => array( 'title' ),
+        'show_in_rest'       => true,
+    );
+
+    register_post_type( 'dokumen', $args );
+
+    // Register Taxonomy
+    $tax_labels = array(
+        'name'              => _x( 'Kategori Dokumen', 'taxonomy general name', 'textdomain' ),
+        'singular_name'     => _x( 'Kategori', 'taxonomy singular name', 'textdomain' ),
+        'search_items'      => __( 'Cari Kategori', 'textdomain' ),
+        'all_items'         => __( 'Semua Kategori', 'textdomain' ),
+        'parent_item'       => __( 'Parent Kategori', 'textdomain' ),
+        'parent_item_colon' => __( 'Parent Kategori:', 'textdomain' ),
+        'edit_item'         => __( 'Edit Kategori', 'textdomain' ),
+        'update_item'       => __( 'Update Kategori', 'textdomain' ),
+        'add_new_item'      => __( 'Tambah Kategori', 'textdomain' ),
+        'new_item_name'     => __( 'Nama Kategori Baru', 'textdomain' ),
+        'menu_name'         => __( 'Kategori', 'textdomain' ),
+    );
+
+    $tax_args = array(
+        'hierarchical'      => true,
+        'labels'            => $tax_labels,
+        'show_ui'           => true,
+        'show_admin_column' => true,
+        'query_var'         => true,
+        'rewrite'           => array( 'slug' => 'kategori-dokumen' ),
+        'show_in_rest'      => true,
+    );
+
+    register_taxonomy( 'kategori_dokumen', array( 'dokumen' ), $tax_args );
+}
+add_action( 'init', 'dprd_register_dokumen_cpt' );
+
+// META BOXES FOR DOKUMEN
+function dprd_dokumen_meta_boxes() {
+    add_meta_box(
+        'dprd_dokumen_details',
+        'Detail Dokumen',
+        'dprd_dokumen_meta_box_html',
+        'dokumen',
+        'normal',
+        'default'
+    );
+}
+add_action( 'add_meta_boxes', 'dprd_dokumen_meta_boxes' );
+
+function dprd_dokumen_meta_box_html( $post ) {
+    wp_nonce_field( 'dprd_save_dokumen_meta', 'dprd_dokumen_meta_nonce' );
+
+    $file_url = get_post_meta( $post->ID, '_dokumen_file_url', true );
+    $tanggal = get_post_meta( $post->ID, '_dokumen_tanggal', true );
+    $tahun = get_post_meta( $post->ID, '_dokumen_tahun', true );
+    $grup = get_post_meta( $post->ID, '_dokumen_grup', true );
+
+    // Defaults
+    if(empty($tanggal)) $tanggal = date('d F Y');
+    if(empty($tahun)) $tahun = date('Y');
+    if(empty($grup)) $grup = 'PPID';
+
+    ?>
+    <table class="form-table">
+        <tr>
+            <th><label for="dokumen_grup">Grup Dokumen</label></th>
+            <td>
+                <select name="dokumen_grup" id="dokumen_grup">
+                    <option value="PPID" <?php selected($grup, 'PPID'); ?>>PPID</option>
+                    <option value="SAKIP" <?php selected($grup, 'SAKIP'); ?>>SAKIP</option>
+                </select>
+                <p class="description">Pilih di mana dokumen ini akan ditampilkan.</p>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="dokumen_tanggal">Tanggal Dokumen</label></th>
+            <td>
+                <input type="text" name="dokumen_tanggal" id="dokumen_tanggal" value="<?php echo esc_attr($tanggal); ?>" class="regular-text">
+                <p class="description">Contoh: 12 Januari 2026</p>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="dokumen_tahun">Tahun Dokumen</label></th>
+            <td>
+                <input type="number" name="dokumen_tahun" id="dokumen_tahun" value="<?php echo esc_attr($tahun); ?>" class="regular-text" style="width:100px;">
+                <p class="description">Contoh: 2026</p>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="dokumen_file_url">File PDF Dokumen</label></th>
+            <td>
+                <input type="text" name="dokumen_file_url" id="dokumen_file_url" value="<?php echo esc_url($file_url); ?>" class="regular-text">
+                <button type="button" class="button button-secondary" id="dokumen_upload_btn">Upload PDF</button>
+                <p class="description">URL file dokumen (PDF/Word/Excel).</p>
+            </td>
+        </tr>
+    </table>
+    <script>
+    jQuery(document).ready(function($){
+        var mediaUploader;
+        $('#dokumen_upload_btn').click(function(e) {
+            e.preventDefault();
+            if (mediaUploader) {
+                mediaUploader.open();
+                return;
+            }
+            mediaUploader = wp.media.frames.file_frame = wp.media({
+                title: 'Pilih Dokumen',
+                button: { text: 'Gunakan Dokumen Ini' },
+                multiple: false
+            });
+            mediaUploader.on('select', function() {
+                var attachment = mediaUploader.state().get('selection').first().toJSON();
+                $('#dokumen_file_url').val(attachment.url);
+            });
+            mediaUploader.open();
+        });
+    });
+    </script>
+    <?php
+}
+
+function dprd_save_dokumen_meta( $post_id ) {
+    if ( ! isset( $_POST['dprd_dokumen_meta_nonce'] ) || ! wp_verify_nonce( $_POST['dprd_dokumen_meta_nonce'], 'dprd_save_dokumen_meta' ) ) {
+        return;
+    }
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+        return;
+    }
+
+    if ( isset( $_POST['dokumen_file_url'] ) ) {
+        update_post_meta( $post_id, '_dokumen_file_url', sanitize_text_field( $_POST['dokumen_file_url'] ) );
+    }
+    if ( isset( $_POST['dokumen_tanggal'] ) ) {
+        update_post_meta( $post_id, '_dokumen_tanggal', sanitize_text_field( $_POST['dokumen_tanggal'] ) );
+    }
+    if ( isset( $_POST['dokumen_tahun'] ) ) {
+        update_post_meta( $post_id, '_dokumen_tahun', absint( $_POST['dokumen_tahun'] ) );
+    }
+    if ( isset( $_POST['dokumen_grup'] ) ) {
+        update_post_meta( $post_id, '_dokumen_grup', sanitize_text_field( $_POST['dokumen_grup'] ) );
+    }
+}
+add_action( 'save_post_dokumen', 'dprd_save_dokumen_meta' );
