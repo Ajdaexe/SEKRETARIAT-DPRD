@@ -4,21 +4,21 @@
  */
 
 // Foto Galeri Data
-const galleryPhotos = [
+const galleryPhotos = window.galleryPhotosData || [
   {
-    src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=85",
+    url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=85",
     caption: "Dokumentasi Kegiatan Sidang Paripurna DPRD Purbalingga"
   },
   {
-    src: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=85",
+    url: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=85",
     caption: "Kegiatan Pelayanan Riset & Mahasiswa Magang di Perpustakaan DPRD"
   },
   {
-    src: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=1200&q=85",
+    url: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=1200&q=85",
     caption: "Penerimaan Kunjungan Kerja & Studi Banding Masyarakat Purbalingga"
   },
   {
-    src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=1200&q=85",
+    url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=1200&q=85",
     caption: "Koordinasi Layanan Administrasi Publik Sekretariat DPRD"
   }
 ];
@@ -93,7 +93,7 @@ function openGalleryLightbox(index) {
   const caption = document.getElementById('lightboxCaption');
   
   if (galleryPhotos[index]) {
-    img.src = galleryPhotos[index].src;
+    img.src = galleryPhotos[index].url || galleryPhotos[index].src;
     caption.textContent = galleryPhotos[index].caption;
     modal.classList.add('show');
     document.body.style.overflow = 'hidden';
@@ -108,12 +108,29 @@ function closeLightbox(event) {
 }
 
 // Video Modal
-function openVideoModal(videoUrl, title) {
+function openVideoModal(videoUrl, title, mp4Url) {
   const modal = document.getElementById('videoModal');
   const iframe = document.getElementById('videoIframe');
+  const video = document.getElementById('videoPlayer');
   const titleEl = document.getElementById('videoModalTitle');
   
-  iframe.src = videoUrl;
+  if (videoUrl && videoUrl !== '-') {
+    iframe.src = videoUrl;
+    iframe.style.display = 'block';
+    if(video) {
+        video.style.display = 'none';
+        video.pause();
+        video.src = '';
+    }
+  } else if (mp4Url) {
+    if(video) {
+        video.src = mp4Url;
+        video.style.display = 'block';
+    }
+    iframe.style.display = 'none';
+    iframe.src = '';
+  }
+  
   titleEl.textContent = title || 'Dokumentasi Video';
   modal.classList.add('show');
   document.body.style.overflow = 'hidden';
@@ -123,8 +140,13 @@ function openVideoModal(videoUrl, title) {
 function closeVideoModal(event) {
   const modal = document.getElementById('videoModal');
   const iframe = document.getElementById('videoIframe');
+  const video = document.getElementById('videoPlayer');
   
-  iframe.src = '';
+  if (iframe) iframe.src = '';
+  if (video) {
+      video.pause();
+      video.src = '';
+  }
   modal.classList.remove('show');
   document.body.style.overflow = '';
 }

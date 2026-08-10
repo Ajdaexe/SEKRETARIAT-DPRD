@@ -239,7 +239,11 @@ get_header();
       <span class="video-modal-close" onclick="closeVideoModal(event)">&times;</span>
     </div>
     <div class="video-modal-body">
-      <iframe id="videoIframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <iframe id="videoIframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%; height:100%;"></iframe>
+      <video id="videoPlayer" controls style="display:none; width:100%; height:100%; border-radius: 0 0 16px 16px;">
+          <source src="" type="video/mp4">
+          Browser Anda tidak mendukung tag video.
+      </video>
     </div>
   </div>
 </div>
@@ -260,84 +264,40 @@ get_header();
   <div class="wrap layanan-grid" style="padding:0; max-width:none;">
     
     <?php
-    $layanan_query = new WP_Query(array(
-        'post_type'      => 'layanan_dlantunan',
-        'posts_per_page' => 3,
-        'order'          => 'ASC',
-        'orderby'        => 'date'
-    ));
-
     $icons = array('tas kerja.svg', 'document.svg', 'user account.svg');
     $icons_fallback = array('user account.png', 'document.png', 'user account.png');
-    $i = 0;
+    
+    $defaults = array(
+        1 => array('title' => "Layanan\nPermohonan Magang", 'desc' => 'Ajukan permohonan magang di lingkungan Sekretariat DPRD Kabupaten Purbalingga untuk mahasiswa dan pelajar.', 'link' => 'https://docs.google.com/forms/d/e/1FAIpQLSf-kexVgXar7DEOPdKhB_IZgfoWEb4F-QFBYa5kD9wRmf4AjA/viewform'),
+        2 => array('title' => "Layanan\nPermohonan Ijin\nPenelitian", 'desc' => 'Ajukan permohonan izin penelitian untuk keperluan akademik maupun lembaga terkait di Sekretariat DPRD.', 'link' => 'https://docs.google.com/forms/d/e/1FAIpQLSd4pWbgYw7ySztddt3luzmxw4Vume_BxQRk3h1Et5bpEyg2mg/viewform'),
+        3 => array('title' => "Layanan\nPermohonan Ijin\nKunjungan", 'desc' => 'Ajukan permohonan kunjungan kerja atau studi banding ke Sekretariat DPRD Kabupaten Purbalingga.', 'link' => 'https://docs.google.com/forms/d/e/1FAIpQLSdOgg9-L2MaLKOKobYc7KblGJDvuTbvs_9L7RZDxg61Ww6tog/viewform')
+    );
 
-    if ( $layanan_query->have_posts() ) :
-        while ( $layanan_query->have_posts() ) : $layanan_query->the_post();
-            $icon = isset($icons[$i]) ? $icons[$i] : 'document.svg';
-            $fallback = isset($icons_fallback[$i]) ? $icons_fallback[$i] : 'document.png';
-            $url = get_post_meta( get_the_ID(), '_dprd_layanan_url', true );
-            if ( empty($url) ) $url = '#';
-            
-            // Mengubah spasi menjadi baris baru pada judul jika panjang (opsional) atau biarkan admin menggunakan HTML di konten
-            // Di desain lama: "Layanan<br>Permohonan Magang"
-            $title = get_the_title();
-            $title = str_replace(array('<br>', '<br/>', '<br />'), '<br>', $title); // allow manual <br> in title if needed
-            ?>
-            <div class="card-panel layanan-card">
-              <div class="icon-circle">
-                <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/<?php echo $icon; ?>" alt="<?php echo esc_attr( wp_strip_all_tags($title) ); ?> Icon" onerror="this.onerror=null; this.src='<?php echo get_template_directory_uri(); ?>/assets/images/<?php echo $fallback; ?>';">
-              </div>
-              <h3><?php echo wp_kses_post($title); ?></h3>
-              <div style="font-size: 14px; line-height: 1.6; color: #555; margin-bottom: 24px; flex-grow: 1;">
-                <?php echo wp_kses_post( wpautop( get_the_content() ) ); ?>
-              </div>
-              <a class="btn-ajukan" href="<?php echo esc_url($url); ?>" target="_blank" rel="noopener">
-                Ajukan Sekarang <span class="arrow-icon">&rsaquo;</span>
-              </a>
-            </div>
-            <?php
-            $i++;
-        endwhile;
-        wp_reset_postdata();
-    else:
+    for ($i = 1; $i <= 3; $i++) {
+        $icon = isset($icons[$i-1]) ? $icons[$i-1] : 'document.svg';
+        $fallback = isset($icons_fallback[$i-1]) ? $icons_fallback[$i-1] : 'document.png';
+        
+        $raw_title = get_option('dprd_layanan'.$i.'_title', $defaults[$i]['title']);
+        $clean_title = str_replace(array('<br>', '<br/>', '<br />'), "\n", $raw_title);
+        $desc = get_option('dprd_layanan'.$i.'_desc', $defaults[$i]['desc']);
+        $url = get_option('dprd_layanan'.$i.'_link', $defaults[$i]['link']);
+        if ( empty($url) ) $url = '#';
+        ?>
+        <div class="card-panel layanan-card">
+          <div class="icon-circle">
+            <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/<?php echo $icon; ?>" alt="<?php echo esc_attr( wp_strip_all_tags($clean_title) ); ?> Icon" onerror="this.onerror=null; this.src='<?php echo get_template_directory_uri(); ?>/assets/images/<?php echo $fallback; ?>';">
+          </div>
+          <h3><?php echo wp_kses_post( nl2br($clean_title) ); ?></h3>
+          <div style="font-size: 14px; line-height: 1.6; color: #555; margin-bottom: 24px; flex-grow: 1;">
+            <?php echo wp_kses_post( wpautop( $desc ) ); ?>
+          </div>
+          <a class="btn-ajukan" href="<?php echo esc_url($url); ?>" target="_blank" rel="noopener">
+            Ajukan Sekarang <span class="arrow-icon">&rsaquo;</span>
+          </a>
+        </div>
+        <?php
+    }
     ?>
-    <!-- Fallback Hardcoded jika CPT kosong -->
-    <!-- Layanan Magang -->
-    <div class="card-panel layanan-card">
-      <div class="icon-circle">
-        <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/tas kerja.svg" alt="Magang Icon" onerror="this.onerror=null; this.src='<?php echo get_template_directory_uri(); ?>/assets/images/user account.png';">
-      </div>
-      <h3>Layanan<br>Permohonan Magang</h3>
-      <p>Ajukan permohonan magang di lingkungan Sekretariat DPRD Kabupaten Purbalingga untuk mahasiswa dan pelajar.</p>
-      <a class="btn-ajukan" href="https://docs.google.com/forms/d/e/1FAIpQLSf-kexVgXar7DEOPdKhB_IZgfoWEb4F-QFBYa5kD9wRmf4AjA/viewform" target="_blank" rel="noopener">
-        Ajukan Sekarang <span class="arrow-icon">&rsaquo;</span>
-      </a>
-    </div>
-
-    <!-- Layanan Ijin Penelitian -->
-    <div class="card-panel layanan-card">
-      <div class="icon-circle">
-        <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/document.svg" alt="Penelitian Icon" onerror="this.onerror=null; this.src='<?php echo get_template_directory_uri(); ?>/assets/images/document.png';">
-      </div>
-      <h3>Layanan<br>Permohonan Ijin<br>Penelitian</h3>
-      <p>Ajukan permohonan izin penelitian untuk keperluan akademik maupun lembaga terkait di Sekretariat DPRD.</p>
-      <a class="btn-ajukan" href="https://docs.google.com/forms/d/e/1FAIpQLSd4pWbgYw7ySztddt3luzmxw4Vume_BxQRk3h1Et5bpEyg2mg/viewform" target="_blank" rel="noopener">
-        Ajukan Sekarang <span class="arrow-icon">&rsaquo;</span>
-      </a>
-    </div>
-
-    <!-- Layanan Ijin Kunjungan -->
-    <div class="card-panel layanan-card">
-      <div class="icon-circle">
-        <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/user account.svg" alt="Kunjungan Icon" onerror="this.onerror=null; this.src='<?php echo get_template_directory_uri(); ?>/assets/images/user account.png';">
-      </div>
-      <h3>Layanan<br>Permohonan Ijin<br>Kunjungan</h3>
-      <p>Ajukan permohonan kunjungan kerja atau studi banding ke Sekretariat DPRD Kabupaten Purbalingga.</p>
-      <a class="btn-ajukan" href="https://docs.google.com/forms/d/e/1FAIpQLSdOgg9-L2MaLKOKobYc7KblGJDvuTbvs_9L7RZDxg61Ww6tog/viewform" target="_blank" rel="noopener">
-        Ajukan Sekarang <span class="arrow-icon">&rsaquo;</span>
-      </a>
-    </div>
-    <?php endif; ?>
 
   </div>
 </section>
@@ -355,21 +315,41 @@ get_header();
           </div>
           <h3>Informasi &amp; Dokumen Terkait</h3>
         </div>
-        <a href="<?php echo dprd_get_page_url('ppid'); ?>" class="lihat-semua-link">Lihat Semua</a>
       </div>
-      <div class="dokumen-list">
-        <div class="dokumen-item">
-          <div class="pdf-icon-badge">
-            <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/pdf.svg" alt="PDF" onerror="this.onerror=null; this.src='<?php echo get_template_directory_uri(); ?>/assets/images/PDF.png';">
-          </div>
-          <div class="file-info">
-            <span class="file-title">Panduan Penggunaan Portal D'Lantunan</span>
-            <span class="file-meta">PDF &bull; 1.8 MB &bull; 20 Mei 2023</span>
-          </div>
-          <a class="btn-download" href="<?php echo get_template_directory_uri(); ?>/assets/pdf/DOR.pdf" download aria-label="Unduh">
-            <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/unduh.svg" alt="Unduh" onerror="this.onerror=null; this.src='<?php echo get_template_directory_uri(); ?>/assets/images/unduh.png';">
-          </a>
-        </div>
+      <div class="dokumen-list" style="max-height: 300px; overflow-y: auto; padding-right: 10px;">
+        <?php
+        $default_docs = json_encode([
+            ['title' => 'Panduan Penggunaan Portal D\'Lantunan', 'url' => get_template_directory_uri() . '/assets/pdf/DOR.pdf', 'type' => 'PDF', 'date' => '20 Mei 2023']
+        ]);
+        $saved_docs = get_option('dprd_dlantunan_docs_data', '');
+        if (empty($saved_docs) || $saved_docs === '[]' || $saved_docs === 'false') {
+            $saved_docs = $default_docs;
+        }
+        $docs_data = json_decode($saved_docs, true);
+        
+        if (is_array($docs_data) && !empty($docs_data)) {
+            foreach ($docs_data as $doc) {
+                $type = strtoupper(isset($doc['type']) ? $doc['type'] : 'FILE');
+                $icon_name = 'pdf.svg';
+                if (in_array($type, ['DOC', 'DOCX', 'WORD'])) $icon_name = 'document.svg';
+                elseif (in_array($type, ['XLS', 'XLSX', 'EXCEL'])) $icon_name = 'document.svg';
+                ?>
+                <div class="dokumen-item">
+                  <div class="pdf-icon-badge">
+                    <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/<?php echo $icon_name; ?>" alt="<?php echo esc_attr($type); ?>" onerror="this.onerror=null; this.src='<?php echo get_template_directory_uri(); ?>/assets/images/PDF.png';">
+                  </div>
+                  <div class="file-info">
+                    <span class="file-title"><?php echo esc_html($doc['title']); ?></span>
+                    <span class="file-meta"><?php echo esc_html($type); ?> &bull; <?php echo esc_html($doc['date']); ?></span>
+                  </div>
+                  <a class="btn-download" href="<?php echo esc_url($doc['url']); ?>" download aria-label="Unduh" target="_blank" rel="noopener">
+                    <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/unduh.svg" alt="Unduh" onerror="this.onerror=null; this.src='<?php echo get_template_directory_uri(); ?>/assets/images/unduh.png';">
+                  </a>
+                </div>
+                <?php
+            }
+        }
+        ?>
       </div>
     </div>
 
@@ -426,36 +406,43 @@ get_header();
   </div>
 
   <div class="video-grid">
-    <!-- Video Card 1 -->
-    <div class="video-card">
-      <div class="video-thumbnail" onclick="openVideoModal('https://www.youtube.com/embed/uRZvKm-5YuE', 'Video Rapat Paripurna DPRD')">
-        <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80" alt="Video 1">
-        <div class="play-btn-circle">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="#9B1B2B">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-        </div>
-      </div>
-      <div class="video-desc">
-        <h4 class="video-card-title">Video</h4>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis blandit malesuada.</p>
-      </div>
-    </div>
-
-    <!-- Video Card 2 -->
-    <div class="video-card">
-      <div class="video-thumbnail" onclick="openVideoModal('https://www.youtube.com/embed/uRZvKm-5YuE', 'Video Dokumentasi Layanan DPRD')">
-        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80" alt="Video 2">
-        <div class="play-btn-circle">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="#9B1B2B">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-        </div>
-      </div>
-      <div class="video-desc">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis blandit malesuada. Vestibulum rutrum risus id efficitur mattis. Ut scelerisque est auctor, iaculis diam a, hendrerit ante.</p>
-      </div>
-    </div>
+    <?php
+    $default_vids = json_encode([
+        ['title' => 'Video', 'desc' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis blandit malesuada.', 'url' => 'https://www.youtube.com/embed/uRZvKm-5YuE', 'thumb' => 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80'],
+        ['title' => 'Video', 'desc' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis blandit malesuada. Vestibulum rutrum risus id efficitur mattis.', 'url' => 'https://www.youtube.com/embed/uRZvKm-5YuE', 'thumb' => 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80']
+    ]);
+    $saved_vids = get_option('dprd_dlantunan_video_data', '');
+    if (empty($saved_vids) || $saved_vids === '[]' || $saved_vids === 'false') {
+        $saved_vids = $default_vids;
+    }
+    $vids_data = json_decode($saved_vids, true);
+    
+    if (is_array($vids_data) && !empty($vids_data)) {
+        foreach ($vids_data as $vid) {
+            $vid_url = isset($vid['url']) ? $vid['url'] : '';
+            $js_vid_url = ($vid_url === '-') ? '-' : esc_url($vid_url);
+            $vid_mp4 = isset($vid['mp4']) ? esc_url($vid['mp4']) : '';
+            ?>
+            <div class="video-card">
+              <div class="video-thumbnail" onclick="openVideoModal('<?php echo esc_js($js_vid_url); ?>', '<?php echo esc_js(esc_attr($vid['title'])); ?>', '<?php echo esc_js($vid_mp4); ?>')">
+                <img src="<?php echo esc_url($vid['thumb']); ?>" alt="<?php echo esc_attr($vid['title']); ?>" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80';">
+                <div class="play-btn-circle">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="#9B1B2B">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="video-desc">
+                <?php if (!empty($vid['title'])) : ?>
+                  <h4 class="video-card-title"><?php echo esc_html($vid['title']); ?></h4>
+                <?php endif; ?>
+                <p><?php echo wp_kses_post($vid['desc']); ?></p>
+              </div>
+            </div>
+            <?php
+        }
+    }
+    ?>
   </div>
 </section>
 
@@ -467,54 +454,40 @@ get_header();
   </div>
 
   <div class="foto-grid">
-    <!-- Foto 1 -->
-    <div class="foto-card" onclick="openGalleryLightbox(0)">
-      <div class="foto-img-wrap">
-        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" alt="Foto Dokumentasi 1">
-        <div class="foto-hover-overlay">
-          <div class="zoom-icon">
-            <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/search.png" alt="Zoom" style="width:20px; height:20px; filter:brightness(0) invert(1);">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Foto 2 -->
-    <div class="foto-card" onclick="openGalleryLightbox(1)">
-      <div class="foto-img-wrap">
-        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80" alt="Foto Dokumentasi 2">
-        <div class="foto-hover-overlay">
-          <div class="zoom-icon">
-            <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/search.png" alt="Zoom" style="width:20px; height:20px; filter:brightness(0) invert(1);">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Foto 3 -->
-    <div class="foto-card" onclick="openGalleryLightbox(2)">
-      <div class="foto-img-wrap">
-        <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=600&q=80" alt="Foto Dokumentasi 3">
-        <div class="foto-hover-overlay">
-          <div class="zoom-icon">
-            <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/search.png" alt="Zoom" style="width:20px; height:20px; filter:brightness(0) invert(1);">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Foto 4 -->
-    <div class="foto-card" onclick="openGalleryLightbox(3)">
-      <div class="foto-img-wrap">
-        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80" alt="Foto Dokumentasi 4">
-        <div class="foto-hover-overlay">
-          <div class="zoom-icon">
-            <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/search.png" alt="Zoom" style="width:20px; height:20px; filter:brightness(0) invert(1);">
-          </div>
-        </div>
-      </div>
-    </div>
+    <?php
+    $default_fotos = json_encode([
+        ['url' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80', 'caption' => 'Dokumentasi Kegiatan 1'],
+        ['url' => 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80', 'caption' => 'Dokumentasi Kegiatan 2'],
+        ['url' => 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=600&q=80', 'caption' => 'Dokumentasi Kegiatan 3'],
+        ['url' => 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80', 'caption' => 'Dokumentasi Kegiatan 4']
+    ]);
+    $saved_fotos = get_option('dprd_dlantunan_foto_data', '');
+    if (empty($saved_fotos) || $saved_fotos === '[]' || $saved_fotos === 'false') {
+        $saved_fotos = $default_fotos;
+    }
+    $fotos_data = json_decode($saved_fotos, true);
+    
+    if (is_array($fotos_data) && !empty($fotos_data)) {
+        foreach ($fotos_data as $idx => $foto) {
+            ?>
+            <div class="foto-card" onclick="openGalleryLightbox(<?php echo $idx; ?>)">
+              <div class="foto-img-wrap">
+                <img src="<?php echo esc_url($foto['url']); ?>" alt="Foto Dokumentasi <?php echo $idx + 1; ?>">
+                <div class="foto-hover-overlay">
+                  <div class="zoom-icon">
+                    <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/search.png" alt="Zoom" style="width:20px; height:20px; filter:brightness(0) invert(1);">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <?php
+        }
+    }
+    ?>
   </div>
+  <script>
+      window.galleryPhotosData = <?php echo json_encode($fotos_data); ?>;
+  </script>
 </section>
 
 <!-- ===== CTA BANNER ===== -->
