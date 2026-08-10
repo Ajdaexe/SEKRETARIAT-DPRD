@@ -80,6 +80,21 @@ function tema_kustom_dprd_scripts() {
 add_action( 'wp_enqueue_scripts', 'tema_kustom_dprd_scripts' );
 
 /**
+ * Inject dynamic CSS for CTA Banner Background
+ */
+function dprd_dynamic_cta_css() {
+    $cta_bg = get_option('dprd_cta_bg_url');
+    if ( $cta_bg ) {
+        echo "<style>\n";
+        echo "  .cta-banner::before {\n";
+        echo "      background-image: url('" . esc_url($cta_bg) . "') !important;\n";
+        echo "  }\n";
+        echo "</style>\n";
+    }
+}
+add_action( 'wp_head', 'dprd_dynamic_cta_css' );
+
+/**
  * AJAX Handler for Live Search
  */
 function tema_kustom_live_search() {
@@ -205,6 +220,27 @@ function dprd_handle_video_thumb_base64( $base64 ) {
     return '';
 }
 
+function dprd_handle_cta_bg_base64( $base64 ) {
+    if ( empty( $base64 ) ) {
+        return '';
+    }
+    if ( preg_match('/^data:image\/(\w+);base64,/', $base64, $type) ) {
+        $data = substr($base64, strpos($base64, ',') + 1);
+        $type = strtolower($type[1]);
+        if (in_array($type, [ 'jpg', 'jpeg', 'gif', 'png', 'webp' ])) {
+            $data = base64_decode($data);
+            if ($data !== false) {
+                $filename = 'cta-bg-' . time() . '.' . $type;
+                $upload = wp_upload_bits($filename, null, $data);
+                if ( ! $upload['error'] ) {
+                    update_option( 'dprd_cta_bg_url', $upload['url'] );
+                }
+            }
+        }
+    }
+    return '';
+}
+
 function dprd_theme_settings_menu() {
     add_menu_page(
         'Pengaturan Beranda', 
@@ -241,6 +277,9 @@ function dprd_theme_settings_init() {
 
     // IKM Survey Settings
     register_setting( 'dprd_statistik_beranda_group', 'dprd_ikm_slides_data' );
+
+    // CTA Banner Background
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_cta_bg_base64', array( 'sanitize_callback' => 'dprd_handle_cta_bg_base64' ) );
 }
 add_action( 'admin_init', 'dprd_theme_settings_init' );
 
@@ -366,6 +405,33 @@ function dprd_theme_settings_page_html() {
             
             <button type="button" class="button button-primary" id="btn_add_ikm_slide" style="margin-top: 10px;">+ Tambah Slide Baru</button>
 
+            <hr style="margin: 30px 0;">
+            <h2>Pengaturan Banner Hubungi Kami (CTA)</h2>
+            <table class="form-table">
+                <tr valign="top">
+                    <th scope="row">Background CTA Banner</th>
+                    <td>
+                        <p>Pilih gambar latar belakang untuk banner CTA merah di bagian bawah halaman. Anda wajib memotong (crop) gambarnya dalam rasio memanjang (6:1).</p>
+                        <input type="file" id="cta_image_input" accept="image/*" />
+                        
+                        <div id="cta-cropper-container" style="max-width: 800px; margin-top: 10px; display: none;">
+                            <img id="cta_image_to_crop" src="" style="max-width: 100%;" />
+                            <br><br>
+                            <button type="button" class="button button-secondary" id="btn_apply_cta_crop">Terapkan Crop</button>
+                        </div>
+                        
+                        <div id="cta_cropped_preview_container" style="margin-top: 15px; <?php if(!get_option('dprd_cta_bg_url')) echo 'display:none;'; ?>">
+                            <h4>Preview Background CTA Saat Ini:</h4>
+                            <?php $current_cta = get_option('dprd_cta_bg_url', 'https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png'); ?>
+                            <img id="cta_cropped_preview" src="<?php echo esc_url($current_cta); ?>" style="width: 100%; max-width: 800px; border-radius: 8px;" />
+                        </div>
+                        
+                        <input type="hidden" name="dprd_cta_bg_base64" id="dprd_cta_bg_base64" value="" />
+                    </td>
+                </tr>
+            </table>
+
+            <br><br>
             <?php submit_button(); ?>
         </form>
     </div>
@@ -438,6 +504,50 @@ function dprd_theme_settings_page_html() {
                 mediaUploader.open();
             });
         }
+
+        // --- CROPPER FOR CTA BANNER ---
+        var inputCtaImage = document.getElementById('cta_image_input');
+        var ctaImageToCrop = document.getElementById('cta_image_to_crop');
+        var ctaCropperContainer = document.getElementById('cta-cropper-container');
+        var btnApplyCtaCrop = document.getElementById('btn_apply_cta_crop');
+        var ctaHiddenBase64 = document.getElementById('dprd_cta_bg_base64');
+        var ctaCroppedPreview = document.getElementById('cta_cropped_preview');
+        var ctaCroppedPreviewContainer = document.getElementById('cta_cropped_preview_container');
+        var ctaCropper;
+
+        if (inputCtaImage) {
+            inputCtaImage.addEventListener('change', function(e) {
+                var files = e.target.files;
+                if (files && files.length > 0) {
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        ctaImageToCrop.src = event.target.result;
+                        ctaCropperContainer.style.display = 'block';
+                        if (ctaCropper) { ctaCropper.destroy(); }
+                        ctaCropper = new Cropper(ctaImageToCrop, {
+                            aspectRatio: 6 / 1,
+                            viewMode: 1,
+                        });
+                    };
+                    reader.readAsDataURL(files[0]);
+                }
+            });
+        }
+
+        if (btnApplyCtaCrop) {
+            btnApplyCtaCrop.addEventListener('click', function() {
+                if (ctaCropper) {
+                    var canvas = ctaCropper.getCroppedCanvas({ width: 1200, height: 200 });
+                    var base64 = canvas.toDataURL('image/jpeg', 0.8);
+                    ctaHiddenBase64.value = base64;
+                    ctaCroppedPreview.src = base64;
+                    ctaCroppedPreviewContainer.style.display = 'block';
+                    ctaCropperContainer.style.display = 'none';
+                    alert("Background CTA berhasil dicrop! Jangan lupa klik 'Save Changes' untuk menyimpan.");
+                }
+            });
+        }
+
 
         // --- JSON REPEATER LOGIC FOR IKM SLIDES ---
         var ikmSlidesData = [];
