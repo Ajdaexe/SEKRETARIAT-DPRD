@@ -675,11 +675,11 @@
 
     .badge-grade {
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 48%;
+      left: 52%;
       transform: translate(-46%, -65%);
       color: #921313;
-      font-size: 54px;
+      font-size: 70px;
       font-weight: 800;
       font-family: serif;
       z-index: 10;
