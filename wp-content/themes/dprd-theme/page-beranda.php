@@ -31,28 +31,28 @@ get_header();
       <div class="stat-icon"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/user account.png" alt="Pegawai"></div>
       <div>
         <div class="stat-num" id="stat-pegawai">0</div>
-        <div class="stat-label">Pegawai Profesional</div>
+        <div class="stat-label"><?php echo esc_html( get_option('dprd_stat_label_pegawai', 'Pegawai Profesional') ); ?></div>
       </div>
     </div>
     <div class="stat-item">
       <div class="stat-icon"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/university.png" alt="Agenda"></div>
       <div>
         <div class="stat-num" id="stat-agenda">0</div>
-        <div class="stat-label">Agenda DPRD Tahun Ini</div>
+        <div class="stat-label"><?php echo esc_html( get_option('dprd_stat_label_agenda', 'Agenda DPRD Tahun Ini') ); ?></div>
       </div>
     </div>
     <div class="stat-item">
       <div class="stat-icon"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/document.png" alt="Dokumen"></div>
       <div>
         <div class="stat-num" id="stat-dokumen">0</div>
-        <div class="stat-label">Dokumen Tersedia</div>
+        <div class="stat-label"><?php echo esc_html( get_option('dprd_stat_label_dokumen', 'Dokumen Tersedia') ); ?></div>
       </div>
     </div>
     <div class="stat-item">
       <div class="stat-icon"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Protect.png" alt="Transparan"></div>
       <div>
         <div class="stat-num" id="stat-transparan">0%</div>
-        <div class="stat-label">Pelayanan Transparan</div>
+        <div class="stat-label"><?php echo esc_html( get_option('dprd_stat_label_transparan', 'Pelayanan Transparan') ); ?></div>
       </div>
     </div>
   </div>
@@ -81,10 +81,9 @@ get_header();
 
     <!-- Video Card -->
     <div class="card video-card">
-      <div class="card-tag"><span class="ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Video Call.png" alt=""></span>PERSETUJUAN
-        BERSAMA RAPERTA PERTANGGUNGJAWABAN APBD TA 2025 DAN PENYAMPAIAN KUA PPAS TA 2027</div>
-      <a href="https://youtu.be/uRZvKm-5YuE?si=0XHt5Nl5IPKieJRO" target="_blank" class="video-thumb">
-        <img src="https://www.purbalinggakab.go.id/wp-content/uploads/2025/08/DSC00352-1280x640.jpg"
+      <div class="card-tag"><span class="ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Video Call.png" alt=""></span><?php echo esc_html( get_option('dprd_video_title', 'PERSETUJUAN BERSAMA RAPERTA PERTANGGUNGJAWABAN APBD TA 2025 DAN PENYAMPAIAN KUA PPAS TA 2027') ); ?></div>
+      <a href="<?php echo esc_url( get_option('dprd_video_url', 'https://youtu.be/uRZvKm-5YuE?si=0XHt5Nl5IPKieJRO') ); ?>" target="_blank" class="video-thumb">
+        <img src="<?php echo esc_url( get_option('dprd_video_thumbnail_url', 'https://www.purbalinggakab.go.id/wp-content/uploads/2025/08/DSC00352-1280x640.jpg') ); ?>"
           alt="Rapat Paripurna">
         <div class="youtube-play-btn"></div>
         <div class="youtube-watch-badge">Tonton di <span>YouTube</span></div>
@@ -94,13 +93,13 @@ get_header();
               alt=""></span> Informasi Terbaru</span>
         <a href="<?php echo dprd_get_page_url('ppid', 'docCard'); ?>" class="lihat">Lihat Semua &rsaquo;</a>
       </div>
-      <div class="info-item" onclick="window.location.href='<?php echo get_template_directory_uri(); ?>/assets/pdf/DOR.pdf'">
-        <div class="doc-ic">PDF</div>
-        <div>
-          <div class="doc-title">3 Renja Sekretariat DPRD Tahun 2023 Revisi 1</div>
-          <div class="doc-date">12 Mei 2023</div>
+        <div class="info-item" onclick="window.location.href='<?php echo esc_url( get_option('dprd_info_file_url', get_template_directory_uri() . '/assets/pdf/DOR.pdf') ); ?>'">
+          <div class="doc-ic">PDF</div>
+          <div>
+            <div class="doc-title"><?php echo esc_html( get_option('dprd_info_title', '3 Renja Sekretariat DPRD Tahun 2023 Revisi 1') ); ?></div>
+            <div class="doc-date"><?php echo esc_html( get_option('dprd_info_date', '12 Mei 2023') ); ?></div>
+          </div>
         </div>
-      </div>
     </div>
   </div>
 
@@ -109,24 +108,54 @@ get_header();
     <button id="prevBtn" class="ikm-nav-btn" onclick="prevSurvey()">&#10094;</button>
     <div class="ikm-carousel-overflow">
       <div id="surveyTrack" class="ikm-track">
+        <?php
+        $default_slides = json_encode([
+            ['title' => 'SEMESTER I TAHUN 2026', 'score' => '93.275', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png'],
+            ['title' => 'SEMESTER II TAHUN 2025', 'score' => '92.150', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png'],
+            ['title' => 'SEMESTER I TAHUN 2025', 'score' => '91.500', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png']
+        ]);
+        $saved_slides = get_option('dprd_ikm_slides_data', '');
+        if (empty($saved_slides) || $saved_slides === '[]' || $saved_slides === 'false') {
+            $saved_slides = $default_slides;
+        }
+        $slides = json_decode($saved_slides, true);
         
-        <!-- Slide 0 (Current) -->
-        <div class="survey-card-item active">
+        if (is_array($slides)) {
+            foreach ($slides as $index => $slide): 
+                $title = isset($slide['title']) ? $slide['title'] : '';
+                $score = isset($slide['score']) ? $slide['score'] : '';
+                $predicate = isset($slide['predicate']) ? $slide['predicate'] : '';
+                $grade = isset($slide['grade']) ? $slide['grade'] : '';
+                $qr = isset($slide['qr']) && !empty($slide['qr']) ? $slide['qr'] : get_template_directory_uri() . '/assets/images/QR Code.png';
+        ?>
+        <!-- Slide <?php echo $index + 1; ?> -->
+        <div class="survey-card-item <?php if($index == 0) echo 'active'; ?>">
           <div class="ikm-card-new">
             <div class="ikm-top">
               <div class="ikm-top-left">
                 <div class="ikm-title">Hasil Survey Indeks Kepuasan Masyarakat<br>Sekretariat DPRD Kabupaten
-                  Purbalingga<strong>SEMESTER I TAHUN 2026</strong></div>
-                <div class="ikm-score">93.275</div>
+                  Purbalingga<strong><?php echo esc_html($title); ?></strong></div>
+                <div class="ikm-score"><?php echo esc_html($score); ?></div>
                 <div class="ikm-skala">Skala : 0 - 100</div>
               </div>
               <div class="ikm-top-right">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/badge a.png" alt="Sangat Baik" class="ikm-badge">
+                <div class="badge-container">
+                  <img src="<?php echo get_template_directory_uri(); ?>/assets/images/badge.png" alt="Badge IKM" class="ikm-badge">
+                  <span class="badge-grade"><?php echo esc_html($grade); ?></span>
+                  <svg viewBox="0 0 180 180" class="badge-svg-text">
+                    <path id="curve-<?php echo $index; ?>" d="M 20,144 Q 95,120 170,144" fill="transparent" />
+                    <text width="180">
+                      <textPath href="#curve-<?php echo $index; ?>" startOffset="50%" text-anchor="middle">
+                        <?php echo esc_html($predicate); ?>
+                      </textPath>
+                    </text>
+                  </svg>
+                </div>
               </div>
             </div>
             <div class="ikm-bottom">
               <div class="ikm-bottom-left">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/QR Code.png" alt="QR Code" class="ikm-qr">
+                <img src="<?php echo esc_url($qr); ?>" alt="QR Code" class="ikm-qr">
               </div>
               <div class="ikm-bottom-right">
                 <div class="ikm-bottom-text">
@@ -137,62 +166,10 @@ get_header();
             </div>
           </div>
         </div>
-
-        <!-- Slide 1 -->
-        <div class="survey-card-item">
-          <div class="ikm-card-new">
-            <div class="ikm-top">
-              <div class="ikm-top-left">
-                <div class="ikm-title">Hasil Survey Indeks Kepuasan Masyarakat<br>Sekretariat DPRD Kabupaten
-                  Purbalingga<strong>SEMESTER II TAHUN 2025</strong></div>
-                <div class="ikm-score">92.150</div>
-                <div class="ikm-skala">Skala : 0 - 100</div>
-              </div>
-              <div class="ikm-top-right">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/badge a.png" alt="Sangat Baik" class="ikm-badge">
-              </div>
-            </div>
-            <div class="ikm-bottom">
-              <div class="ikm-bottom-left">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/QR Code.png" alt="QR Code" class="ikm-qr">
-              </div>
-              <div class="ikm-bottom-right">
-                <div class="ikm-bottom-text">
-                  <h4>Berikan Penilaian Anda</h4>
-                  <p>Scan QR code di samping untuk mengisi Survey Kepuasan Masyarakat.<br>Masukan Anda sangat berarti demi peningkatan kualitas layanan kami.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 2 -->
-        <div class="survey-card-item">
-          <div class="ikm-card-new">
-            <div class="ikm-top">
-              <div class="ikm-top-left">
-                <div class="ikm-title">Hasil Survey Indeks Kepuasan Masyarakat<br>Sekretariat DPRD Kabupaten
-                  Purbalingga<strong>SEMESTER I TAHUN 2025</strong></div>
-                <div class="ikm-score">91.500</div>
-                <div class="ikm-skala">Skala : 0 - 100</div>
-              </div>
-              <div class="ikm-top-right">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/badge a.png" alt="Sangat Baik" class="ikm-badge">
-              </div>
-            </div>
-            <div class="ikm-bottom">
-              <div class="ikm-bottom-left">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/QR Code.png" alt="QR Code" class="ikm-qr">
-              </div>
-              <div class="ikm-bottom-right">
-                <div class="ikm-bottom-text">
-                  <h4>Berikan Penilaian Anda</h4>
-                  <p>Scan QR code di samping untuk mengisi Survey Kepuasan Masyarakat.<br>Masukan Anda sangat berarti demi peningkatan kualitas layanan kami.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <?php 
+            endforeach; 
+        }
+        ?>
 
       </div>
     </div>

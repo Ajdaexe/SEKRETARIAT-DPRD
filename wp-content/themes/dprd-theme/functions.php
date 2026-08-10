@@ -65,11 +65,34 @@ function tema_kustom_dprd_scripts() {
         wp_enqueue_script( 'tema-kustom-profile-script', get_template_directory_uri() . '/assets/profile-script.js', array(), null, true );
     }
     if ( is_page_template('page-beranda.php') || is_front_page() ) {
-        wp_enqueue_style( 'tema-kustom-beranda', get_template_directory_uri() . '/assets/beranda-style.css', array(), '1.2' );
-        wp_enqueue_script( 'tema-kustom-beranda-script', get_template_directory_uri() . '/assets/beranda-script.js', array(), '1.2', true );
+        wp_enqueue_style( 'tema-kustom-beranda', get_template_directory_uri() . '/assets/beranda-style.css', array(), time() );
+        wp_enqueue_script( 'tema-kustom-beranda-script', get_template_directory_uri() . '/assets/beranda-script.js', array(), time(), true );
+        
+        // Pass dynamic data from options
+        wp_localize_script( 'tema-kustom-beranda-script', 'siteData', array(
+            'totalPegawai'     => intval( get_option('dprd_stat_pegawai', 150) ),
+            'totalAgenda'      => intval( get_option('dprd_stat_agenda', 45) ),
+            'totalDokumen'     => intval( get_option('dprd_stat_dokumen', 250) ),
+            'persenTransparan' => intval( get_option('dprd_stat_transparan', 100) )
+        ) );
     }
 }
 add_action( 'wp_enqueue_scripts', 'tema_kustom_dprd_scripts' );
+
+/**
+ * Inject dynamic CSS for CTA Banner Background
+ */
+function dprd_dynamic_cta_css() {
+    $cta_bg = get_option('dprd_cta_bg_url');
+    if ( $cta_bg ) {
+        echo "<style>\n";
+        echo "  .cta-banner::before {\n";
+        echo "      background-image: url('" . esc_url($cta_bg) . "') !important;\n";
+        echo "  }\n";
+        echo "</style>\n";
+    }
+}
+add_action( 'wp_head', 'dprd_dynamic_cta_css' );
 
 /**
  * AJAX Handler for Live Search
@@ -572,8 +595,279 @@ function dprd_render_struktur_options_page() {
             $('#dprd_susunan_photo_preview').html('<p style="color:#64748b; margin:20px 0; font-size:14px;">Belum ada foto Susunan Organisasi yang diunggah.</p>');
             $(this).hide();
         });
+=======
+            <hr style="margin: 30px 0;">
+            <h2>Pengaturan Hasil Survey IKM (Slide Dinamis)</h2>
+            <p>Anda dapat menambah, menghapus, atau mengubah urutan slide IKM di bawah ini. Anda juga bisa mengganti gambar QR Code per-slide.</p>
+            
+            <?php
+            $default_slides = json_encode([
+                ['title' => 'SEMESTER I TAHUN 2026', 'score' => '93.275', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png'],
+                ['title' => 'SEMESTER II TAHUN 2025', 'score' => '92.150', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png'],
+                ['title' => 'SEMESTER I TAHUN 2025', 'score' => '91.500', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png']
+            ]);
+            $saved_slides = get_option('dprd_ikm_slides_data', '');
+            if (empty($saved_slides) || $saved_slides === '[]' || $saved_slides === 'false') {
+                $saved_slides = $default_slides;
+            }
+            ?>
+            <input type="hidden" name="dprd_ikm_slides_data" id="dprd_ikm_slides_data" value="<?php echo esc_attr($saved_slides); ?>">
+            
+            <div id="ikm_repeater_container"></div>
+            
+            <button type="button" class="button button-primary" id="btn_add_ikm_slide" style="margin-top: 10px;">+ Tambah Slide Baru</button>
+
+            <hr style="margin: 30px 0;">
+            <h2>Pengaturan Banner Hubungi Kami (CTA)</h2>
+            <table class="form-table">
+                <tr valign="top">
+                    <th scope="row">Background CTA Banner</th>
+                    <td>
+                        <p>Pilih gambar latar belakang untuk banner CTA merah di bagian bawah halaman. Anda wajib memotong (crop) gambarnya dalam rasio memanjang (6:1).</p>
+                        <input type="file" id="cta_image_input" accept="image/*" />
+                        
+                        <div id="cta-cropper-container" style="max-width: 800px; margin-top: 10px; display: none;">
+                            <img id="cta_image_to_crop" src="" style="max-width: 100%;" />
+                            <br><br>
+                            <button type="button" class="button button-secondary" id="btn_apply_cta_crop">Terapkan Crop</button>
+                        </div>
+                        
+                        <div id="cta_cropped_preview_container" style="margin-top: 15px; <?php if(!get_option('dprd_cta_bg_url')) echo 'display:none;'; ?>">
+                            <h4>Preview Background CTA Saat Ini:</h4>
+                            <?php $current_cta = get_option('dprd_cta_bg_url', 'https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png'); ?>
+                            <img id="cta_cropped_preview" src="<?php echo esc_url($current_cta); ?>" style="width: 100%; max-width: 800px; border-radius: 8px;" />
+                        </div>
+                        
+                        <input type="hidden" name="dprd_cta_bg_base64" id="dprd_cta_bg_base64" value="" />
+                    </td>
+                </tr>
+            </table>
+
+            <br><br>
+            <?php submit_button(); ?>
+        </form>
+    </div>
+    
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var inputImage = document.getElementById('video_image_input');
+        var imageToCrop = document.getElementById('image_to_crop');
+        var cropperContainer = document.getElementById('cropper-container');
+        var btnApplyCrop = document.getElementById('btn_apply_crop');
+        var hiddenBase64 = document.getElementById('dprd_video_thumbnail_base64');
+        var croppedPreview = document.getElementById('cropped_preview');
+        var croppedPreviewContainer = document.getElementById('cropped_preview_container');
+        var cropper;
+
+        if(inputImage) {
+            inputImage.addEventListener('change', function(e) {
+                var files = e.target.files;
+                if (files && files.length > 0) {
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        imageToCrop.src = event.target.result;
+                        cropperContainer.style.display = 'block';
+                        if (cropper) { cropper.destroy(); }
+                        cropper = new Cropper(imageToCrop, {
+                            aspectRatio: 16 / 9,
+                            viewMode: 1,
+                        });
+                    };
+                    reader.readAsDataURL(files[0]);
+                }
+            });
+        }
+
+        if(btnApplyCrop) {
+            btnApplyCrop.addEventListener('click', function() {
+                if (cropper) {
+                    var canvas = cropper.getCroppedCanvas({ width: 1280, height: 720 });
+                    var base64 = canvas.toDataURL('image/jpeg', 0.8);
+                    hiddenBase64.value = base64;
+                    croppedPreview.src = base64;
+                    croppedPreviewContainer.style.display = 'block';
+                    cropperContainer.style.display = 'none';
+                    alert("Gambar berhasil dicrop! Jangan lupa klik 'Save Changes' di bawah untuk menyimpan pengaturan.");
+                }
+            });
+        }
+
+        // Media Uploader for Informasi Terbaru File
+        var btnUploadInfoFile = document.getElementById('btn_upload_info_file');
+        var inputInfoFileUrl = document.getElementById('dprd_info_file_url');
+        var mediaUploader;
+
+        if (btnUploadInfoFile) {
+            btnUploadInfoFile.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (mediaUploader) {
+                    mediaUploader.open();
+                    return;
+                }
+                mediaUploader = wp.media({
+                    title: 'Pilih atau Unggah File',
+                    button: { text: 'Gunakan File Ini' },
+                    multiple: false
+                });
+                mediaUploader.on('select', function() {
+                    var attachment = mediaUploader.state().get('selection').first().toJSON();
+                    inputInfoFileUrl.value = attachment.url;
+                });
+                mediaUploader.open();
+            });
+        }
+
+        // --- CROPPER FOR CTA BANNER ---
+        var inputCtaImage = document.getElementById('cta_image_input');
+        var ctaImageToCrop = document.getElementById('cta_image_to_crop');
+        var ctaCropperContainer = document.getElementById('cta-cropper-container');
+        var btnApplyCtaCrop = document.getElementById('btn_apply_cta_crop');
+        var ctaHiddenBase64 = document.getElementById('dprd_cta_bg_base64');
+        var ctaCroppedPreview = document.getElementById('cta_cropped_preview');
+        var ctaCroppedPreviewContainer = document.getElementById('cta_cropped_preview_container');
+        var ctaCropper;
+
+        if (inputCtaImage) {
+            inputCtaImage.addEventListener('change', function(e) {
+                var files = e.target.files;
+                if (files && files.length > 0) {
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        ctaImageToCrop.src = event.target.result;
+                        ctaCropperContainer.style.display = 'block';
+                        if (ctaCropper) { ctaCropper.destroy(); }
+                        ctaCropper = new Cropper(ctaImageToCrop, {
+                            aspectRatio: 6 / 1,
+                            viewMode: 1,
+                        });
+                    };
+                    reader.readAsDataURL(files[0]);
+                }
+            });
+        }
+
+        if (btnApplyCtaCrop) {
+            btnApplyCtaCrop.addEventListener('click', function() {
+                if (ctaCropper) {
+                    var canvas = ctaCropper.getCroppedCanvas({ width: 1200, height: 200 });
+                    var base64 = canvas.toDataURL('image/jpeg', 0.8);
+                    ctaHiddenBase64.value = base64;
+                    ctaCroppedPreview.src = base64;
+                    ctaCroppedPreviewContainer.style.display = 'block';
+                    ctaCropperContainer.style.display = 'none';
+                    alert("Background CTA berhasil dicrop! Jangan lupa klik 'Save Changes' untuk menyimpan.");
+                }
+            });
+        }
+
+
+        // --- JSON REPEATER LOGIC FOR IKM SLIDES ---
+        var ikmSlidesData = [];
+        try {
+            var rawVal = document.getElementById('dprd_ikm_slides_data').value;
+            ikmSlidesData = JSON.parse(rawVal || '[]');
+        } catch(e) { console.error('Failed parsing IKM JSON data'); }
+
+        var ikmContainer = document.getElementById('ikm_repeater_container');
+
+        function renderIkmRow(slide, index) {
+            var html = `
+            <div class="ikm-slide-row" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background: #fafafa; position: relative;">
+                <h4 style="margin-top:0;">Slide \${index + 1}</h4>
+                <button type="button" class="button button-link-delete btn_remove_ikm_slide" style="position:absolute; top:15px; right:15px; color:#a00;">Hapus Slide</button>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">Semester & Tahun</th>
+                        <td><input type="text" class="ikm_input_title" value="\${slide.title || ''}" style="width:100%; max-width:300px;"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Skor (Nilai)</th>
+                        <td><input type="text" class="ikm_input_score" value="\${slide.score || ''}" style="width:150px;"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Huruf Mutu (Grade)</th>
+                        <td><input type="text" class="ikm_input_grade" value="\${slide.grade || ''}" style="width:50px;" maxlength="2"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Teks Predikat (Badge)</th>
+                        <td><input type="text" class="ikm_input_predicate" value="\${slide.predicate || ''}" style="width:100%; max-width:150px;"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Gambar QR Code</th>
+                        <td>
+                            <input type="url" class="ikm_input_qr" value="\${slide.qr || ''}" style="width:100%; max-width:300px;">
+                            <button type="button" class="button btn_upload_ikm_qr">Pilih Gambar</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            `;
+            ikmContainer.insertAdjacentHTML('beforeend', html);
+        }
+
+        function renderAllIkmRows() {
+            ikmContainer.innerHTML = '';
+            ikmSlidesData.forEach(function(slide, idx) {
+                renderIkmRow(slide, idx);
+            });
+        }
+        renderAllIkmRows();
+
+        var btnAddIkm = document.getElementById('btn_add_ikm_slide');
+        if (btnAddIkm) {
+            btnAddIkm.addEventListener('click', function() {
+                ikmSlidesData.push({title:'', score:'', grade:'', predicate:'', qr:''});
+                renderAllIkmRows();
+            });
+        }
+
+        ikmContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn_remove_ikm_slide')) {
+                if(confirm('Hapus slide ini?')) {
+                    var row = e.target.closest('.ikm-slide-row');
+                    var index = Array.from(ikmContainer.children).indexOf(row);
+                    if (index > -1) {
+                        ikmSlidesData.splice(index, 1);
+                        renderAllIkmRows();
+                    }
+                }
+            }
+            
+            if (e.target.classList.contains('btn_upload_ikm_qr')) {
+                e.preventDefault();
+                var inputQr = e.target.previousElementSibling;
+                var uploader = wp.media({
+                    title: 'Pilih Gambar QR Code',
+                    button: { text: 'Gunakan Gambar Ini' },
+                    multiple: false
+                });
+                uploader.on('select', function() {
+                    var attachment = uploader.state().get('selection').first().toJSON();
+                    inputQr.value = attachment.url;
+                });
+                uploader.open();
+            }
+        });
+
+        // Update JSON before saving
+        var form = document.querySelector('form[action="options.php"]');
+        if (form) {
+            form.addEventListener('submit', function() {
+                var rows = ikmContainer.querySelectorAll('.ikm-slide-row');
+                var newData = [];
+                rows.forEach(function(row) {
+                    newData.push({
+                        title: row.querySelector('.ikm_input_title').value,
+                        score: row.querySelector('.ikm_input_score').value,
+                        grade: row.querySelector('.ikm_input_grade').value,
+                        predicate: row.querySelector('.ikm_input_predicate').value,
+                        qr: row.querySelector('.ikm_input_qr').value
+                    });
+                });
+                document.getElementById('dprd_ikm_slides_data').value = JSON.stringify(newData);
+            });
+        }
     });
     </script>
     <?php
 }
-
