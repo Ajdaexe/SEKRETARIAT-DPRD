@@ -6,27 +6,31 @@ $currentPage = "dlantunan";
 include 'header.php';
 ?>
 
-<!-- Hero Section -->
-  <section class="hero" id="heroSection" onclick="openHeroLightbox()">
-    <img id="heroImage" src="https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png" alt="Gedung Sekretariat DPRD Purbalingga">
-    <div class="hero-text" id="heroText">
-      <h2>D'Lantunan</h2>
-      <p>Portal Layanan digital dan aspirasi masyarakat Sekretariat DPRD Kabupaten Purbalingga untuk permohonan layanan dan kebutuhan administratif secara mudah, cepat, dan transparan.</p>
-    </div>
-    <div class="card-panel welcome-card right-welcome" style="position:absolute; top:50%; right:20px; max-width:400px; margin:0;" onclick="event.stopPropagation();">
-      <div class="welcome-icon-box" style="margin-bottom:12px; display:flex; align-items:center; gap:12px;">
-        <div class="icon-circle red-bubble" style="width:44px; height:44px; border-radius:50%; background:var(--merah); color:#ffffff; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 4px 12px var(--merah-glow);">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-11 9c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm4 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm4 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg>
-        </div>
-        <h2 style="font-size:22px; font-weight:700; color:var(--teks-primary); margin:0;">Selamat Datang di D'Lantunan</h2>
+<!-- Hero Section (Figma 1:1 Perfect Layout) -->
+<div class="figma-hero-wrapper" id="heroSection" onclick="openHeroLightbox()" style="position:relative; width:calc(100% - 80px); max-width:1180px; margin:30px auto 0; min-height:420px; border-radius:24px; overflow:hidden; box-shadow:0 12px 36px rgba(0,0,0,0.12); background-image:url('https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png'); background-size:cover; background-position:center 60%; display:flex; align-items:center; justify-content:space-between; padding:40px 48px; gap:32px; cursor:pointer;">
+  <div class="figma-hero-overlay" style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.25) 100%); pointer-events:none; z-index:1;"></div>
+  
+  <!-- Left Side: Title & Description -->
+  <div class="figma-hero-left" id="heroText" style="position:relative; z-index:2; max-width:460px; color:#ffffff; flex:1;">
+    <h2 style="font-size:44px; font-weight:800; margin-bottom:16px; line-height:1.1; color:#ffffff; text-shadow:0 2px 10px rgba(0,0,0,0.3);">D'Lantunan</h2>
+    <p style="font-size:15px; line-height:1.65; color:rgba(255,255,255,0.92); text-shadow:0 1px 5px rgba(0,0,0,0.3);">Portal Layanan digital dan aspirasi masyarakat Sekretariat DPRD Kabupaten Purbalingga untuk permohonan layanan dan kebutuhan administratif secara mudah, cepat, dan transparan.</p>
+  </div>
+
+  <!-- Right Side: Floating White Welcome Card -->
+  <div class="figma-welcome-card" onclick="event.stopPropagation();" style="position:relative; z-index:2; width:390px; max-width:100%; background:#ffffff; border-radius:20px; padding:26px 26px; box-shadow:0 16px 40px rgba(0,0,0,0.18); border:1px solid rgba(255,255,255,0.5); flex-shrink:0; cursor:default;">
+    <div class="card-header-row" style="display:flex; align-items:flex-start; gap:14px; margin-bottom:16px;">
+      <div class="card-icon-bubble" style="width:44px; height:44px; border-radius:50%; background:#FCE8E8; color:#A5182B; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="#A5182B">
+          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-11 9c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm4 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm4 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+        </svg>
       </div>
-      <div class="welcome-text">
-        <p style="font-size:14.5px; color:var(--teks-secondary); line-height:1.65; margin-bottom:10px;">D'Lantunan adalah portal layanan dan aspirasi masyarakat Sekretariat DPRD Kabupaten Purbalingga.</p>
-        <p style="font-size:14.5px; color:var(--teks-secondary); line-height:1.65; margin-bottom:10px;">Melalui portal ini, Anda dapat mengajukan berbagai permohonan layanan dengan mudah secara daring.</p>
-        <p style="font-size:14.5px; color:var(--teks-secondary); line-height:1.65; margin-bottom:0;">Kami berkomitmen memberikan pelayanan yang cepat, transparan, dan akuntabel.</p>
-      </div>
+      <h3 style="font-size:20px; font-weight:700; color:#111111; line-height:1.25; margin:0;">Selamat Datang di<br>D'Lantunan</h3>
     </div>
-  </section>
+    <p style="font-size:13px; color:#666666; line-height:1.6; margin-bottom:12px;">D'Lantunan adalah portal layanan dan aspirasi masyarakat Sekretariat DPRD Kabupaten Purbalingga.</p>
+    <p style="font-size:13px; color:#666666; line-height:1.6; margin-bottom:12px;">Melalui portal ini, Anda dapat mengajukan berbagai permohonan layanan dengan mudah secara daring.</p>
+    <p style="font-size:13px; color:#666666; line-height:1.6; margin-bottom:0;">Kami berkomitmen memberikan pelayanan yang cepat, transparan, dan akuntabel.</p>
+  </div>
+</div>
 
   <main class="container">
 
@@ -438,20 +442,17 @@ include 'header.php';
   <section class="cta-section">
     <div class="cta-banner">
       <div class="cta-left">
-        <div class="cta-icon-circle">
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="#ffffff">
-            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
-          </svg>
+        <div class="icon-circle">
+          <img src="images/user account.png" alt="User Account Icon" style="filter:brightness(0) invert(1); width:22px; height:22px;">
         </div>
-        <h3>D'Lantunan untuk pelayanan publik yang lebih cepat,</h3>
+        <h3>Bersama Mewujudkan DPRD yang Berkinerja<br>Tinggi dan Melayani Masyarakat</h3>
       </div>
       <a
         href="https://mail.google.com/mail/?view=cm&fs=1&to=sekretariat@dprd.purbalingga.go.id&su=Permohonan%20Informasi"
         target="_blank"
         rel="noopener noreferrer"
-        class="btn-outline-white">
-        <span>Hubungi Kami</span>
-        <span class="arrow-icon">›</span>
+        class="btn-outline">
+        Hubungi Kami
       </a>
     </div>
   </section>

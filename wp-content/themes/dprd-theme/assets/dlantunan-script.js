@@ -23,14 +23,18 @@ const galleryPhotos = [
   }
 ];
 
-// Toggle Search Box
-function toggleSearchBox(event) {
-  event.stopPropagation();
+// Toggle Search Box (Disamakan dengan SAKIP & Profil)
+function triggerSearchFocus(event) {
+  if (event && event.stopPropagation) event.stopPropagation();
   const searchBox = document.getElementById('searchBoxAnimated');
   const searchInput = document.getElementById('globalSearchInput');
   
-  searchBox.classList.add('active');
-  searchInput.focus();
+  if (searchBox) searchBox.classList.add('active');
+  if (searchInput) searchInput.focus();
+}
+
+function toggleSearchBox(event) {
+  triggerSearchFocus(event);
 }
 
 // Global Click to close search box if clicked outside
@@ -38,7 +42,7 @@ document.addEventListener('click', function(e) {
   const searchBox = document.getElementById('searchBoxAnimated');
   const searchContainer = document.querySelector('.search-container');
   
-  if (searchContainer && !searchContainer.contains(e.target)) {
+  if (searchContainer && searchBox && !searchContainer.contains(e.target)) {
     searchBox.classList.remove('active');
   }
 });
