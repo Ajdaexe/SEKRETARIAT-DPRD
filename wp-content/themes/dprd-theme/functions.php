@@ -1734,10 +1734,7 @@ function dprd_seed_layanan_dlantunan() {
 }
 add_action('admin_init', 'dprd_seed_layanan_dlantunan');
 
-<<<<<<< HEAD
 
-
-=======
 // ==========================================
 // PENGATURAN 3 LAYANAN D'LANTUNAN (SETTINGS PAGE)
 // ==========================================
@@ -2526,4 +2523,3 @@ function dprd_upload_dokumentasi_dlantunan_page_html() {
     </script>
     <?php
 }
->>>>>>> 6a831d33d8dbb864a8d4845d9ef5847c14258fce
