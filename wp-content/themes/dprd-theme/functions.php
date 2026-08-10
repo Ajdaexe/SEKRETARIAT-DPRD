@@ -200,7 +200,7 @@ function dprd_register_struktur_menu() {
         'dprd-profile',
         'dprd_render_struktur_options_page',
         'dashicons-id-alt',
-        25
+        31
     );
 }
 add_action( 'admin_menu', 'dprd_register_struktur_menu' );
@@ -603,7 +603,7 @@ function dprd_render_struktur_options_page() {
 // ==========================================
 
 function dprd_theme_admin_scripts($hook) {
-    if ( ! in_array( $hook, array( 'toplevel_page_dprd-statistik-beranda', 'toplevel_page_dprd-cta-settings', 'toplevel_page_dprd-hero-settings' ) ) ) {
+    if ( ! in_array( $hook, array( 'toplevel_page_dprd-beranda-settings', 'toplevel_page_dprd-cta-settings', 'toplevel_page_dprd-hero-settings' ) ) ) {
         return;
     }
     wp_enqueue_media(); // For file uploads (PDF)
@@ -654,18 +654,18 @@ function dprd_handle_cta_bg_base64( $base64 ) {
     return '';
 }
 
-function dprd_theme_settings_menu() {
+function dprd_beranda_settings_menu() {
     add_menu_page(
         'Pengaturan Beranda', 
         'Pengaturan Beranda', 
         'manage_options', 
-        'dprd-statistik-beranda', 
-        'dprd_theme_settings_page_html', 
-        'dashicons-admin-home', 
-        25
+        'dprd-beranda-settings', 
+        'dprd_theme_settings_page_html',
+        'dashicons-admin-home',
+        '32'
     );
 }
-add_action( 'admin_menu', 'dprd_theme_settings_menu' );
+add_action( 'admin_menu', 'dprd_beranda_settings_menu' );
 
 function dprd_theme_settings_init() {
     register_setting( 'dprd_statistik_beranda_group', 'dprd_stat_pegawai' );
@@ -1020,7 +1020,7 @@ function dprd_hero_settings_menu() {
         'dprd-pengaturan-hero', 
         'dprd_hero_settings_page_html', 
         'dashicons-format-image', 
-        26
+        33
     );
 }
 add_action( 'admin_menu', 'dprd_hero_settings_menu' );
@@ -1196,7 +1196,7 @@ function dprd_cta_settings_menu() {
         'dprd-cta-settings', 
         'dprd_cta_settings_page_html', 
         'dashicons-megaphone', 
-        27
+        34
     );
 }
 add_action( 'admin_menu', 'dprd_cta_settings_menu' );
@@ -1367,7 +1367,7 @@ function dprd_ppid_settings_menu() {
         'dprd-ppid-settings', 
         'dprd_ppid_settings_page_html', 
         'dashicons-chart-bar', 
-        28
+        35
     );
 }
 add_action( 'admin_menu', 'dprd_ppid_settings_menu' );
@@ -1377,6 +1377,19 @@ function dprd_ppid_settings_init() {
         register_setting( 'dprd_ppid_settings_group', 'dprd_stat_ppid_label_' . $i );
         register_setting( 'dprd_ppid_settings_group', 'dprd_stat_ppid_num_' . $i );
     }
+
+    // Info Section
+    register_setting( 'dprd_ppid_settings_group', 'dprd_ppid_info_title' );
+    register_setting( 'dprd_ppid_settings_group', 'dprd_ppid_info_desc' );
+
+    // Cards Section
+    for ($i = 1; $i <= 4; $i++) {
+        register_setting( 'dprd_ppid_settings_group', 'dprd_ppid_card_title_' . $i );
+        register_setting( 'dprd_ppid_settings_group', 'dprd_ppid_card_desc_' . $i );
+    }
+
+    // Documents Repeater (JSON)
+    register_setting( 'dprd_ppid_settings_group', 'dprd_ppid_documents_data' );
 }
 add_action( 'admin_init', 'dprd_ppid_settings_init' );
 
@@ -1421,6 +1434,56 @@ function dprd_ppid_settings_page_html() {
                     </td>
                 </tr>
             </table>
+            
+            <hr style="margin: 30px 0;">
+            <h2>Informasi Utama (Kotak Atas)</h2>
+            <table class="form-table">
+                <tr valign="top">
+                    <th scope="row">Judul Informasi</th>
+                    <td>
+                        <input type="text" name="dprd_ppid_info_title" value="<?php echo esc_attr( get_option('dprd_ppid_info_title', 'Informasi') ); ?>" class="regular-text" />
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Deskripsi Informasi</th>
+                    <td>
+                        <textarea name="dprd_ppid_info_desc" rows="4" cols="50" class="large-text"><?php echo esc_textarea( get_option('dprd_ppid_info_desc', 'PPID Sekretariat DPRD Kabupaten Purbalingga adalah portal layanan informasi publik untuk mewujudkan transparansi, akuntabilitas, dan keterbukaan informasi sesuai dengan UU No. 14 Tahun 2008 tentang Keterbukaan Informasi Publik.') ); ?></textarea>
+                    </td>
+                </tr>
+            </table>
+
+            <hr style="margin: 30px 0;">
+            <h2>Teks Kartu Kategori (4 Kotak Tengah)</h2>
+            <table class="form-table">
+                <tr valign="top">
+                    <th scope="row">Kartu 1 (Berkala)</th>
+                    <td>
+                        <input type="text" name="dprd_ppid_card_title_1" value="<?php echo esc_attr( get_option('dprd_ppid_card_title_1', 'Informasi Berkala') ); ?>" class="regular-text" style="margin-bottom: 5px;" /><br>
+                        <textarea name="dprd_ppid_card_desc_1" rows="2" class="large-text"><?php echo esc_textarea( get_option('dprd_ppid_card_desc_1', 'Informasi yang wajib disediakan dan diumumkan secara berkala oleh Sekretariat DPRD.') ); ?></textarea>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Kartu 2 (Serta Merta)</th>
+                    <td>
+                        <input type="text" name="dprd_ppid_card_title_2" value="<?php echo esc_attr( get_option('dprd_ppid_card_title_2', 'Informasi Serta Merta') ); ?>" class="regular-text" style="margin-bottom: 5px;" /><br>
+                        <textarea name="dprd_ppid_card_desc_2" rows="2" class="large-text"><?php echo esc_textarea( get_option('dprd_ppid_card_desc_2', 'Informasi yang harus disampaikan segera karena berkaitan dengan hajat hidup orang banyak.') ); ?></textarea>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Kartu 3 (Setiap Saat)</th>
+                    <td>
+                        <input type="text" name="dprd_ppid_card_title_3" value="<?php echo esc_attr( get_option('dprd_ppid_card_title_3', 'Informasi Setiap Saat') ); ?>" class="regular-text" style="margin-bottom: 5px;" /><br>
+                        <textarea name="dprd_ppid_card_desc_3" rows="2" class="large-text"><?php echo esc_textarea( get_option('dprd_ppid_card_desc_3', 'Informasi yang tersedia setiap saat dan dapat diakses oleh publik kapan pun dibutuhkan.') ); ?></textarea>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Kartu 4 (Laporan)</th>
+                    <td>
+                        <input type="text" name="dprd_ppid_card_title_4" value="<?php echo esc_attr( get_option('dprd_ppid_card_title_4', 'Laporan PPID') ); ?>" class="regular-text" style="margin-bottom: 5px;" /><br>
+                        <textarea name="dprd_ppid_card_desc_4" rows="2" class="large-text"><?php echo esc_textarea( get_option('dprd_ppid_card_desc_4', 'Laporan layanan informasi publik dan kinerja PPID Sekretariat DPRD Kabupaten Purbalingga.') ); ?></textarea>
+                    </td>
+                </tr>
+            </table>
             <?php submit_button(); ?>
         </form>
     </div>
@@ -1439,7 +1502,7 @@ function dprd_dlantunan_settings_menu() {
         'dprd-dlantunan-settings', 
         'dprd_dlantunan_settings_page_html', 
         'dashicons-format-aside', 
-        29
+        36
     );
 }
 add_action( 'admin_menu', 'dprd_dlantunan_settings_menu' );
@@ -1589,3 +1652,6 @@ function dprd_seed_layanan_dlantunan() {
     }
 }
 add_action('admin_init', 'dprd_seed_layanan_dlantunan');
+
+
+

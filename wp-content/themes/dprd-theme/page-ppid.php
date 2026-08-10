@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Template Name: PPID
  *
@@ -42,37 +42,35 @@ get_header();
     <div class="info-card">
       <div class="info-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/informasi.png" alt=""></div>
       <div>
-        <h3>Informasi</h3>
-        <p>PPID Sekretariat DPRD Kabupaten Purbalingga adalah portal layanan informasi publik untuk mewujudkan
-          transparansi, akuntabilitas, dan keterbukaan informasi sesuai dengan UU No. 14 Tahun 2008 tentang Keterbukaan
-          Informasi Publik.</p>
+        <h3><?php echo esc_html( get_option('dprd_ppid_info_title', 'Informasi') ); ?></h3>
+        <p><?php echo esc_html( get_option('dprd_ppid_info_desc', 'PPID Sekretariat DPRD Kabupaten Purbalingga adalah portal layanan informasi publik untuk mewujudkan transparansi, akuntabilitas, dan keterbukaan informasi sesuai dengan UU No. 14 Tahun 2008 tentang Keterbukaan Informasi Publik.') ); ?></p>
       </div>
     </div>
 
     <div class="type-grid">
       <div class="type-card">
         <div class="type-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/informasi berkala.png" alt=""></div>
-        <h5>Informasi Berkala</h5>
-        <p>Informasi yang wajib disediakan dan diumumkan secara berkala oleh Sekretariat DPRD.</p>
-        <button class="btn-red-sm" onclick="filterByCategory('Informasi Berkala')">Lihat Informasi &rsaquo;</button>
+        <h5><?php echo esc_html( get_option('dprd_ppid_card_title_1', 'Informasi Berkala') ); ?></h5>
+        <p><?php echo esc_html( get_option('dprd_ppid_card_desc_1', 'Informasi yang wajib disediakan dan diumumkan secara berkala oleh Sekretariat DPRD.') ); ?></p>
+        <button class="btn-red-sm" onclick="filterByCategory('<?php echo esc_js( get_option('dprd_ppid_card_title_1', 'Informasi Berkala') ); ?>')">Lihat Informasi &rsaquo;</button>
       </div>
       <div class="type-card">
         <div class="type-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/informasi serta merta.png" alt=""></div>
-        <h5>Informasi Serta Merta</h5>
-        <p>Informasi yang harus disampaikan segera karena berkaitan dengan hajat hidup orang banyak.</p>
-        <button class="btn-red-sm" onclick="filterByCategory('Informasi Serta Merta')">Lihat Informasi &rsaquo;</button>
+        <h5><?php echo esc_html( get_option('dprd_ppid_card_title_2', 'Informasi Serta Merta') ); ?></h5>
+        <p><?php echo esc_html( get_option('dprd_ppid_card_desc_2', 'Informasi yang harus disampaikan segera karena berkaitan dengan hajat hidup orang banyak.') ); ?></p>
+        <button class="btn-red-sm" onclick="filterByCategory('<?php echo esc_js( get_option('dprd_ppid_card_title_2', 'Informasi Serta Merta') ); ?>')">Lihat Informasi &rsaquo;</button>
       </div>
       <div class="type-card">
         <div class="type-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/search merah.png" alt=""></div>
-        <h5>Informasi Setiap Saat</h5>
-        <p>Informasi yang tersedia setiap saat dan dapat diakses oleh publik kapan pun dibutuhkan.</p>
-        <button class="btn-red-sm" onclick="filterByCategory('Informasi Setiap Saat')">Lihat Informasi &rsaquo;</button>
+        <h5><?php echo esc_html( get_option('dprd_ppid_card_title_3', 'Informasi Setiap Saat') ); ?></h5>
+        <p><?php echo esc_html( get_option('dprd_ppid_card_desc_3', 'Informasi yang tersedia setiap saat dan dapat diakses oleh publik kapan pun dibutuhkan.') ); ?></p>
+        <button class="btn-red-sm" onclick="filterByCategory('<?php echo esc_js( get_option('dprd_ppid_card_title_3', 'Informasi Setiap Saat') ); ?>')">Lihat Informasi &rsaquo;</button>
       </div>
       <div class="type-card">
         <div class="type-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/laporan ppid.png" alt=""></div>
-        <h5>Laporan PPID</h5>
-        <p>Laporan layanan informasi publik dan kinerja PPID Sekretariat DPRD Kabupaten Purbalingga.</p>
-        <button class="btn-red-sm" onclick="filterByCategory('Laporan PPID')">Lihat Informasi &rsaquo;</button>
+        <h5><?php echo esc_html( get_option('dprd_ppid_card_title_4', 'Laporan PPID') ); ?></h5>
+        <p><?php echo esc_html( get_option('dprd_ppid_card_desc_4', 'Laporan layanan informasi publik dan kinerja PPID Sekretariat DPRD Kabupaten Purbalingga.') ); ?></p>
+        <button class="btn-red-sm" onclick="filterByCategory('<?php echo esc_js( get_option('dprd_ppid_card_title_4', 'Laporan PPID') ); ?>')">Lihat Informasi &rsaquo;</button>
       </div>
     </div>
 
@@ -123,10 +121,10 @@ get_header();
         <button class="pill-btn" id="btn-semua" onclick="resetFilter()">Semua</button>
         <select class="filter-select" id="filter-kategori" onchange="applyFilters()">
           <option value="">Dokumen (Semua Kategori)</option>
-          <option value="Informasi Berkala">Informasi Berkala</option>
-          <option value="Informasi Serta Merta">Informasi Serta Merta</option>
-          <option value="Informasi Setiap Saat">Informasi Setiap Saat</option>
-          <option value="Laporan PPID">Laporan PPID</option>
+          <option value="<?php echo esc_attr( get_option('dprd_ppid_card_title_1', 'Informasi Berkala') ); ?>"><?php echo esc_html( get_option('dprd_ppid_card_title_1', 'Informasi Berkala') ); ?></option>
+          <option value="<?php echo esc_attr( get_option('dprd_ppid_card_title_2', 'Informasi Serta Merta') ); ?>"><?php echo esc_html( get_option('dprd_ppid_card_title_2', 'Informasi Serta Merta') ); ?></option>
+          <option value="<?php echo esc_attr( get_option('dprd_ppid_card_title_3', 'Informasi Setiap Saat') ); ?>"><?php echo esc_html( get_option('dprd_ppid_card_title_3', 'Informasi Setiap Saat') ); ?></option>
+          <option value="<?php echo esc_attr( get_option('dprd_ppid_card_title_4', 'Laporan PPID') ); ?>"><?php echo esc_html( get_option('dprd_ppid_card_title_4', 'Laporan PPID') ); ?></option>
         </select>
         <!-- DROPDOWN TAHUN (2020 - 2026) -->
         <select class="filter-select" id="filter-tahun" onchange="applyFilters()">
@@ -182,30 +180,23 @@ get_header();
   </div>
 
   <script>
-    const dokumenData = [
-      { judul: "3 Renja Sekretariat DPRD Tahun 2026", kategori: "Informasi Berkala", tanggal: "12 Januari 2026", tahun: 2026, file: "#" },
-      { judul: "Laporan Kinerja Instansi Pemerintah (LKjIP) 2025", kategori: "Informasi Berkala", tanggal: "15 Februari 2025", tahun: 2025, file: "#" },
-      { judul: "Ringkasan DPA Sekretariat DPRD Tahun 2025", kategori: "Informasi Berkala", tanggal: "10 Januari 2025", tahun: 2025, file: "#" },
-      { judul: "Kebijakan Pelayanan Informasi Publik 2026", kategori: "Informasi Setiap Saat", tanggal: "05 Maret 2026", tahun: 2026, file: "#" },
-      { judul: "Daftar Informasi Publik (DIP) Tahun 2025", kategori: "Informasi Setiap Saat", tanggal: "20 Desember 2025", tahun: 2025, file: "#" },
-      { judul: "Laporan Layanan Informasi Publik Semester I 2026", kategori: "Laporan PPID", tanggal: "30 Juni 2026", tahun: 2026, file: "#" },
-      { judul: "Informasi Penanganan Darurat Bencana Alam", kategori: "Informasi Serta Merta", tanggal: "12 November 2025", tahun: 2025, file: "#" },
-      { judul: "Rencana Kerja (Renja) Sekretariat DPRD Tahun 2024", kategori: "Informasi Berkala", tanggal: "14 Januari 2024", tahun: 2024, file: "#" },
-      { judul: "LKjIP Sekretariat DPRD Tahun 2024", kategori: "Informasi Berkala", tanggal: "20 Februari 2024", tahun: 2024, file: "#" },
-      { judul: "DPA Sekretariat DPRD Tahun 2024", kategori: "Informasi Berkala", tanggal: "10 Januari 2024", tahun: 2024, file: "#" },
-      { judul: "Laporan PPID Tahunan 2024", kategori: "Laporan PPID", tanggal: "15 Januari 2025", tahun: 2024, file: "#" },
-      { judul: "Informasi Kebijakan Tarif Layanan Publik 2024", kategori: "Informasi Setiap Saat", tanggal: "05 April 2024", tahun: 2024, file: "#" },
-      { judul: "Renja Sekretariat DPRD Tahun 2023", kategori: "Informasi Berkala", tanggal: "12 Mei 2023", tahun: 2023, file: "#" },
-      { judul: "LKjIP Sekretariat DPRD Tahun 2022", kategori: "Informasi Berkala", tanggal: "10 Januari 2023", tahun: 2023, file: "#" },
-      { judul: "Ringkasan DPA Sekretariat DPRD Tahun 2023", kategori: "Informasi Berkala", tanggal: "09 Januari 2023", tahun: 2023, file: "#" },
-      { judul: "Kebijakan Pelayanan Informasi Publik 2023", kategori: "Informasi Setiap Saat", tanggal: "08 Januari 2023", tahun: 2023, file: "#" },
-      { judul: "Laporan Layanan PPID Tahun 2022", kategori: "Laporan PPID", tanggal: "12 Januari 2023", tahun: 2022, file: "#" },
-      { judul: "Rencana Strategis (Renstra) 2021-2026", kategori: "Informasi Setiap Saat", tanggal: "15 Februari 2021", tahun: 2021, file: "#" },
-      { judul: "Laporan Tahunan Kinerja PPID 2021", kategori: "Laporan PPID", tanggal: "10 Januari 2022", tahun: 2021, file: "#" },
-      { judul: "Dokumen Anggaran Belanja Tahun 2021", kategori: "Informasi Berkala", tanggal: "05 Januari 2021", tahun: 2021, file: "#" },
-      { judul: "Profil Pimpinan dan Anggota DPRD 2020", kategori: "Informasi Berkala", tanggal: "18 Maret 2020", tahun: 2020, file: "#" },
-      { judul: "Laporan Kinerja PPID Tahun 2020", kategori: "Laporan PPID", tanggal: "14 Januari 2021", tahun: 2020, file: "#" }
-    ];
+    <?php
+    $docs_json = get_option('dprd_ppid_documents_data', '');
+    $dokumen_array = json_decode($docs_json, true);
+    
+    if (empty($dokumen_array) || !is_array($dokumen_array)) {
+        // Dummy data fallback
+        $dokumen_array = array(
+            array("judul" => "3 Renja Sekretariat DPRD Tahun 2026", "kategori" => get_option('dprd_ppid_card_title_1', 'Informasi Berkala'), "tanggal" => "12 Januari 2026", "tahun" => 2026, "file" => "#"),
+            array("judul" => "Laporan Kinerja Instansi Pemerintah (LKjIP) 2025", "kategori" => get_option('dprd_ppid_card_title_1', 'Informasi Berkala'), "tanggal" => "15 Februari 2025", "tahun" => 2025, "file" => "#"),
+            array("judul" => "Ringkasan DPA Sekretariat DPRD Tahun 2025", "kategori" => get_option('dprd_ppid_card_title_1', 'Informasi Berkala'), "tanggal" => "10 Januari 2025", "tahun" => 2025, "file" => "#"),
+            array("judul" => "Kebijakan Pelayanan Informasi Publik 2026", "kategori" => get_option('dprd_ppid_card_title_3', 'Informasi Setiap Saat'), "tanggal" => "05 Maret 2026", "tahun" => 2026, "file" => "#"),
+            array("judul" => "Daftar Informasi Publik (DIP) Tahun 2025", "kategori" => get_option('dprd_ppid_card_title_3', 'Informasi Setiap Saat'), "tanggal" => "20 Desember 2025", "tahun" => 2025, "file" => "#"),
+            array("judul" => "Laporan Layanan Informasi Publik Semester I 2026", "kategori" => get_option('dprd_ppid_card_title_4', 'Laporan PPID'), "tanggal" => "30 Juni 2026", "tahun" => 2026, "file" => "#")
+        );
+    }
+    ?>
+    const dokumenData = <?php echo json_encode($dokumen_array); ?>;
 
     const kategoriClass = {
       "Informasi Berkala": "tag-berkala",
