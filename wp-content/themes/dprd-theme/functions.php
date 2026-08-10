@@ -244,6 +244,7 @@ function dprd_theme_settings_init() {
         register_setting( 'dprd_statistik_beranda_group', 'dprd_ikm_title_' . $i );
         register_setting( 'dprd_statistik_beranda_group', 'dprd_ikm_score_' . $i );
         register_setting( 'dprd_statistik_beranda_group', 'dprd_ikm_predicate_' . $i );
+        register_setting( 'dprd_statistik_beranda_group', 'dprd_ikm_grade_' . $i );
     }
 }
 add_action( 'admin_init', 'dprd_theme_settings_init' );
@@ -353,9 +354,9 @@ function dprd_theme_settings_page_html() {
             <h2>Pengaturan Hasil Survey IKM (3 Slide)</h2>
             <?php
             $default_ikm = [
-                1 => ['title' => 'SEMESTER I TAHUN 2026', 'score' => '93.275', 'predicate' => 'Sangat Baik'],
-                2 => ['title' => 'SEMESTER II TAHUN 2025', 'score' => '92.150', 'predicate' => 'Sangat Baik'],
-                3 => ['title' => 'SEMESTER I TAHUN 2025', 'score' => '91.500', 'predicate' => 'Sangat Baik'],
+                1 => ['title' => 'SEMESTER I TAHUN 2026', 'score' => '93.275', 'predicate' => 'Sangat Baik', 'grade' => 'A'],
+                2 => ['title' => 'SEMESTER II TAHUN 2025', 'score' => '92.150', 'predicate' => 'Sangat Baik', 'grade' => 'A'],
+                3 => ['title' => 'SEMESTER I TAHUN 2025', 'score' => '91.500', 'predicate' => 'Sangat Baik', 'grade' => 'A'],
             ];
             for ($i = 1; $i <= 3; $i++): ?>
                 <h3>Slide <?php echo $i; ?></h3>
@@ -367,6 +368,10 @@ function dprd_theme_settings_page_html() {
                     <tr valign="top">
                         <th scope="row">Skor (Nilai)</th>
                         <td><input type="text" name="dprd_ikm_score_<?php echo $i; ?>" value="<?php echo esc_attr( get_option('dprd_ikm_score_'.$i, $default_ikm[$i]['score']) ); ?>" style="width: 100%; max-width: 150px;" /></td>
+                    </tr>
+                    <tr valign="top">
+                        <th scope="row">Huruf Mutu (Grade)</th>
+                        <td><input type="text" name="dprd_ikm_grade_<?php echo $i; ?>" value="<?php echo esc_attr( get_option('dprd_ikm_grade_'.$i, $default_ikm[$i]['grade']) ); ?>" style="width: 50px;" maxlength="2" placeholder="Cth: A" /></td>
                     </tr>
                     <tr valign="top">
                         <th scope="row">Teks Predikat (Badge)</th>

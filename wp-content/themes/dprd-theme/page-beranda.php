@@ -119,6 +119,7 @@ get_header();
             $title = get_option('dprd_ikm_title_'.$i, $default_ikm[$i]['title']);
             $score = get_option('dprd_ikm_score_'.$i, $default_ikm[$i]['score']);
             $predicate = get_option('dprd_ikm_predicate_'.$i, $default_ikm[$i]['predicate']);
+            $grade = get_option('dprd_ikm_grade_'.$i, $default_ikm[$i]['grade']);
         ?>
         <!-- Slide <?php echo $i; ?> -->
         <div class="survey-card-item <?php if($i == 1) echo 'active'; ?>">
@@ -133,7 +134,15 @@ get_header();
               <div class="ikm-top-right">
                 <div class="badge-container">
                   <img src="<?php echo get_template_directory_uri(); ?>/assets/images/badge.png" alt="Badge IKM" class="ikm-badge">
-                  <span class="badge-text"><?php echo esc_html($predicate); ?></span>
+                  <span class="badge-grade"><?php echo esc_html($grade); ?></span>
+                  <svg viewBox="0 0 180 180" class="badge-svg-text">
+                    <path id="curve-<?php echo $i; ?>" d="M 15,133 Q 90,165 165,133" fill="transparent" />
+                    <text width="180">
+                      <textPath href="#curve-<?php echo $i; ?>" startOffset="50%" text-anchor="middle">
+                        <?php echo esc_html($predicate); ?>
+                      </textPath>
+                    </text>
+                  </svg>
                 </div>
               </div>
             </div>
