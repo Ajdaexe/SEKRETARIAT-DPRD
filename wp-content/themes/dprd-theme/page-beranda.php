@@ -143,7 +143,7 @@ get_header();
                   <img src="<?php echo get_template_directory_uri(); ?>/assets/images/badge.png" alt="Badge IKM" class="ikm-badge">
                   <span class="badge-grade"><?php echo esc_html($grade); ?></span>
                   <svg viewBox="0 0 180 180" class="badge-svg-text">
-                    <path id="curve-<?php echo $index; ?>" d="M 15,151 Q 90,127 165,151" fill="transparent" />
+                    <path id="curve-<?php echo $index; ?>" d="M 17,148 Q 92,124 167,148" fill="transparent" />
                     <text width="180">
                       <textPath href="#curve-<?php echo $index; ?>" startOffset="50%" text-anchor="middle">
                         <?php echo esc_html($predicate); ?>
