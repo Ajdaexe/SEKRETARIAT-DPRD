@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Template Name: PPID
  *
@@ -216,7 +216,7 @@ get_header();
 
     let showAll = false;
 
-    function animateValue(id, start, end, duration, isFormatted = false) {
+    function animateValue(id, start, end, duration, isFormatted = false, suffix = '') {
       const obj = document.getElementById(id);
       if (!obj) return;
       let startTimestamp = null;
@@ -224,7 +224,8 @@ get_header();
         if (!startTimestamp) startTimestamp = timestamp;
         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
         const current = Math.floor(progress * (end - start) + start);
-        obj.textContent = isFormatted ? current.toLocaleString('id-ID') : current;
+        let val = isFormatted ? current.toLocaleString('id-ID') : current;
+        obj.textContent = val + suffix;
         if (progress < 1) {
           window.requestAnimationFrame(step);
         }
@@ -233,11 +234,15 @@ get_header();
     }
 
     function initStats() {
-      const totalDokumen = dokumenData.length;
-      const totalPermintaan = dokumenData.filter(d => d.tahun === 2026).length * 25 + 45;
+      const num1 = <?php echo intval( get_option('dprd_stat_ppid_num_1', 22) ); ?>;
+      const num2 = <?php echo intval( get_option('dprd_stat_ppid_num_2', 120) ); ?>;
+      const num3 = <?php echo intval( get_option('dprd_stat_ppid_num_3', 100) ); ?>;
+      const num4 = <?php echo intval( get_option('dprd_stat_ppid_num_4', 100) ); ?>;
 
-      animateValue('stat-dokumen', 0, totalDokumen, 2000);
-      animateValue('stat-permintaan', 0, totalPermintaan, 2000);
+      animateValue('stat-dokumen', 0, num1, 2000);
+      animateValue('stat-permintaan', 0, num2, 2000);
+      animateValue('stat-layanan', 0, num3, 2000, false, '%');
+      animateValue('stat-komitmen', 0, num4, 2000, false, '%');
     }
 
     let hasAnimatedStats = false;
@@ -394,4 +399,5 @@ get_header();
   </script>
 
 <?php get_footer(); ?>
+
 

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Tema Kustom DPRD functions and definitions
  *
@@ -398,7 +398,7 @@ function dprd_render_struktur_options_page() {
                         </div>
 
                         <p style="margin-top:10px; margin-bottom:0; font-size:11.5px; color:#64748b; font-style:italic; text-align:center;">
-                            âœ¨ Hasil penggabungan teks & foto diperbarui secara langsung saat Anda menggeser box crop di sebelah kiri!
+                            Ã¢Å“Â¨ Hasil penggabungan teks & foto diperbarui secara langsung saat Anda menggeser box crop di sebelah kiri!
                         </p>
                     </div>
                 </div>
@@ -407,12 +407,12 @@ function dprd_render_struktur_options_page() {
             <!-- CONTROLS TOOLBAR -->
             <div style="padding:14px 24px; background:#ffffff; border-top:1px solid #e2e8f0; display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between; align-items:center;">
                 <div style="display:flex; gap:8px; align-items:center;">
-                    <button type="button" class="button" id="crop_rotate_left" title="Putar Kiri"><span class="dashicons dashicons-undo"></span> -90Â°</button>
-                    <button type="button" class="button" id="crop_rotate_right" title="Putar Kanan"><span class="dashicons dashicons-redo"></span> +90Â°</button>
+                    <button type="button" class="button" id="crop_rotate_left" title="Putar Kiri"><span class="dashicons dashicons-undo"></span> -90Ã‚Â°</button>
+                    <button type="button" class="button" id="crop_rotate_right" title="Putar Kanan"><span class="dashicons dashicons-redo"></span> +90Ã‚Â°</button>
                     <button type="button" class="button" id="crop_zoom_in" title="Perbesar"><span class="dashicons dashicons-plus-alt2"></span></button>
                     <button type="button" class="button" id="crop_zoom_out" title="Perkecil"><span class="dashicons dashicons-minus"></span></button>
                     <select id="crop_aspect_ratio" class="button" style="height:30px; line-height:1; font-size:13px; font-weight:600; color:#A5182B;" disabled>
-                        <option value="3.076923076923077" selected>ðŸ”’ Rasio Box Foto (Terkunci Presisi 800:260)</option>
+                        <option value="3.076923076923077" selected>Ã°Å¸â€â€™ Rasio Box Foto (Terkunci Presisi 800:260)</option>
                     </select>
                 </div>
 
@@ -1561,5 +1561,77 @@ function dprd_cta_settings_page_html() {
         }
     });
     </script>
+    <?php
+}
+
+// ==========================================
+// PENGATURAN STATISTIK PPID
+// ==========================================
+
+function dprd_ppid_settings_menu() {
+    add_menu_page(
+        'Pengaturan PPID', 
+        'Pengaturan PPID', 
+        'manage_options', 
+        'dprd-ppid-settings', 
+        'dprd_ppid_settings_page_html', 
+        'dashicons-chart-bar', 
+        28
+    );
+}
+add_action( 'admin_menu', 'dprd_ppid_settings_menu' );
+
+function dprd_ppid_settings_init() {
+    for ($i = 1; $i <= 4; $i++) {
+        register_setting( 'dprd_ppid_settings_group', 'dprd_stat_ppid_label_' . $i );
+        register_setting( 'dprd_ppid_settings_group', 'dprd_stat_ppid_num_' . $i );
+    }
+}
+add_action( 'admin_init', 'dprd_ppid_settings_init' );
+
+function dprd_ppid_settings_page_html() {
+    if ( ! current_user_can( 'manage_options' ) ) return;
+    ?>
+    <div class="wrap">
+        <h1>Pengaturan Statistik PPID</h1>
+        <p>Silakan isi teks label dan angka untuk ditampilkan pada bagian statistik di halaman PPID.</p>
+        <form action="options.php" method="post">
+            <?php
+            settings_fields( 'dprd_ppid_settings_group' );
+            do_settings_sections( 'dprd_ppid_settings_group' );
+            ?>
+            <table class="form-table">
+                <tr valign="top">
+                    <th scope="row">Statistik 1</th>
+                    <td>
+                        <input type="text" name="dprd_stat_ppid_label_1" value="<?php echo esc_attr( get_option('dprd_stat_ppid_label_1', 'Dokumen / Informasi Tersedia untuk publik') ); ?>" placeholder="Teks Label" style="width: 250px; margin-right: 10px;" />
+                        <input type="number" name="dprd_stat_ppid_num_1" value="<?php echo esc_attr( get_option('dprd_stat_ppid_num_1', 22) ); ?>" placeholder="Angka" style="width: 100px;" />
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Statistik 2</th>
+                    <td>
+                        <input type="text" name="dprd_stat_ppid_label_2" value="<?php echo esc_attr( get_option('dprd_stat_ppid_label_2', 'Permintaan Informasi Tahun Ini') ); ?>" placeholder="Teks Label" style="width: 250px; margin-right: 10px;" />
+                        <input type="number" name="dprd_stat_ppid_num_2" value="<?php echo esc_attr( get_option('dprd_stat_ppid_num_2', 120) ); ?>" placeholder="Angka" style="width: 100px;" />
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Statistik 3</th>
+                    <td>
+                        <input type="text" name="dprd_stat_ppid_label_3" value="<?php echo esc_attr( get_option('dprd_stat_ppid_label_3', 'Layanan Cepat Sesuai SOP') ); ?>" placeholder="Teks Label" style="width: 250px; margin-right: 10px;" />
+                        <input type="number" name="dprd_stat_ppid_num_3" value="<?php echo esc_attr( get_option('dprd_stat_ppid_num_3', 100) ); ?>" placeholder="Angka" style="width: 100px;" /> %
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Statistik 4</th>
+                    <td>
+                        <input type="text" name="dprd_stat_ppid_label_4" value="<?php echo esc_attr( get_option('dprd_stat_ppid_label_4', 'Komitmen Transparan & Akuntabel') ); ?>" placeholder="Teks Label" style="width: 250px; margin-right: 10px;" />
+                        <input type="number" name="dprd_stat_ppid_num_4" value="<?php echo esc_attr( get_option('dprd_stat_ppid_num_4', 100) ); ?>" placeholder="Angka" style="width: 100px;" /> %
+                    </td>
+                </tr>
+            </table>
+            <?php submit_button(); ?>
+        </form>
+    </div>
     <?php
 }
