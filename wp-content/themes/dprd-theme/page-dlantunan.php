@@ -9,71 +9,87 @@ get_header();
 ?>
 
 <style>
-/* ===== HERO SECTION FIGMA 1:1 OVERLAPPING LAYOUT ===== */
-.figma-hero-wrapper {
-  position: relative !important;
-  width: calc(100% - 80px) !important;
-  max-width: 1180px !important;
-  margin: 30px auto 0 !important;
-  height: 440px !important;
-  min-height: 440px !important;
-  z-index: 2 !important;
-  display: block !important;
-}
-
-.figma-hero-banner {
+/* ===== BATIK EDGE MOTIFS (100% DISAMAKAN DENGAN HALAMAN PROFIL) ===== */
+.batik-desktop-edge {
   position: absolute !important;
-  left: 0 !important;
-  top: 0 !important;
-  width: 76% !important;
-  height: 100% !important;
-  border-radius: 24px !important;
-  overflow: hidden !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
-  cursor: pointer !important;
-  z-index: 1 !important;
+  top: 380px !important;
+  height: 480px !important;
+  width: auto !important;
+  object-fit: contain !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+  opacity: 0.96 !important;
+  overflow: visible !important;
 }
 
-.figma-hero-banner img#heroImage {
+.batik-desktop-edge-left {
+  left: 0 !important;
+}
+
+.batik-desktop-edge-right {
+  right: 0 !important;
+}
+
+/* ===== HERO SECTION (FULL-WIDTH DISAMAKAN PERSIS DENGAN PROFIL) ===== */
+.hero {
+  position: relative !important;
+  width: 100% !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  height: calc(100vh - 96px) !important;
+  min-height: 540px !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  transition: height 0.2s ease-out, box-shadow 0.3s ease-in-out !important;
+}
+
+.hero:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.hero img#heroImage {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
   object-position: center 60% !important;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  transform: scale(1.05) !important;
+  transition: transform 0.5s ease !important;
 }
 
-.figma-hero-banner:hover img#heroImage {
-  transform: scale(1.04) !important;
+.hero:hover img#heroImage {
+  transform: scale(1.1) !important;
 }
 
-.figma-hero-overlay {
+.hero-overlay-dlantunan {
   position: absolute !important;
   inset: 0 !important;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.45) 60%, rgba(0, 0, 0, 0.1) 100%) !important;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.15) 100%) !important;
+  z-index: 1 !important;
   pointer-events: none !important;
-  z-index: 2 !important;
 }
 
-.figma-hero-text {
+.hero-text-left {
   position: absolute !important;
-  left: 44px !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-  max-width: 440px !important;
+  left: 60px !important;
+  bottom: 65px !important;
+  max-width: 480px !important;
   color: #ffffff !important;
+  pointer-events: auto !important;
   z-index: 3 !important;
 }
 
-.figma-hero-text h2 {
-  font-size: 42px !important;
+.hero-text-left h2 {
+  font-size: 44px !important;
   font-weight: 800 !important;
-  margin-bottom: 14px !important;
-  line-height: 1.15 !important;
+  margin-bottom: 16px !important;
+  line-height: 1.1 !important;
   color: #ffffff !important;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4) !important;
 }
 
-.figma-hero-text p {
+.hero-text-left p {
   font-size: 15px !important;
   line-height: 1.65 !important;
   color: rgba(255, 255, 255, 0.95) !important;
@@ -81,67 +97,76 @@ get_header();
 }
 
 .figma-welcome-card {
+  pointer-events: auto !important;
   position: absolute !important;
-  right: 0 !important;
+  right: 40px !important;
   top: 50% !important;
   transform: translateY(-50%) !important;
-  width: 38% !important;
-  max-width: 440px !important;
-  min-width: 340px !important;
+  z-index: 3 !important;
+  width: 390px !important;
+  max-width: 100% !important;
   background: #ffffff !important;
   border-radius: 20px !important;
-  padding: 30px 28px !important;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(0, 0, 0, 0.06) !important;
-  border: 1px solid #ECE8E4 !important;
-  z-index: 10 !important;
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
-              box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
-              border-color 0.35s ease !important;
+  padding: 26px 26px !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  flex-shrink: 0 !important;
+  cursor: pointer !important;
+  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out !important;
 }
 
 .figma-welcome-card:hover {
-  transform: translateY(calc(-50% - 6px)) scale(1.02) !important;
-  box-shadow: 0 24px 50px rgba(155, 27, 43, 0.22), 0 8px 24px rgba(0, 0, 0, 0.12) !important;
-  border-color: rgba(155, 27, 43, 0.35) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(calc(-50% - 4px)) !important;
 }
 
-.figma-welcome-card .icon-circle.red-bubble {
+.card-header-row {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 14px !important;
+  margin-bottom: 16px !important;
+}
+
+.card-icon-bubble {
   width: 44px !important;
   height: 44px !important;
   border-radius: 50% !important;
-  background: #9B1B2B !important;
+  background: #FCE8E8 !important;
+  color: #A5182B !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  margin-bottom: 16px !important;
-  box-shadow: 0 4px 14px rgba(155, 27, 43, 0.25) !important;
-  transition: transform 0.3s ease, background-color 0.3s ease !important;
+  flex-shrink: 0 !important;
+  transition: transform 0.35s ease, background-color 0.3s ease, color 0.3s ease !important;
 }
 
-.figma-welcome-card:hover .icon-circle.red-bubble {
-  transform: scale(1.12) !important;
-  background: #7D1220 !important;
+.card-icon-bubble svg {
+  transition: fill 0.3s ease !important;
 }
 
-.figma-welcome-card .icon-circle.red-bubble .icon-img {
-  width: 22px !important;
-  height: 22px !important;
-  filter: brightness(0) invert(1) !important;
+.figma-welcome-card:hover .card-icon-bubble {
+  transform: scale(1.12) rotate(-5deg) !important;
+  background: #A5182B !important;
+  color: #ffffff !important;
 }
 
-.figma-welcome-card h3 {
-  font-size: 21px !important;
+.figma-welcome-card:hover .card-icon-bubble svg {
+  fill: #ffffff !important;
+}
+
+.card-header-row h3 {
+  font-size: 20px !important;
   font-weight: 700 !important;
-  color: #1A1A1A !important;
-  margin-bottom: 14px !important;
-  line-height: 1.3 !important;
+  color: #111111 !important;
+  line-height: 1.25 !important;
+  margin: 0 !important;
 }
 
 .figma-welcome-card p {
-  font-size: 13.5px !important;
-  color: #555555 !important;
-  line-height: 1.65 !important;
-  margin-bottom: 10px !important;
+  font-size: 13px !important;
+  color: #666666 !important;
+  line-height: 1.6 !important;
+  margin-bottom: 12px !important;
 }
 
 .figma-welcome-card p:last-child {
@@ -149,55 +174,45 @@ get_header();
 }
 
 @media (max-width: 992px) {
-  .figma-hero-wrapper {
-    height: auto !important;
-    min-height: initial !important;
-    display: flex !important;
-    flex-direction: column !important;
-    width: calc(100% - 40px) !important;
-    gap: 20px !important;
+  .hero-text-left {
+    left: 20px !important;
+    bottom: 30px !important;
+    max-width: calc(100% - 40px) !important;
   }
-  
-  .figma-hero-banner {
-    position: relative !important;
-    width: 100% !important;
-    height: 380px !important;
-  }
-  
+
   .figma-welcome-card {
-    position: relative !important;
-    right: auto !important;
-    top: auto !important;
-    transform: none !important;
-    width: 100% !important;
-    max-width: 100% !important;
+    right: 20px !important;
+    width: calc(100% - 40px) !important;
   }
 }
 </style>
 
-<!-- ===== HERO SECTION (FIGMA 1:1 OVERLAPPING LAYOUT) ===== -->
-<div class="figma-hero-wrapper">
-  <!-- Banner Gambar Utama di Kiri (76% Width) -->
-  <div class="figma-hero-banner" id="heroSection" onclick="openHeroLightbox()">
-    <img id="heroImage" src="https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png" alt="Gedung Sekretariat DPRD">
-    <div class="figma-hero-overlay"></div>
-    <div class="figma-hero-text" id="heroText">
-      <h2>D'Lantunan</h2>
-      <p>Portal Layanan digital dadn aspirasi masyarakat Sekretariat DPRD Kabupaten Purbalingga untuk permohonan layanan dan kebutuhan administratif secara mudah, cepat, dan transparan.</p>
-    </div>
+<!-- ===== HERO SECTION (FULL-WIDTH DISAMAKAN PERSIS DENGAN PROFIL) ===== -->
+<section class="hero" id="heroSection" onclick="openHeroLightbox()">
+  <img id="heroImage" src="https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png" alt="Gedung Sekretariat DPRD Purbalingga">
+  <div class="hero-overlay-dlantunan"></div>
+
+  <!-- Left Side: Title & Description (Directly at left: 40px; bottom: 50px; like Profil) -->
+  <div class="hero-text-left" id="heroText">
+    <h2>D'Lantunan</h2>
+    <p>Portal Layanan digital dan aspirasi masyarakat Sekretariat DPRD Kabupaten Purbalingga untuk permohonan layanan dan kebutuhan administratif secara mudah, cepat, dan transparan.</p>
   </div>
 
-  <!-- Card Putih Selamat Datang di Kanan (Position Absolute Right: 0, Width: 38% Overlapping) -->
-  <div class="figma-welcome-card">
-    <div class="icon-circle red-bubble">
-      <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/sms.png" alt="SMS Icon" onerror="this.onerror=null; this.src='<?php echo get_template_directory_uri(); ?>/assets/images/email merah.png';">
+  <!-- Right Side: Floating White Welcome Card -->
+  <div class="figma-welcome-card" onclick="event.stopPropagation();">
+    <div class="card-header-row">
+      <div class="card-icon-bubble">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="#A5182B">
+          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-11 9c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm4 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm4 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+        </svg>
+      </div>
+      <h3>Selamat Datang di<br>D'Lantunan</h3>
     </div>
-    <h3>Selamat Datang di D'Lantunan</h3>
     <p>D'Lantunan adalah portal layanan dan aspirasi masyarakat Sekretariat DPRD Kabupaten Purbalingga.</p>
     <p>Melalui portal ini, Anda dapat mengajukan berbagai permohonan layanan dengan mudah secara daring.</p>
     <p>Kami berkomitmen memberikan pelayanan yang cepat, transparan, dan akuntabel.</p>
   </div>
-</div>
+</section>
 
 <!-- Modal Lightbox untuk Foto Hero -->
 <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox(event)">
@@ -448,111 +463,28 @@ get_header();
   </div>
 </section>
 
-</div>
-
 <!-- ===== CTA BANNER ===== -->
 <section class="cta-section">
-  <div class="wrap" style="max-width:none;">
+  <div class="wrap" style="padding:0; max-width:none;">
     <div class="cta-banner">
       <div class="cta-left">
-        <div class="cta-icon-circle">
-          <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/user account.png" alt="User Account Icon" style="filter:brightness(0) invert(1); width:22px; height:22px;">
+        <div class="icon-circle">
+          <img src="<?php echo get_template_directory_uri(); ?>/assets/images/user account.png" alt="User Account Icon" style="filter:brightness(0) invert(1); width:22px; height:22px;">
         </div>
-        <h3>D'Lantunan untuk pelayanan publik yang lebih cepat,</h3>
+        <h3>Bersama Mewujudkan DPRD yang Berkinerja<br>Tinggi dan Melayani Masyarakat</h3>
       </div>
       <a
         href="https://mail.google.com/mail/?view=cm&fs=1&to=sekretariat@dprd.purbalingga.go.id&su=Permohonan%20Informasi"
         target="_blank"
         rel="noopener noreferrer"
-        class="btn-outline-white">
-        Hubungi Kami <span class="arrow-icon">&rsaquo;</span>
+        class="btn-outline">
+        Hubungi Kami
       </a>
     </div>
   </div>
 </section>
 
-<footer>
-    <div class="footer-grid">
-      <div>
-        <div class="footer-logo">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Lambang_Kabupaten_Purbalingga.png" alt="Logo">
-          <div>
-            <h3>Sekretariat DPRD</h3>
-            <p>Kabupaten Purbalingga</p>
-          </div>
-        </div>
-        <p class="footer-desc">Mendukung kelancaran tugas dan wewenang DPRD melalui pelayanan yang profesional,
-          transparan, dan akuntabel.</p>
-        <div class="socials">
-          <a href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
-            <span><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/facebook.png" alt="Facebook"></span>
-          </a>
-          <a href="https://www.instagram.com/sekretariatdprd_pbg?igsh=MXQ2ZGQwenA2a2NxYw==" target="_blank"
-            rel="noopener noreferrer" style="text-decoration:none;">
-            <span><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/instagram.png" alt="Instagram"></span>
-          </a>
-          <a href="https://youtube.com/@dprdpurbalingga?si=SaazLFY6H9PvVLw1" target="_blank" rel="noopener noreferrer"
-            style="text-decoration:none;">
-            <span>
-              <svg class="icon-img" viewBox="0 0 24 24" fill="#ffffff" width="16" height="16">
-                <path
-                  d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-              </svg>
-            </span>
-          </a>
-          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sekretariat@dprd.purbalingga.go.id" target="_blank"
-            rel="noopener noreferrer" style="text-decoration:none;">
-            <span><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/email.png" alt="Email"></span>
-          </a>
-        </div>
-      </div>
+</div><!-- /.container -->
 
-      <div class="footer-col-border">
-        <h6>Kontak Kami</h6>
-        <div class="contact-item">
-          <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/maps.png" alt="Maps">
-          <span>Jl. Onje No.2A Purbalingga, Jawa Tengah</span>
-        </div>
-        <div class="contact-item">
-          <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/phone.png" alt="Phone">
-          <span><a href="tel:02818951058" style="color:inherit;text-decoration:none;">Telp. (0281) 8951058</a></span>
-        </div>
-        <div class="contact-item">
-          <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/website.png" alt="Website">
-          <span><a href="https://dprd.purbalinggakab.go.id" target="_blank" rel="noopener noreferrer"
-              style="color:inherit;text-decoration:none;">www.dprd.purbalingga.go.id</a></span>
-        </div>
-        <div class="contact-item">
-          <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/email merah.png" alt="Email">
-          <span><a href="https://mail.google.com/mail/?view=cm&fs=1&to=sekretariat@dprd.purbalingga.go.id"
-              target="_blank" rel="noopener noreferrer"
-              style="color:inherit;text-decoration:none;">sekretariat@dprd.purbalingga.go.id</a></span>
-        </div>
-      </div>
-
-      <div class="footer-col-border">
-        <h6>Jam Layanan</h6>
-        <div class="jam-item">
-          <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/clock tipis.png" alt="Clock">
-          <div>
-            <b>Senin - Kamis</b>
-            <span>07:30 - 16:00 WIB</span>
-          </div>
-        </div>
-        <div class="jam-item">
-          <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/clock tipis.png" alt="Clock">
-          <div>
-            <b>Jumat</b>
-            <span>07:30 - 14:30 WIB</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <div class="copyright">&copy; 2026 Sekretariat DPRD Kabupaten Purbalingga. All rights reserved.</div>
-
-  <?php wp_footer(); ?>
-</body>
-</html>
+<?php get_footer(); ?>
 

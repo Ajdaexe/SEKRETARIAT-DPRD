@@ -199,7 +199,12 @@
     height: calc(100vh - 96px);
     min-height: 540px;
     cursor: pointer;
-    transition: height 0.2s ease-out;
+    box-shadow: none;
+    transition: height 0.2s ease-out, box-shadow 0.3s ease-in-out;
+  }
+
+  .hero:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   }
 
   .hero img {

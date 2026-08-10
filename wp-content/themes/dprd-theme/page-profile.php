@@ -20,7 +20,12 @@ get_header();
   height: calc(100vh - 96px) !important;
   min-height: 540px !important;
   cursor: pointer !important;
-  transition: height 0.2s ease-out !important;
+  box-shadow: none !important;
+  transition: height 0.2s ease-out, box-shadow 0.3s ease-in-out !important;
+}
+
+.hero:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
 }
 
 .hero img#heroImage {

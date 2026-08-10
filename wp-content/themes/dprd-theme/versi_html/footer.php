@@ -79,6 +79,27 @@
 
   <div class="copyright">&copy; 2026 Sekretariat DPRD Kabupaten Purbalingga. All rights reserved.</div>
 
+  <script>
+    function triggerSearchFocus() {
+      const box = document.getElementById('searchBoxAnimated');
+      if (box) {
+        box.classList.add('active');
+        const input = document.getElementById('globalSearchInput');
+        if (input) {
+          input.focus();
+        }
+      }
+    }
+
+    document.addEventListener('click', function (e) {
+      const searchContainer = document.querySelector('.search-container');
+      const searchBox = document.getElementById('searchBoxAnimated');
+      if (searchContainer && searchBox && !searchContainer.contains(e.target)) {
+        searchBox.classList.remove('active');
+      }
+    });
+  </script>
+
   <?php if(isset($pageScript) && $pageScript): ?>
   <script src="<?php echo $pageScript; ?>"></script>
   <?php endif; ?>
