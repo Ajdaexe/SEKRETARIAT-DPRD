@@ -12,9 +12,6 @@
 
 <body>
 
-  <!-- Motif Batik Full Viewport Desktop Edge -->
-  <img src="<?php echo get_template_directory_uri(); ?>/assets/images/motif kiri.svg" alt="Motif Batik Kiri Desktop" class="batik-desktop-edge batik-desktop-edge-left">
-  <img src="<?php echo get_template_directory_uri(); ?>/assets/images/motif kanan.svg" alt="Motif Batik Kanan Desktop" class="batik-desktop-edge batik-desktop-edge-right">
   <header id="mainHeader">
     <div class="logo-wrap">
       <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Lambang_Kabupaten_Purbalingga.png"
@@ -39,4 +36,8 @@
       </div>
     </div>
   </header>
+
+  <!-- Motif Batik Full Viewport Desktop Edge -->
+  <img src="<?php echo get_template_directory_uri(); ?>/assets/images/motif kiri.svg" alt="Motif Batik Kiri Desktop" class="batik-desktop-edge batik-desktop-edge-left">
+  <img src="<?php echo get_template_directory_uri(); ?>/assets/images/motif kanan.svg" alt="Motif Batik Kanan Desktop" class="batik-desktop-edge batik-desktop-edge-right">
 

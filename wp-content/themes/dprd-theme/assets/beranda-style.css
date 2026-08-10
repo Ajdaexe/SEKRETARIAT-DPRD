@@ -55,7 +55,7 @@
     }
 
     header.scrolled {
-      padding: 12px 40px;
+      padding: 12px 40px; 
       box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
     }
 
@@ -90,7 +90,6 @@
 
     .logo-wrap p {
       font-size: 13px;
-      color: var(--teks);
       font-weight: 500;
     }
 
@@ -182,34 +181,6 @@
 
     .search-box-animated.active input {
       opacity: 1;
-    }
-
-    .stat-icon .icon-img {
-      width: 24px;
-      height: 24px;
-    }
-
-    .card-tag .icon-img {
-      width: 16px;
-      height: 16px;
-    }
-
-    .quick-ic .icon-img {
-      width: 20px;
-      height: 20px;
-    }
-
-    .socials .icon-img {
-      width: 16px;
-      height: 16px;
-      filter: brightness(0) invert(1);
-    }
-
-    .contact-item .icon-img,
-    .jam-item .icon-img {
-      width: 15px;
-      height: 15px;
-      margin-top: 2px;
     }
 
     /* HERO */
@@ -1367,7 +1338,7 @@
     /* Full Viewport Desktop Edge Batik Motifs */
     .batik-desktop-edge {
       position: absolute;
-      top: 260px;
+      top: 380px;
       height: 420px;
       width: auto;
       object-fit: contain;

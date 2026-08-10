@@ -42,158 +42,157 @@
     object-fit: contain;
   }
 
-  /* HEADER - Fixed Navbar agar 100% Stay Menempel di Atas */
-  header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 22px 40px;
-    border-bottom: 1px solid var(--border);
-    z-index: 1000;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-    transition: padding 0.3s ease, box-shadow 0.3s ease;
-  }
+  /* HEADER - Sticky Navbar dengan Efek Shrink ke Atas yang Stabil */
+    header {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 22px 40px;
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      transition: padding 0.3s ease, box-shadow 0.3s ease;
+    }
 
-  header.scrolled {
-    padding: 12px 40px; 
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
-  }
+    header.scrolled {
+      padding: 12px 40px; 
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+    }
 
-  .logo-wrap {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
 
-  .logo-wrap img {
-    width: 52px;
-    height: 52px;
-    transition: width 0.3s ease, height 0.3s ease;
-  }
+    .logo-wrap img {
+      width: 52px;
+      height: 52px;
+      transition: width 0.3s ease, height 0.3s ease;
+    }
 
-  header.scrolled .logo-wrap img {
-    width: 42px;
-    height: 42px;
-  }
+    header.scrolled .logo-wrap img {
+      width: 42px;
+      height: 42px;
+    }
 
-  .logo-wrap h1 {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--merah);
-    line-height: 1.1;
-    transition: font-size 0.3s ease;
-  }
+    .logo-wrap h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--merah);
+      line-height: 1.1;
+      transition: font-size 0.3s ease;
+    }
 
-  header.scrolled .logo-wrap h1 {
-    font-size: 19px;
-  }
+    header.scrolled .logo-wrap h1 {
+      font-size: 19px;
+    }
 
-  .logo-wrap p {
-    font-size: 13px;
-    font-weight: 500;
-  }
+    .logo-wrap p {
+      font-size: 13px;
+      font-weight: 500;
+    }
 
-  nav {
-    display: flex;
-    align-items: center;
-    gap: 34px;
-  }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 34px;
+    }
 
-  nav a {
-    font-size: 15px;
-    font-weight: 500;
-    color: #333;
-    padding-bottom: 6px;
-    border-bottom: 3px solid transparent;
-    transition: color 0.2s ease, border-color 0.2s ease, font-weight 0.2s ease;
-  }
+    nav a {
+      font-size: 15px;
+      font-weight: 500;
+      color: #333;
+      padding-bottom: 6px;
+      border-bottom: 3px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease, font-weight 0.2s ease;
+    }
 
-  nav a:hover,
-  nav a.active {
-    color: var(--merah);
-    font-weight: 600;
-    border-bottom-color: var(--merah);
-  }
+    nav a:hover,
+    nav a.active {
+      color: var(--merah);
+      font-weight: 600;
+      border-bottom-color: var(--merah);
+    }
 
-  /* SEARCH BAR ANIMATION */
-  .search-container {
+    /* SEARCH BAR ANIMATION */
+    .search-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box-animated {
+      display: flex;
+      align-items: center;
+      width: 42px;
+      height: 42px;
+      background: transparent;
+      border: 2px solid var(--border);
+      border-radius: 50px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0 10px;
+    }
+
+    .search-box-animated.active {
+      width: 280px;
+      border-color: var(--merah);
+      box-shadow: 0 4px 15px rgba(165, 24, 43, 0.08);
+      background: #fff;
+    }
+
+    .search-box-animated .search-btn-icon {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .search-box-animated .icon-img {
+      width: 18px;
+      height: 18px;
+      filter: brightness(0) saturate(100%);
+      transition: filter 0.3s ease;
+    }
+
+    .search-box-animated.active .icon-img {
+      filter: brightness(0) saturate(100%) invert(18%) sepia(85%) saturate(4500%) hue-rotate(340deg) brightness(85%) contrast(90%);
+    }
+
+    .search-box-animated input {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      font-size: 14px;
+      background: transparent;
+      padding-left: 10px;
+      color: var(--teks);
+      opacity: 0;
+      transition: opacity 0.3s ease 0.1s;
+    }
+
+    .search-box-animated.active input {
+      opacity: 1;
+    }
+
+    /* HERO */
+    .hero {
     position: relative;
-    display: flex;
-    align-items: center;
-  }
-
-  .search-box-animated {
-    display: flex;
-    align-items: center;
-    width: 42px;
-    height: 42px;
-    background: transparent;
-    border: 2px solid var(--border);
-    border-radius: 50px;
-    cursor: pointer;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 0 10px;
-  }
-
-  .search-box-animated.active {
-    width: 280px;
-    border-color: var(--merah);
-    box-shadow: 0 4px 15px rgba(165, 24, 43, 0.08);
-    background: #fff;
-  }
-
-  .search-box-animated .search-btn-icon {
-    width: 22px;
-    height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-
-  .search-box-animated .icon-img {
-    width: 18px;
-    height: 18px;
-    filter: brightness(0) saturate(100%);
-    transition: filter 0.3s ease;
-  }
-
-  .search-box-animated.active .icon-img {
-    filter: brightness(0) saturate(100%) invert(18%) sepia(85%) saturate(4500%) hue-rotate(340deg) brightness(85%) contrast(90%);
-  }
-
-  .search-box-animated input {
     width: 100%;
-    border: none;
-    outline: none;
-    font-family: inherit;
-    font-size: 14px;
-    background: transparent;
-    padding-left: 10px;
-    color: var(--teks);
-    opacity: 0;
-    transition: opacity 0.3s ease 0.1s;
-  }
-
-  .search-box-animated.active input {
-    opacity: 1;
-  }
-
-  /* HERO */
-  .hero {
-    position: relative;
-    width: 100%;
-    margin-top: 96px;
-    margin-bottom: 0;
+    margin: 0;
+    border-radius: 0;
     border-radius: 0;
     overflow: hidden;
     height: calc(100vh - 96px);
@@ -825,7 +824,7 @@
 
     .hero {
       height: 340px;
-      margin-top: 80px;
+      margin: 0;
     }
 
     .hero-text {
@@ -923,3 +922,4 @@
     object-fit: contain;
     flex-shrink: 0;
   }
+
