@@ -178,6 +178,7 @@ function dprd_theme_admin_scripts($hook) {
     if ( $hook != 'toplevel_page_dprd-statistik-beranda' ) {
         return;
     }
+    wp_enqueue_media(); // For file uploads (PDF)
     wp_enqueue_style( 'cropper-css', 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css' );
     wp_enqueue_script( 'cropper-js', 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js', array(), '1.5.13', true );
 }
@@ -232,6 +233,11 @@ function dprd_theme_settings_init() {
     register_setting( 'dprd_statistik_beranda_group', 'dprd_video_title' );
     register_setting( 'dprd_statistik_beranda_group', 'dprd_video_url' );
     register_setting( 'dprd_statistik_beranda_group', 'dprd_video_thumbnail_base64', array( 'sanitize_callback' => 'dprd_handle_video_thumb_base64' ) );
+
+    // Informasi Terbaru Settings
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_info_title' );
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_info_date' );
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_info_file_url' );
 }
 add_action( 'admin_init', 'dprd_theme_settings_init' );
 
@@ -316,6 +322,26 @@ function dprd_theme_settings_page_html() {
                 </tr>
             </table>
 
+            <hr style="margin: 30px 0;">
+            <h2>Pengaturan Informasi Terbaru</h2>
+            <table class="form-table">
+                <tr valign="top">
+                    <th scope="row">Judul File</th>
+                    <td><input type="text" name="dprd_info_title" value="<?php echo esc_attr( get_option('dprd_info_title', '3 Renja Sekretariat DPRD Tahun 2023 Revisi 1') ); ?>" style="width: 100%; max-width: 600px;" /></td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Tanggal Upload</th>
+                    <td><input type="text" name="dprd_info_date" value="<?php echo esc_attr( get_option('dprd_info_date', '12 Mei 2023') ); ?>" style="width: 100%; max-width: 300px;" placeholder="Contoh: 12 Mei 2023" /></td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">File (PDF/Link)</th>
+                    <td>
+                        <input type="url" name="dprd_info_file_url" id="dprd_info_file_url" value="<?php echo esc_url( get_option('dprd_info_file_url', get_template_directory_uri() . '/assets/pdf/DOR.pdf') ); ?>" style="width: 100%; max-width: 500px;" />
+                        <button type="button" class="button button-secondary" id="btn_upload_info_file">Pilih / Unggah File</button>
+                    </td>
+                </tr>
+            </table>
+
             <?php submit_button(); ?>
         </form>
     </div>
@@ -361,6 +387,31 @@ function dprd_theme_settings_page_html() {
                     cropperContainer.style.display = 'none';
                     alert("Gambar berhasil dicrop! Jangan lupa klik 'Save Changes' di bawah untuk menyimpan pengaturan.");
                 }
+            });
+        }
+
+        // Media Uploader for Informasi Terbaru File
+        var btnUploadInfoFile = document.getElementById('btn_upload_info_file');
+        var inputInfoFileUrl = document.getElementById('dprd_info_file_url');
+        var mediaUploader;
+
+        if (btnUploadInfoFile) {
+            btnUploadInfoFile.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (mediaUploader) {
+                    mediaUploader.open();
+                    return;
+                }
+                mediaUploader = wp.media({
+                    title: 'Pilih atau Unggah File',
+                    button: { text: 'Gunakan File Ini' },
+                    multiple: false
+                });
+                mediaUploader.on('select', function() {
+                    var attachment = mediaUploader.state().get('selection').first().toJSON();
+                    inputInfoFileUrl.value = attachment.url;
+                });
+                mediaUploader.open();
             });
         }
     });

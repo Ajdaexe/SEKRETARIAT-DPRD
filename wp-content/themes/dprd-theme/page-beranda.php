@@ -93,13 +93,13 @@ get_header();
               alt=""></span> Informasi Terbaru</span>
         <a href="<?php echo dprd_get_page_url('ppid', 'docCard'); ?>" class="lihat">Lihat Semua &rsaquo;</a>
       </div>
-      <div class="info-item" onclick="window.location.href='<?php echo get_template_directory_uri(); ?>/assets/pdf/DOR.pdf'">
-        <div class="doc-ic">PDF</div>
-        <div>
-          <div class="doc-title">3 Renja Sekretariat DPRD Tahun 2023 Revisi 1</div>
-          <div class="doc-date">12 Mei 2023</div>
+        <div class="info-item" onclick="window.location.href='<?php echo esc_url( get_option('dprd_info_file_url', get_template_directory_uri() . '/assets/pdf/DOR.pdf') ); ?>'">
+          <div class="doc-ic">PDF</div>
+          <div>
+            <div class="doc-title"><?php echo esc_html( get_option('dprd_info_title', '3 Renja Sekretariat DPRD Tahun 2023 Revisi 1') ); ?></div>
+            <div class="doc-date"><?php echo esc_html( get_option('dprd_info_date', '12 Mei 2023') ); ?></div>
+          </div>
         </div>
-      </div>
     </div>
   </div>
 
