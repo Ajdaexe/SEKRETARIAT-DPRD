@@ -2781,6 +2781,15 @@ function dprd_dokumen_custom_column($column, $post_id) {
 }
 add_action('manage_dokumen_posts_custom_column', 'dprd_dokumen_custom_column', 10, 2);
 
+// Hapus fitur "Quick Edit" (Penyuntingan Cepat) untuk CPT Dokumen agar user tidak bingung
+function dprd_remove_quick_edit_dokumen($actions, $post) {
+    if ($post->post_type === 'dokumen') {
+        unset($actions['inline hide-if-no-js']);
+    }
+    return $actions;
+}
+add_filter('post_row_actions', 'dprd_remove_quick_edit_dokumen', 10, 2);
+
 // ==========================================
 // CPT DOKUMEN & CUSTOM TAXONOMY
 // ==========================================
