@@ -109,20 +109,27 @@ get_header();
     <div class="ikm-carousel-overflow">
       <div id="surveyTrack" class="ikm-track">
         <?php
-        $default_ikm = [
-            1 => ['title' => 'SEMESTER I TAHUN 2026', 'score' => '93.275', 'predicate' => 'Sangat Baik', 'grade' => 'A'],
-            2 => ['title' => 'SEMESTER II TAHUN 2025', 'score' => '92.150', 'predicate' => 'Sangat Baik', 'grade' => 'A'],
-            3 => ['title' => 'SEMESTER I TAHUN 2025', 'score' => '91.500', 'predicate' => 'Sangat Baik', 'grade' => 'A'],
-        ];
+        $default_slides = json_encode([
+            ['title' => 'SEMESTER I TAHUN 2026', 'score' => '93.275', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png'],
+            ['title' => 'SEMESTER II TAHUN 2025', 'score' => '92.150', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png'],
+            ['title' => 'SEMESTER I TAHUN 2025', 'score' => '91.500', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png']
+        ]);
+        $saved_slides = get_option('dprd_ikm_slides_data', '');
+        if (empty($saved_slides) || $saved_slides === '[]' || $saved_slides === 'false') {
+            $saved_slides = $default_slides;
+        }
+        $slides = json_decode($saved_slides, true);
         
-        for ($i = 1; $i <= 3; $i++): 
-            $title = get_option('dprd_ikm_title_'.$i, $default_ikm[$i]['title']);
-            $score = get_option('dprd_ikm_score_'.$i, $default_ikm[$i]['score']);
-            $predicate = get_option('dprd_ikm_predicate_'.$i, $default_ikm[$i]['predicate']);
-            $grade = get_option('dprd_ikm_grade_'.$i, $default_ikm[$i]['grade']);
+        if (is_array($slides)) {
+            foreach ($slides as $index => $slide): 
+                $title = isset($slide['title']) ? $slide['title'] : '';
+                $score = isset($slide['score']) ? $slide['score'] : '';
+                $predicate = isset($slide['predicate']) ? $slide['predicate'] : '';
+                $grade = isset($slide['grade']) ? $slide['grade'] : '';
+                $qr = isset($slide['qr']) && !empty($slide['qr']) ? $slide['qr'] : get_template_directory_uri() . '/assets/images/QR Code.png';
         ?>
-        <!-- Slide <?php echo $i; ?> -->
-        <div class="survey-card-item <?php if($i == 1) echo 'active'; ?>">
+        <!-- Slide <?php echo $index + 1; ?> -->
+        <div class="survey-card-item <?php if($index == 0) echo 'active'; ?>">
           <div class="ikm-card-new">
             <div class="ikm-top">
               <div class="ikm-top-left">
@@ -136,9 +143,9 @@ get_header();
                   <img src="<?php echo get_template_directory_uri(); ?>/assets/images/badge.png" alt="Badge IKM" class="ikm-badge">
                   <span class="badge-grade"><?php echo esc_html($grade); ?></span>
                   <svg viewBox="0 0 180 180" class="badge-svg-text">
-                    <path id="curve-<?php echo $i; ?>" d="M 15,151 Q 90,127 165,151" fill="transparent" />
+                    <path id="curve-<?php echo $index; ?>" d="M 15,151 Q 90,127 165,151" fill="transparent" />
                     <text width="180">
-                      <textPath href="#curve-<?php echo $i; ?>" startOffset="50%" text-anchor="middle">
+                      <textPath href="#curve-<?php echo $index; ?>" startOffset="50%" text-anchor="middle">
                         <?php echo esc_html($predicate); ?>
                       </textPath>
                     </text>
@@ -148,7 +155,7 @@ get_header();
             </div>
             <div class="ikm-bottom">
               <div class="ikm-bottom-left">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/QR Code.png" alt="QR Code" class="ikm-qr">
+                <img src="<?php echo esc_url($qr); ?>" alt="QR Code" class="ikm-qr">
               </div>
               <div class="ikm-bottom-right">
                 <div class="ikm-bottom-text">
@@ -159,7 +166,10 @@ get_header();
             </div>
           </div>
         </div>
-        <?php endfor; ?>
+        <?php 
+            endforeach; 
+        }
+        ?>
 
       </div>
     </div>

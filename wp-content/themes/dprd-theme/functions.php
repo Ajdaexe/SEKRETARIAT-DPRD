@@ -240,12 +240,7 @@ function dprd_theme_settings_init() {
     register_setting( 'dprd_statistik_beranda_group', 'dprd_info_file_url' );
 
     // IKM Survey Settings
-    for ($i = 1; $i <= 3; $i++) {
-        register_setting( 'dprd_statistik_beranda_group', 'dprd_ikm_title_' . $i );
-        register_setting( 'dprd_statistik_beranda_group', 'dprd_ikm_score_' . $i );
-        register_setting( 'dprd_statistik_beranda_group', 'dprd_ikm_predicate_' . $i );
-        register_setting( 'dprd_statistik_beranda_group', 'dprd_ikm_grade_' . $i );
-    }
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_ikm_slides_data' );
 }
 add_action( 'admin_init', 'dprd_theme_settings_init' );
 
@@ -351,34 +346,25 @@ function dprd_theme_settings_page_html() {
             </table>
 
             <hr style="margin: 30px 0;">
-            <h2>Pengaturan Hasil Survey IKM (3 Slide)</h2>
+            <h2>Pengaturan Hasil Survey IKM (Slide Dinamis)</h2>
+            <p>Anda dapat menambah, menghapus, atau mengubah urutan slide IKM di bawah ini. Anda juga bisa mengganti gambar QR Code per-slide.</p>
+            
             <?php
-            $default_ikm = [
-                1 => ['title' => 'SEMESTER I TAHUN 2026', 'score' => '93.275', 'predicate' => 'Sangat Baik', 'grade' => 'A'],
-                2 => ['title' => 'SEMESTER II TAHUN 2025', 'score' => '92.150', 'predicate' => 'Sangat Baik', 'grade' => 'A'],
-                3 => ['title' => 'SEMESTER I TAHUN 2025', 'score' => '91.500', 'predicate' => 'Sangat Baik', 'grade' => 'A'],
-            ];
-            for ($i = 1; $i <= 3; $i++): ?>
-                <h3>Slide <?php echo $i; ?></h3>
-                <table class="form-table" style="margin-bottom: 20px; border-left: 3px solid #b51c1c; padding-left: 15px; display: block;">
-                    <tr valign="top">
-                        <th scope="row">Semester & Tahun</th>
-                        <td><input type="text" name="dprd_ikm_title_<?php echo $i; ?>" value="<?php echo esc_attr( get_option('dprd_ikm_title_'.$i, $default_ikm[$i]['title']) ); ?>" style="width: 100%; max-width: 300px;" /></td>
-                    </tr>
-                    <tr valign="top">
-                        <th scope="row">Skor (Nilai)</th>
-                        <td><input type="text" name="dprd_ikm_score_<?php echo $i; ?>" value="<?php echo esc_attr( get_option('dprd_ikm_score_'.$i, $default_ikm[$i]['score']) ); ?>" style="width: 100%; max-width: 150px;" /></td>
-                    </tr>
-                    <tr valign="top">
-                        <th scope="row">Huruf Mutu (Grade)</th>
-                        <td><input type="text" name="dprd_ikm_grade_<?php echo $i; ?>" value="<?php echo esc_attr( get_option('dprd_ikm_grade_'.$i, $default_ikm[$i]['grade']) ); ?>" style="width: 50px;" maxlength="2" placeholder="Cth: A" /></td>
-                    </tr>
-                    <tr valign="top">
-                        <th scope="row">Teks Predikat (Badge)</th>
-                        <td><input type="text" name="dprd_ikm_predicate_<?php echo $i; ?>" value="<?php echo esc_attr( get_option('dprd_ikm_predicate_'.$i, $default_ikm[$i]['predicate']) ); ?>" style="width: 100%; max-width: 150px;" placeholder="Cth: Sangat Baik" /></td>
-                    </tr>
-                </table>
-            <?php endfor; ?>
+            $default_slides = json_encode([
+                ['title' => 'SEMESTER I TAHUN 2026', 'score' => '93.275', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png'],
+                ['title' => 'SEMESTER II TAHUN 2025', 'score' => '92.150', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png'],
+                ['title' => 'SEMESTER I TAHUN 2025', 'score' => '91.500', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png']
+            ]);
+            $saved_slides = get_option('dprd_ikm_slides_data', '');
+            if (empty($saved_slides) || $saved_slides === '[]' || $saved_slides === 'false') {
+                $saved_slides = $default_slides;
+            }
+            ?>
+            <input type="hidden" name="dprd_ikm_slides_data" id="dprd_ikm_slides_data" value="<?php echo esc_attr($saved_slides); ?>">
+            
+            <div id="ikm_repeater_container"></div>
+            
+            <button type="button" class="button button-primary" id="btn_add_ikm_slide" style="margin-top: 10px;">+ Tambah Slide Baru</button>
 
             <?php submit_button(); ?>
         </form>
@@ -452,6 +438,114 @@ function dprd_theme_settings_page_html() {
                 mediaUploader.open();
             });
         }
+
+        // --- JSON REPEATER LOGIC FOR IKM SLIDES ---
+        var ikmSlidesData = [];
+        try {
+            var rawVal = document.getElementById('dprd_ikm_slides_data').value;
+            ikmSlidesData = JSON.parse(rawVal || '[]');
+        } catch(e) { console.error('Failed parsing IKM JSON data'); }
+
+        var ikmContainer = document.getElementById('ikm_repeater_container');
+
+        function renderIkmRow(slide, index) {
+            var html = `
+            <div class="ikm-slide-row" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background: #fafafa; position: relative;">
+                <h4 style="margin-top:0;">Slide \${index + 1}</h4>
+                <button type="button" class="button button-link-delete btn_remove_ikm_slide" style="position:absolute; top:15px; right:15px; color:#a00;">Hapus Slide</button>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">Semester & Tahun</th>
+                        <td><input type="text" class="ikm_input_title" value="\${slide.title || ''}" style="width:100%; max-width:300px;"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Skor (Nilai)</th>
+                        <td><input type="text" class="ikm_input_score" value="\${slide.score || ''}" style="width:150px;"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Huruf Mutu (Grade)</th>
+                        <td><input type="text" class="ikm_input_grade" value="\${slide.grade || ''}" style="width:50px;" maxlength="2"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Teks Predikat (Badge)</th>
+                        <td><input type="text" class="ikm_input_predicate" value="\${slide.predicate || ''}" style="width:100%; max-width:150px;"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Gambar QR Code</th>
+                        <td>
+                            <input type="url" class="ikm_input_qr" value="\${slide.qr || ''}" style="width:100%; max-width:300px;">
+                            <button type="button" class="button btn_upload_ikm_qr">Pilih Gambar</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            `;
+            ikmContainer.insertAdjacentHTML('beforeend', html);
+        }
+
+        function renderAllIkmRows() {
+            ikmContainer.innerHTML = '';
+            ikmSlidesData.forEach(function(slide, idx) {
+                renderIkmRow(slide, idx);
+            });
+        }
+        renderAllIkmRows();
+
+        var btnAddIkm = document.getElementById('btn_add_ikm_slide');
+        if (btnAddIkm) {
+            btnAddIkm.addEventListener('click', function() {
+                ikmSlidesData.push({title:'', score:'', grade:'', predicate:'', qr:''});
+                renderAllIkmRows();
+            });
+        }
+
+        ikmContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn_remove_ikm_slide')) {
+                if(confirm('Hapus slide ini?')) {
+                    var row = e.target.closest('.ikm-slide-row');
+                    var index = Array.from(ikmContainer.children).indexOf(row);
+                    if (index > -1) {
+                        ikmSlidesData.splice(index, 1);
+                        renderAllIkmRows();
+                    }
+                }
+            }
+            
+            if (e.target.classList.contains('btn_upload_ikm_qr')) {
+                e.preventDefault();
+                var inputQr = e.target.previousElementSibling;
+                var uploader = wp.media({
+                    title: 'Pilih Gambar QR Code',
+                    button: { text: 'Gunakan Gambar Ini' },
+                    multiple: false
+                });
+                uploader.on('select', function() {
+                    var attachment = uploader.state().get('selection').first().toJSON();
+                    inputQr.value = attachment.url;
+                });
+                uploader.open();
+            }
+        });
+
+        // Update JSON before saving
+        var form = document.querySelector('form[action="options.php"]');
+        if (form) {
+            form.addEventListener('submit', function() {
+                var rows = ikmContainer.querySelectorAll('.ikm-slide-row');
+                var newData = [];
+                rows.forEach(function(row) {
+                    newData.push({
+                        title: row.querySelector('.ikm_input_title').value,
+                        score: row.querySelector('.ikm_input_score').value,
+                        grade: row.querySelector('.ikm_input_grade').value,
+                        predicate: row.querySelector('.ikm_input_predicate').value,
+                        qr: row.querySelector('.ikm_input_qr').value
+                    });
+                });
+                document.getElementById('dprd_ikm_slides_data').value = JSON.stringify(newData);
+            });
+        }
+
     });
     </script>
     <?php
