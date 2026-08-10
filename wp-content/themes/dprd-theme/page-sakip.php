@@ -111,108 +111,73 @@ get_header();
   </div>
 
   <script>
-    const dokumenData = [
-      {
-        judul: "3 Renja Sekretariat DPRD Tahun 2023 Revisi 1",
-        deskripsi: "Dokumen Rencana Kerja (Renja) Sekretariat DPRD Kabupaten Purbalingga Tahun 2023 Revisi 1 sebagai pedoman pelaksanaan program dan kegiatan.",
-        kategori: "Renja",
-        tanggal: "14 Sep 2023",
-        tanggalSort: "2023-09-14",
-        author: "admin",
-        jumlahUnduhan: 340,
-        file: "ganti-link-file-dokumen-1.pdf"
-      },
-      {
-        judul: "Laporan Kinerja Instansi Pemerintah (LKjIP) Sekretariat DPRD Tahun 2022",
-        deskripsi: "Laporan capaian kinerja instansi Sekretariat DPRD Kabupaten Purbalingga tahun anggaran 2022.",
-        kategori: "Renja",
-        tanggal: "10 Jan 2023",
-        tanggalSort: "2023-01-10",
-        author: "admin",
-        jumlahUnduhan: 210,
-        file: "ganti-link-file-dokumen-2.pdf"
-      },
-      {
-        judul: "Ringkasan DPA Sekretariat DPRD Tahun 2023",
-        deskripsi: "Ringkasan Dokumen Pelaksanaan Anggaran (DPA) Sekretariat DPRD Kabupaten Purbalingga Tahun 2023.",
-        kategori: "Dokumen Pelaksana Anggaran",
-        tanggal: "09 Jan 2023",
-        tanggalSort: "2023-01-09",
-        author: "admin",
-        jumlahUnduhan: 180,
-        file: "ganti-link-file-dokumen-3.pdf"
-      },
-      {
-        judul: "Kebijakan Pelayanan Informasi Publik",
-        deskripsi: "Dokumen kebijakan pelayanan informasi publik Sekretariat DPRD Kabupaten Purbalingga.",
-        kategori: "Perjanjian Kinerja",
-        tanggal: "08 Jan 2023",
-        tanggalSort: "2023-01-08",
-        author: "admin",
-        jumlahUnduhan: 95,
-        file: "ganti-link-file-dokumen-4.pdf"
-      },
-      {
-        judul: "Rencana Strategis (Renstra) Sekretariat DPRD 2021-2026",
-        deskripsi: "Dokumen Rencana Strategis jangka menengah Sekretariat DPRD Kabupaten Purbalingga.",
-        kategori: "Renstra",
-        tanggal: "15 Feb 2023",
-        tanggalSort: "2023-02-15",
-        author: "admin",
-        jumlahUnduhan: 150,
-        file: "ganti-link-file-dokumen-5.pdf"
-      },
-      {
-        judul: "Dokumen Cascading Kinerja Sekretariat DPRD",
-        deskripsi: "Pohon kinerja dan penjabaran sasaran strategis instansi.",
-        kategori: "Cascading",
-        tanggal: "20 Feb 2023",
-        tanggalSort: "2023-02-20",
-        author: "admin",
-        jumlahUnduhan: 120,
-        file: "ganti-link-file-dokumen-6.pdf"
-      },
-      {
-        judul: "Rencana Aksi Atas Perjanjian Kinerja Tahun 2023",
-        deskripsi: "Rincian target triwulanan pelaksanaan program kegiatan instansi.",
-        kategori: "Rencana Aksi",
-        tanggal: "02 Mar 2023",
-        tanggalSort: "2023-03-02",
-        author: "admin",
-        jumlahUnduhan: 85,
-        file: "ganti-link-file-dokumen-7.pdf"
-      },
-      {
-        judul: "Indikator Kinerja Utama (IKU) Sekretariat DPRD",
-        deskripsi: "Penetapan IKU sebagai ukuran keberhasilan pencapaian instansi.",
-        kategori: "Indikator Kinerja Utama",
-        tanggal: "10 Mar 2023",
-        tanggalSort: "2023-03-10",
-        author: "admin",
-        jumlahUnduhan: 230,
-        file: "ganti-link-file-dokumen-8.pdf"
-      },
-      {
-        judul: "Laporan Anggaran dan Realisasi Belanja Q1 2023",
-        deskripsi: "Transparansi pengelolaan keuangan triwulan pertama.",
-        kategori: "Anggaran",
-        tanggal: "05 Apr 2023",
-        tanggalSort: "2023-04-05",
-        author: "admin",
-        jumlahUnduhan: 110,
-        file: "ganti-link-file-dokumen-9.pdf"
-      },
-      {
-        judul: "Perjanjian Kinerja Kepala Sekretariat DPRD Tahun 2023",
-        deskripsi: "Dokumen komitmen pencapaian target kinerja tahunan.",
-        kategori: "Perjanjian Kinerja",
-        tanggal: "15 Apr 2023",
-        tanggalSort: "2023-04-15",
-        author: "admin",
-        jumlahUnduhan: 190,
-        file: "ganti-link-file-dokumen-10.pdf"
-      }
-    ];
+    <?php
+    $dokumen_array = array();
+    $args = array(
+        'post_type'      => 'dokumen',
+        'posts_per_page' => -1,
+        'post_status'    => 'publish',
+        'meta_query'     => array(
+            array(
+                'key'     => '_dokumen_grup',
+                'value'   => 'SAKIP',
+                'compare' => '='
+            )
+        )
+    );
+    $query = new WP_Query( $args );
+    if ( $query->have_posts() ) {
+        while ( $query->have_posts() ) {
+            $query->the_post();
+            
+            $kategori_terms = get_the_terms( get_the_ID(), 'kategori_dokumen' );
+            $kategori = !empty($kategori_terms) && !is_wp_error($kategori_terms) ? $kategori_terms[0]->name : 'Renja';
+            
+            $file_url = get_post_meta( get_the_ID(), '_dokumen_file_url', true );
+            $tanggal = get_post_meta( get_the_ID(), '_dokumen_tanggal', true );
+            $unduhan = (int) get_post_meta( get_the_ID(), '_jumlah_unduhan', true );
+            $author = get_the_author();
+            
+            $deskripsi = get_the_excerpt();
+            if (empty($deskripsi)) {
+                $deskripsi = 'Dokumen SAKIP Sekretariat DPRD Kabupaten Purbalingga.';
+            }
+
+            if(empty($tanggal)) $tanggal = get_the_date('d M Y');
+            
+            $track_url = home_url('/?download_doc_id=' . get_the_ID());
+            if(empty($file_url)) $track_url = '#';
+
+            $dokumen_array[] = array(
+                "judul"         => get_the_title(),
+                "deskripsi"     => $deskripsi,
+                "kategori"      => $kategori,
+                "tanggal"       => $tanggal,
+                "tanggalSort"   => get_the_date('Y-m-d H:i:s'),
+                "author"        => $author,
+                "jumlahUnduhan" => $unduhan,
+                "file"          => $track_url
+            );
+        }
+        wp_reset_postdata();
+    }
+    
+    if (empty($dokumen_array)) {
+        $dokumen_array = array(
+            array(
+                "judul"         => "Belum ada dokumen SAKIP",
+                "deskripsi"     => "Dokumen SAKIP belum ditambahkan.",
+                "kategori"      => "Renja",
+                "tanggal"       => date('d M Y'),
+                "tanggalSort"   => date('Y-m-d'),
+                "author"        => "admin",
+                "jumlahUnduhan" => 0,
+                "file"          => "#"
+            )
+        );
+    }
+    ?>
+    const dokumenData = <?php echo json_encode($dokumen_array); ?>;
 
     function getCategoryBadgeClass(kat) {
       switch(kat) {
@@ -309,16 +274,16 @@ get_header();
               <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/PDF.png" alt="PDF">
             </div>
             <div class="sakip-card-info">
-              <h3>${doc.judul}</h3>
+              <h3><a href="${doc.file}" target="_blank" style="color:inherit; text-decoration:none;">${doc.judul}</a></h3>
               <p>${doc.deskripsi}</p>
               <div class="sakip-card-meta">
                 <span class="sakip-meta-item"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/admin.png" alt=""> by ${doc.author}</span>
                 <span class="sakip-meta-item"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Tear-Off Calendar.png" alt=""> ${doc.tanggal}</span>
               </div>
             </div>
-            <button class="sakip-download-btn" onclick="window.location.href='${doc.file}'">
+            <a href="${doc.file}" download class="sakip-download-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
               <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/unduh.png" alt=""> Unduh
-            </button>
+            </a>
           </div>
         `;
         container.appendChild(card);

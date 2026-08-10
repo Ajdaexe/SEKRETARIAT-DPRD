@@ -2822,7 +2822,7 @@ function dprd_register_dokumen_cpt() {
         'hierarchical'       => false,
         'menu_position'      => 5,
         'menu_icon'          => 'dashicons-media-document',
-        'supports'           => array( 'title' ),
+        'supports'           => array( 'title', 'editor', 'excerpt' ),
         'show_in_rest'       => true,
     );
 
@@ -2968,3 +2968,32 @@ function dprd_save_dokumen_meta( $post_id ) {
     }
 }
 add_action( 'save_post_dokumen', 'dprd_save_dokumen_meta' );
+
+// ==========================================
+// DOKUMEN DOWNLOAD TRACKER
+// ==========================================
+function dprd_track_dokumen_download() {
+    if ( isset( $_GET['download_doc_id'] ) ) {
+        $post_id = intval( $_GET['download_doc_id'] );
+        $post = get_post($post_id);
+        
+        if ( $post && $post->post_type === 'dokumen' ) {
+            $file_url = get_post_meta( $post_id, '_dokumen_file_url', true );
+            
+            if ( ! empty( $file_url ) ) {
+                // Increment counter
+                $count = (int) get_post_meta( $post_id, '_jumlah_unduhan', true );
+                update_post_meta( $post_id, '_jumlah_unduhan', $count + 1 );
+                
+                // Redirect to file
+                wp_redirect( esc_url_raw( $file_url ) );
+                exit;
+            }
+        }
+        
+        // Fallback if file not found
+        wp_redirect( home_url() );
+        exit;
+    }
+}
+add_action( 'template_redirect', 'dprd_track_dokumen_download' );
