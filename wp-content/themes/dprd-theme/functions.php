@@ -207,10 +207,11 @@ add_action( 'admin_menu', 'dprd_register_struktur_menu' );
 
 // 2. Enqueue Media Script & Cropper.js di WP Admin
 function dprd_admin_enqueue_media_scripts( $hook ) {
-    if ( $hook === 'toplevel_page_dprd-profile' || $hook === 'toplevel_page_dprd-struktur-organisasi' || $hook === 'post.php' || $hook === 'post-new.php' ) {
+    $is_profile = (isset($_GET['page']) && $_GET['page'] === 'dprd-profile') || strpos($hook, 'dprd-profile') !== false;
+    if ( $is_profile || $hook === 'post.php' || $hook === 'post-new.php' ) {
         wp_enqueue_media();
-        wp_enqueue_style( 'cropper-css', 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css', array(), '1.5.13' );
-        wp_enqueue_script( 'cropper-js', 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js', array( 'jquery' ), '1.5.13', true );
+        wp_enqueue_style( 'cropper-css', get_template_directory_uri() . '/assets/css/cropper.min.css', array(), time() );
+        wp_enqueue_script( 'cropper-js', get_template_directory_uri() . '/assets/js/cropper.min.js', array( 'jquery' ), time(), false );
     }
 }
 add_action( 'admin_enqueue_scripts', 'dprd_admin_enqueue_media_scripts' );
@@ -407,12 +408,15 @@ function dprd_render_struktur_options_page() {
             <!-- CONTROLS TOOLBAR -->
             <div style="padding:14px 24px; background:#ffffff; border-top:1px solid #e2e8f0; display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between; align-items:center;">
                 <div style="display:flex; gap:8px; align-items:center;">
-                    <button type="button" class="button" id="crop_rotate_left" title="Putar Kiri"><span class="dashicons dashicons-undo"></span> -90Ã‚Â°</button>
-                    <button type="button" class="button" id="crop_rotate_right" title="Putar Kanan"><span class="dashicons dashicons-redo"></span> +90Ã‚Â°</button>
+                    <button type="button" class="button" id="crop_rotate_left" title="Putar Kiri"><span class="dashicons dashicons-undo"></span> -90°</button>
+                    <button type="button" class="button" id="crop_rotate_right" title="Putar Kanan"><span class="dashicons dashicons-redo"></span> +90°</button>
                     <button type="button" class="button" id="crop_zoom_in" title="Perbesar"><span class="dashicons dashicons-plus-alt2"></span></button>
                     <button type="button" class="button" id="crop_zoom_out" title="Perkecil"><span class="dashicons dashicons-minus"></span></button>
-                    <select id="crop_aspect_ratio" class="button" style="height:30px; line-height:1; font-size:13px; font-weight:600; color:#A5182B;" disabled>
-                        <option value="3.076923076923077" selected>Ã°Å¸â€â€™ Rasio Box Foto (Terkunci Presisi 800:260)</option>
+                    <select id="crop_aspect_ratio" class="button" style="height:30px; line-height:1; font-size:13px; font-weight:600; color:#2271b1;">
+                        <option value="NaN" selected>Crop Bebas (Freeform)</option>
+                        <option value="3.076923076923077">Rasio Khusus Profil (800:260)</option>
+                        <option value="1">1:1 (Persegi)</option>
+                        <option value="1.7777777777777777">16:9 (Landscape)</option>
                     </select>
                 </div>
 
@@ -498,9 +502,9 @@ function dprd_render_struktur_options_page() {
                 }
 
                 var image = document.getElementById('dprd_crop_target_img');
-                var SUSUNAN_RATIO = 800 / 260; // Rasio Terkunci 3.0769 (Sesuai Box Wadah Foto Web)
+                var currentRatioVal = parseFloat($('#crop_aspect_ratio').val());
                 cropper = new Cropper(image, {
-                    aspectRatio: SUSUNAN_RATIO,
+                    aspectRatio: isNaN(currentRatioVal) ? NaN : currentRatioVal,
                     viewMode: 1,
                     autoCropArea: 0.95,
                     responsive: true,
@@ -524,7 +528,8 @@ function dprd_render_struktur_options_page() {
         $('#crop_zoom_out').on('click', function(){ if (cropper) { cropper.zoom(-0.1); updateLiveImg(); } });
         $('#crop_aspect_ratio').on('change', function(){
             if (cropper) {
-                cropper.setAspectRatio(800 / 260);
+                var val = parseFloat($(this).val());
+                cropper.setAspectRatio(isNaN(val) ? NaN : val);
                 setTimeout(updateLiveImg, 80);
             }
         });
@@ -595,7 +600,9 @@ function dprd_render_struktur_options_page() {
             $('#dprd_susunan_photo_preview').html('<p style="color:#64748b; margin:20px 0; font-size:14px;">Belum ada foto Susunan Organisasi yang diunggah.</p>');
             $(this).hide();
         });
-
+    });
+    </script>
+<?php
 }
 
 // ==========================================
@@ -603,14 +610,88 @@ function dprd_render_struktur_options_page() {
 // ==========================================
 
 function dprd_theme_admin_scripts($hook) {
-    if ( ! in_array( $hook, array( 'toplevel_page_dprd-beranda-settings', 'toplevel_page_dprd-cta-settings', 'toplevel_page_dprd-hero-settings' ) ) ) {
+    if ( strpos( $hook, 'dprd' ) === false ) {
         return;
     }
     wp_enqueue_media(); // For file uploads (PDF)
-    wp_enqueue_style( 'cropper-css', 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css' );
-    wp_enqueue_script( 'cropper-js', 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js', array(), '1.5.13', true );
+    wp_enqueue_style( 'cropper-css', get_template_directory_uri() . '/assets/css/cropper.min.css', array(), time() );
+    wp_enqueue_script( 'cropper-js', get_template_directory_uri() . '/assets/js/cropper.min.js', array(), time(), false );
 }
 add_action( 'admin_enqueue_scripts', 'dprd_theme_admin_scripts' );
+
+function dprd_upload_media_direct() {
+    if ( ! current_user_can( 'upload_files' ) ) {
+        wp_send_json_error( 'Permission denied' );
+    }
+    
+    if ( empty( $_FILES['async_upload'] ) ) {
+        wp_send_json_error( 'No file uploaded' );
+    }
+
+    require_once( ABSPATH . 'wp-admin/includes/file.php' );
+    $upload_overrides = array( 'test_form' => false );
+    
+    $movefile = wp_handle_upload( $_FILES['async_upload'], $upload_overrides );
+
+    if ( $movefile && ! isset( $movefile['error'] ) ) {
+        wp_send_json_success( array( 'url' => $movefile['url'] ) );
+    } else {
+        wp_send_json_error( $movefile['error'] );
+    }
+}
+add_action( 'wp_ajax_dprd_upload_media_direct', 'dprd_upload_media_direct' );
+
+function dprd_upload_base64_image_ajax() {
+    @ob_clean(); // Suppress notice if no buffer exists
+    if ( ! current_user_can( 'upload_files' ) ) {
+        wp_send_json_error( 'Permission denied' );
+    }
+
+    if ( empty( $_POST['image_base64'] ) ) {
+        wp_send_json_error( 'No image data received (POST empty)' );
+    }
+
+    $base64 = $_POST['image_base64'];
+    $base64 = str_replace(' ', '+', $base64);
+
+    $parts = explode(',', $base64);
+    if (count($parts) === 2) {
+        $meta = $parts[0];
+        $data = $parts[1];
+        
+        if (preg_match('/^data:image\/(\w+);base64/i', $meta, $matches)) {
+            $type = strtolower($matches[1]);
+            if (in_array($type, [ 'jpg', 'jpeg', 'gif', 'png', 'webp' ])) {
+                $decoded = base64_decode($data);
+                if ($decoded !== false) {
+                    $filename = 'dokumentasi-' . time() . '-' . wp_generate_password(6, false) . '.' . $type;
+                    
+                    // Gunakan wp_upload_bits agar error direktori/izin (permissions) terdeteksi otomatis
+                    $upload = wp_upload_bits($filename, null, $decoded);
+                    
+                    if ( ! $upload['error'] ) {
+                        wp_send_json_success( array( 'url' => $upload['url'] ) );
+                        return;
+                    } else {
+                        wp_send_json_error( 'WP Upload Error: ' . $upload['error'] );
+                        return;
+                    }
+                } else {
+                    wp_send_json_error( 'Gagal melakukan decode pada string base64.' );
+                    return;
+                }
+            } else {
+                wp_send_json_error( 'Tipe file tidak diizinkan: ' . $type );
+                return;
+            }
+        } else {
+            wp_send_json_error( 'Format meta image base64 tidak dikenali.' );
+            return;
+        }
+    }
+    wp_send_json_error( 'Format partisi data base64 tidak valid.' );
+}
+add_action( 'wp_ajax_dprd_upload_base64_image', 'dprd_upload_base64_image_ajax' );
 
 function dprd_handle_video_thumb_base64( $base64 ) {
     if ( empty( $base64 ) ) {
@@ -1496,8 +1577,8 @@ function dprd_ppid_settings_page_html() {
 
 function dprd_dlantunan_settings_menu() {
     add_menu_page(
-        'Pengaturan D\'Lantunan', 
-        'Pengaturan D\'Lantunan', 
+        'Kartu Sambutan D\'Lantunan', 
+        'Kartu Sambutan D\'Lantunan', 
         'manage_options', 
         'dprd-dlantunan-settings', 
         'dprd_dlantunan_settings_page_html', 
@@ -1517,7 +1598,7 @@ function dprd_dlantunan_settings_page_html() {
     if ( ! current_user_can( 'manage_options' ) ) return;
     ?>
     <div class="wrap">
-        <h1>Pengaturan Halaman D'Lantunan</h1>
+        <h1>Kartu Sambutan D'Lantunan</h1>
         <p>Silakan isi teks judul dan deskripsi untuk kartu "Selamat Datang" di halaman D'Lantunan.</p>
         <form action="options.php" method="post">
             <?php
@@ -1653,5 +1734,796 @@ function dprd_seed_layanan_dlantunan() {
 }
 add_action('admin_init', 'dprd_seed_layanan_dlantunan');
 
+<<<<<<< HEAD
 
 
+=======
+// ==========================================
+// PENGATURAN 3 LAYANAN D'LANTUNAN (SETTINGS PAGE)
+// ==========================================
+
+function dprd_3layanan_settings_menu() {
+    add_menu_page(
+        '3 Layanan D\'Lantunan', 
+        '3 Layanan D\'Lantunan', 
+        'manage_options', 
+        'dprd-3layanan-settings', 
+        'dprd_3layanan_settings_page_html', 
+        'dashicons-clipboard', 
+        30
+    );
+    // Sembunyikan CPT lama agar admin tidak bingung
+    remove_menu_page( 'edit.php?post_type=layanan_dlantunan' );
+}
+add_action( 'admin_menu', 'dprd_3layanan_settings_menu', 999 );
+
+function dprd_3layanan_settings_init() {
+    for ($i = 1; $i <= 3; $i++) {
+        register_setting( 'dprd_3layanan_settings_group', 'dprd_layanan'.$i.'_title' );
+        register_setting( 'dprd_3layanan_settings_group', 'dprd_layanan'.$i.'_desc' );
+        register_setting( 'dprd_3layanan_settings_group', 'dprd_layanan'.$i.'_link' );
+    }
+}
+add_action( 'admin_init', 'dprd_3layanan_settings_init' );
+
+function dprd_3layanan_settings_page_html() {
+    if ( ! current_user_can( 'manage_options' ) ) return;
+    ?>
+    <div class="wrap">
+        <h1>Pengaturan 3 Layanan D'Lantunan</h1>
+        <p>Silakan isi judul, deskripsi, dan link tautan untuk masing-masing dari 3 layanan utama D'Lantunan.</p>
+        <form action="options.php" method="post">
+            <?php
+            settings_fields( 'dprd_3layanan_settings_group' );
+            do_settings_sections( 'dprd_3layanan_settings_group' );
+            
+            $defaults = array(
+                1 => array('title' => 'Layanan Permohonan Magang', 'desc' => 'Ajukan permohonan magang di lingkungan Sekretariat DPRD Kabupaten Purbalingga untuk mahasiswa dan pelajar.', 'link' => 'https://docs.google.com/forms/d/e/1FAIpQLSf-kexVgXar7DEOPdKhB_IZgfoWEb4F-QFBYa5kD9wRmf4AjA/viewform'),
+                2 => array('title' => 'Layanan Permohonan Ijin Penelitian', 'desc' => 'Ajukan permohonan izin penelitian untuk keperluan akademik maupun lembaga terkait di Sekretariat DPRD.', 'link' => 'https://docs.google.com/forms/d/e/1FAIpQLSd4pWbgYw7ySztddt3luzmxw4Vume_BxQRk3h1Et5bpEyg2mg/viewform'),
+                3 => array('title' => 'Layanan Permohonan Ijin Kunjungan', 'desc' => 'Ajukan permohonan kunjungan kerja atau studi banding ke Sekretariat DPRD Kabupaten Purbalingga.', 'link' => 'https://docs.google.com/forms/d/e/1FAIpQLSdOgg9-L2MaLKOKobYc7KblGJDvuTbvs_9L7RZDxg61Ww6tog/viewform')
+            );
+            ?>
+            <table class="form-table">
+            <?php for ($i = 1; $i <= 3; $i++) : ?>
+                <tr valign="top">
+                    <td colspan="2"><hr><h2 style="margin:0;">Layanan Ke-<?php echo $i; ?></h2></td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Judul Layanan <?php echo $i; ?></th>
+                    <td>
+                        <input type="text" name="dprd_layanan<?php echo $i; ?>_title" value="<?php echo esc_attr( get_option('dprd_layanan'.$i.'_title', $defaults[$i]['title']) ); ?>" class="regular-text" style="width: 400px;" />
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Deskripsi Layanan <?php echo $i; ?></th>
+                    <td>
+                        <textarea name="dprd_layanan<?php echo $i; ?>_desc" rows="3" class="regular-text" style="width: 400px;"><?php echo esc_textarea( get_option('dprd_layanan'.$i.'_desc', $defaults[$i]['desc']) ); ?></textarea>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Link Tautan Layanan <?php echo $i; ?></th>
+                    <td>
+                        <input type="url" name="dprd_layanan<?php echo $i; ?>_link" value="<?php echo esc_url( get_option('dprd_layanan'.$i.'_link', $defaults[$i]['link']) ); ?>" class="regular-text" style="width: 400px;" placeholder="Contoh: https://docs.google.com/forms/..." />
+                    </td>
+                </tr>
+            <?php endfor; ?>
+            </table>
+            <?php submit_button('Simpan Pengaturan Layanan'); ?>
+        </form>
+    </div>
+    <?php
+}
+
+// ==========================================
+// PENGATURAN UPLOAD FILE D'LANTUNAN (SETTINGS PAGE)
+// ==========================================
+
+function dprd_upload_file_dlantunan_menu() {
+    add_menu_page(
+        'Upload File D\'Lantunan', 
+        'Upload File D\'Lantunan', 
+        'manage_options', 
+        'dprd-upload-dlantunan-settings', 
+        'dprd_upload_dlantunan_settings_page_html', 
+        'dashicons-media-document', 
+        31
+    );
+}
+add_action( 'admin_menu', 'dprd_upload_file_dlantunan_menu' );
+
+function dprd_upload_dlantunan_settings_init() {
+    register_setting( 'dprd_upload_dlantunan_settings_group', 'dprd_dlantunan_docs_data' );
+}
+add_action( 'admin_init', 'dprd_upload_dlantunan_settings_init' );
+
+function dprd_upload_dlantunan_settings_page_html() {
+    if ( ! current_user_can( 'manage_options' ) ) return;
+    ?>
+    <div class="wrap">
+        <h1>Upload File D'Lantunan</h1>
+        <p>Kelola dokumen "Informasi & Dokumen Terkait" di halaman D'Lantunan.</p>
+        <form action="options.php" method="post">
+            <?php
+            settings_fields( 'dprd_upload_dlantunan_settings_group' );
+            do_settings_sections( 'dprd_upload_dlantunan_settings_group' );
+            
+            $defaults = json_encode([
+                ['title' => 'Panduan Penggunaan Portal D\'Lantunan', 'url' => get_template_directory_uri() . '/assets/pdf/DOR.pdf', 'type' => 'PDF', 'date' => '20 Mei 2023']
+            ]);
+            $saved_docs = get_option('dprd_dlantunan_docs_data', '');
+            if (empty($saved_docs) || $saved_docs === '[]' || $saved_docs === 'false') {
+                $saved_docs = $defaults;
+            }
+            ?>
+            <input type="hidden" name="dprd_dlantunan_docs_data" id="dprd_dlantunan_docs_data" value="<?php echo esc_attr($saved_docs); ?>">
+            
+            <div id="docs_repeater_container"></div>
+            
+            <button type="button" class="button button-primary" id="btn_add_doc_slide" style="margin-top: 10px;">+ Tambah Dokumen Baru</button>
+
+            <br><br>
+            <?php submit_button('Simpan Dokumen'); ?>
+        </form>
+    </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var docsData = [];
+        try {
+            var rawVal = document.getElementById('dprd_dlantunan_docs_data').value;
+            docsData = JSON.parse(rawVal || '[]');
+        } catch(e) {}
+
+        var container = document.getElementById('docs_repeater_container');
+
+        function renderRow(doc, index) {
+            var html = `
+            <div class="doc-slide-row" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background: #fafafa; position: relative;">
+                <h4 style="margin-top:0;">Dokumen ${index + 1}</h4>
+                <button type="button" class="button button-link-delete btn_remove_doc" style="position:absolute; top:15px; right:15px; color:#a00;">Hapus</button>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">Judul Dokumen</th>
+                        <td><input type="text" class="doc_input_title" value="${doc.title || ''}" style="width:100%; max-width:400px;"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Pilih File</th>
+                        <td>
+                            <input type="url" class="doc_input_url" value="${doc.url || ''}" style="width:100%; max-width:400px;" readonly>
+                            <button type="button" class="button btn_upload_doc">Pilih/Unggah File</button>
+                            <br><small>Tipe file dan tanggal otomatis di-generate setelah file dipilih.</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Tipe & Tanggal (Otomatis)</th>
+                        <td>
+                            Tipe: <input type="text" class="doc_input_type" value="${doc.type || ''}" style="width:80px;" readonly> 
+                            Tanggal: <input type="text" class="doc_input_date" value="${doc.date || ''}" style="width:150px;" readonly>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function renderAll() {
+            container.innerHTML = '';
+            docsData.forEach(function(doc, idx) {
+                renderRow(doc, idx);
+            });
+        }
+        renderAll();
+
+        document.getElementById('btn_add_doc_slide').addEventListener('click', function() {
+            docsData.push({title:'', url:'', type:'', date:''});
+            renderAll();
+        });
+
+        container.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn_remove_doc')) {
+                if(confirm('Hapus dokumen ini?')) {
+                    var row = e.target.closest('.doc-slide-row');
+                    var index = Array.from(container.children).indexOf(row);
+                    if (index > -1) {
+                        docsData.splice(index, 1);
+                        renderAll();
+                    }
+                }
+            }
+            
+            if (e.target.classList.contains('btn_upload_doc')) {
+                e.preventDefault();
+                var row = e.target.closest('.doc-slide-row');
+                var inputUrl = row.querySelector('.doc_input_url');
+                var inputType = row.querySelector('.doc_input_type');
+                var inputDate = row.querySelector('.doc_input_date');
+                var inputTitle = row.querySelector('.doc_input_title');
+                
+                var uploader = wp.media({
+                    title: 'Pilih Dokumen',
+                    button: { text: 'Gunakan Dokumen Ini' },
+                    multiple: false
+                });
+                uploader.on('select', function() {
+                    var attachment = uploader.state().get('selection').first().toJSON();
+                    inputUrl.value = attachment.url;
+                    
+                    // Generate Type (e.g., pdf -> PDF)
+                    var type = attachment.subtype ? attachment.subtype.toUpperCase() : 'FILE';
+                    inputType.value = type;
+                    
+                    // Generate Date
+                    var dateFmt = attachment.dateFormatted || '';
+                    if (!dateFmt && attachment.date) {
+                        // Fallback if dateFormatted is missing
+                        var d = new Date(attachment.date);
+                        var months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                        dateFmt = d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+                    }
+                    inputDate.value = dateFmt;
+                    
+                    if(inputTitle.value === '') {
+                        inputTitle.value = attachment.title;
+                    }
+                });
+                uploader.open();
+            }
+        });
+
+        var form = document.querySelector('form[action="options.php"]');
+        if (form) {
+            form.addEventListener('submit', function() {
+                var rows = container.querySelectorAll('.doc-slide-row');
+                var newData = [];
+                rows.forEach(function(row) {
+                    newData.push({
+                        title: row.querySelector('.doc_input_title').value,
+                        url: row.querySelector('.doc_input_url').value,
+                        type: row.querySelector('.doc_input_type').value,
+                        date: row.querySelector('.doc_input_date').value
+                    });
+                });
+                document.getElementById('dprd_dlantunan_docs_data').value = JSON.stringify(newData);
+            });
+        }
+    });
+    </script>
+    <?php
+}
+
+// ==========================================
+// PENGATURAN UPLOAD VIDEO D'LANTUNAN (SETTINGS PAGE)
+// ==========================================
+
+function dprd_upload_video_dlantunan_menu() {
+    add_menu_page(
+        'Upload Video D\'Lantunan', 
+        'Upload Video D\'Lantunan', 
+        'manage_options', 
+        'dprd-upload-video-dlantunan', 
+        'dprd_upload_video_dlantunan_page_html', 
+        'dashicons-video-alt3', 
+        32
+    );
+}
+add_action( 'admin_menu', 'dprd_upload_video_dlantunan_menu' );
+
+function dprd_upload_video_dlantunan_init() {
+    register_setting( 'dprd_upload_video_dlantunan_group', 'dprd_dlantunan_video_data' );
+}
+add_action( 'admin_init', 'dprd_upload_video_dlantunan_init' );
+
+function dprd_upload_video_dlantunan_page_html() {
+    if ( ! current_user_can( 'manage_options' ) ) return;
+    ?>
+    <div class="wrap">
+        <h1>Upload Video D'Lantunan</h1>
+        <p>Kelola daftar video dokumentasi pada halaman D'Lantunan.</p>
+        <form action="options.php" method="post">
+            <?php
+            settings_fields( 'dprd_upload_video_dlantunan_group' );
+            do_settings_sections( 'dprd_upload_video_dlantunan_group' );
+            
+            $defaults = json_encode([
+                ['title' => 'Video', 'desc' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis blandit malesuada.', 'url' => 'https://www.youtube.com/embed/uRZvKm-5YuE', 'thumb' => 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80'],
+                ['title' => 'Video', 'desc' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis blandit malesuada. Vestibulum rutrum risus id efficitur mattis.', 'url' => 'https://www.youtube.com/embed/uRZvKm-5YuE', 'thumb' => 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80']
+            ]);
+            $saved_vids = get_option('dprd_dlantunan_video_data', '');
+            if (empty($saved_vids) || $saved_vids === '[]' || $saved_vids === 'false') {
+                $saved_vids = $defaults;
+            }
+            ?>
+            <input type="hidden" name="dprd_dlantunan_video_data" id="dprd_dlantunan_video_data" value="<?php echo esc_attr($saved_vids); ?>">
+            
+            <div id="video_repeater_container"></div>
+            
+            <button type="button" class="button button-primary" id="btn_add_video_slide" style="margin-top: 10px;">+ Tambah Video Baru</button>
+
+            <br><br>
+            <?php submit_button('Simpan Video'); ?>
+        </form>
+    </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var vidsData = [];
+        try {
+            var rawVal = document.getElementById('dprd_dlantunan_video_data').value;
+            vidsData = JSON.parse(rawVal || '[]');
+        } catch(e) {}
+
+        var container = document.getElementById('video_repeater_container');
+
+        function renderRow(vid, index) {
+            var html = `
+            <div class="video-slide-row" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background: #fafafa; position: relative;">
+                <h4 style="margin-top:0;">Video ${index + 1}</h4>
+                <button type="button" class="button button-link-delete btn_remove_video" style="position:absolute; top:15px; right:15px; color:#a00;">Hapus</button>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">Judul Video</th>
+                        <td><input type="text" class="vid_input_title" value="${vid.title || ''}" style="width:100%; max-width:400px;"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Deskripsi</th>
+                        <td><textarea class="vid_input_desc" rows="3" style="width:100%; max-width:400px;">${vid.desc || ''}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Link Video (YouTube Embed)</th>
+                        <td>
+                            <input type="text" class="vid_input_url" value="${vid.url || ''}" style="width:100%; max-width:400px;" placeholder="Contoh: https://www.youtube.com/embed/...">
+                            <p class="description" style="margin-top:4px; font-size:12px;">Catatan: Jika Anda menggunakan unggahan video lokal (MP4), mohon isi kolom ini dengan tanda hubung (-). Jika menggunakan tautan YouTube, silakan masukkan URL-nya secara lengkap.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Upload File/Video (MP4)</th>
+                        <td>
+                            <div class="mp4-preview-container" style="margin-bottom: 10px; display: ${vid.mp4 ? 'block' : 'none'};">
+                                <video class="vid_preview_mp4" src="${vid.mp4 || ''}" controls style="max-width: 250px; border: 1px solid #ddd; border-radius: 4px;"></video>
+                            </div>
+                            <input type="hidden" class="vid_input_mp4" value="${vid.mp4 || ''}">
+                            <input type="file" class="hidden_file_input_mp4" accept="video/mp4" style="display:none;">
+                            <button type="button" class="button btn_upload_mp4">Pilih/Unggah Video</button>
+                            <span class="upload-status" style="margin-left: 10px; color: #0073aa; font-weight: bold; display: none;">Mengunggah...</span>
+                            <button type="button" class="button btn_remove_mp4" style="color: #a00; border-color: transparent; box-shadow: none; display: ${vid.mp4 ? 'inline-block' : 'none'};">Hapus Video</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Gambar Thumbnail</th>
+                        <td>
+                            <div style="margin-bottom: 10px;">
+                                <img src="${vid.thumb || ''}" class="vid_preview_thumb" style="max-width: 200px; max-height: 120px; display: ${vid.thumb ? 'block' : 'none'}; border: 1px solid #ddd; border-radius: 4px;" />
+                            </div>
+                            <input type="hidden" class="vid_input_thumb" value="${vid.thumb || ''}">
+                            <input type="file" class="hidden_file_input_thumb" accept="image/*" style="display:none;">
+                            <button type="button" class="button btn_upload_video_thumb">Pilih/Unggah Gambar</button>
+                            <span class="upload-status-thumb" style="margin-left: 10px; color: #0073aa; font-weight: bold; display: none;">Mengunggah...</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function renderAll() {
+            container.innerHTML = '';
+            vidsData.forEach(function(vid, idx) {
+                renderRow(vid, idx);
+            });
+        }
+        renderAll();
+
+        document.getElementById('btn_add_video_slide').addEventListener('click', function() {
+            vidsData.push({title:'', desc:'', url:'', thumb:'', mp4:''});
+            renderAll();
+        });
+
+        container.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn_remove_video')) {
+                if(confirm('Hapus video ini?')) {
+                    var row = e.target.closest('.video-slide-row');
+                    var index = Array.from(container.children).indexOf(row);
+                    if (index > -1) {
+                        vidsData.splice(index, 1);
+                        renderAll();
+                    }
+                }
+            }
+            
+            if (e.target.classList.contains('btn_upload_video_thumb')) {
+                e.preventDefault();
+                var row = e.target.closest('.video-slide-row');
+                var fileInput = row.querySelector('.hidden_file_input_thumb');
+                if (fileInput) fileInput.click();
+            }
+
+            if (e.target.classList.contains('btn_upload_mp4')) {
+                e.preventDefault();
+                var row = e.target.closest('.video-slide-row');
+                var fileInput = row.querySelector('.hidden_file_input_mp4');
+                if (fileInput) fileInput.click();
+            }
+
+            if (e.target.classList.contains('btn_remove_mp4')) {
+                e.preventDefault();
+                var row = e.target.closest('.video-slide-row');
+                var inputMp4 = row.querySelector('.vid_input_mp4');
+                var previewMp4 = row.querySelector('.vid_preview_mp4');
+                var previewContainer = row.querySelector('.mp4-preview-container');
+                var btnRemove = e.target;
+                
+                inputMp4.value = '';
+                previewMp4.src = '';
+                previewContainer.style.display = 'none';
+                btnRemove.style.display = 'none';
+            }
+        });
+
+        container.addEventListener('change', function(e) {
+            if (e.target.classList.contains('hidden_file_input_mp4') || e.target.classList.contains('hidden_file_input_thumb')) {
+                var file = e.target.files[0];
+                if (!file) return;
+                
+                var isMp4 = e.target.classList.contains('hidden_file_input_mp4');
+                var row = e.target.closest('.video-slide-row');
+                var statusEl = row.querySelector(isMp4 ? '.upload-status' : '.upload-status-thumb');
+                var inputUrl = row.querySelector(isMp4 ? '.vid_input_mp4' : '.vid_input_thumb');
+                var previewEl = row.querySelector(isMp4 ? '.vid_preview_mp4' : '.vid_preview_thumb');
+                
+                var formData = new FormData();
+                formData.append('action', 'dprd_upload_media_direct');
+                formData.append('async_upload', file);
+                
+                statusEl.style.display = 'inline-block';
+                statusEl.textContent = 'Mengunggah...';
+                
+                fetch(ajaxurl, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        statusEl.textContent = 'Berhasil!';
+                        inputUrl.value = data.data.url;
+                        previewEl.src = data.data.url;
+                        if (isMp4) {
+                            row.querySelector('.mp4-preview-container').style.display = 'block';
+                            row.querySelector('.btn_remove_mp4').style.display = 'inline-block';
+                        } else {
+                            previewEl.style.display = 'block';
+                        }
+                        setTimeout(() => statusEl.style.display = 'none', 2000);
+                    } else {
+                        statusEl.textContent = 'Gagal: ' + (data.data || 'Error');
+                    }
+                })
+                .catch(error => {
+                    statusEl.textContent = 'Terjadi kesalahan jaringan.';
+                    console.error(error);
+                });
+            }
+        });
+
+        var form = document.querySelector('form[action="options.php"]');
+        if (form) {
+            form.addEventListener('submit', function() {
+                var rows = container.querySelectorAll('.video-slide-row');
+                var newData = [];
+                rows.forEach(function(row) {
+                    newData.push({
+                        title: row.querySelector('.vid_input_title').value,
+                        desc: row.querySelector('.vid_input_desc').value,
+                        url: row.querySelector('.vid_input_url').value,
+                        thumb: row.querySelector('.vid_input_thumb').value,
+                        mp4: row.querySelector('.vid_input_mp4') ? row.querySelector('.vid_input_mp4').value : ''
+                    });
+                });
+                document.getElementById('dprd_dlantunan_video_data').value = JSON.stringify(newData);
+            });
+        }
+    });
+    </script>
+    <?php
+}
+
+// ==========================================
+// PENGATURAN FOTO DOKUMENTASI D'LANTUNAN
+// ==========================================
+
+function dprd_upload_dokumentasi_dlantunan_menu() {
+    add_menu_page(
+        'Upload Dokumentasi D\'Lantunan', 
+        'Upload Dokumentasi D\'Lantunan', 
+        'manage_options', 
+        'dprd-upload-dokumentasi-dlantunan', 
+        'dprd_upload_dokumentasi_dlantunan_page_html', 
+        'dashicons-format-gallery', 
+        33
+    );
+}
+add_action( 'admin_menu', 'dprd_upload_dokumentasi_dlantunan_menu' );
+
+function dprd_upload_dokumentasi_dlantunan_init() {
+    register_setting( 'dprd_upload_dokumentasi_dlantunan_group', 'dprd_dlantunan_foto_data' );
+}
+add_action( 'admin_init', 'dprd_upload_dokumentasi_dlantunan_init' );
+
+function dprd_upload_dokumentasi_dlantunan_page_html() {
+    if ( ! current_user_can( 'manage_options' ) ) return;
+    ?>
+    <div class="wrap" style="max-width: 900px;">
+        <h1>Upload Dokumentasi D'Lantunan</h1>
+
+        <form action="options.php" method="post">
+            <?php
+            settings_fields( 'dprd_upload_dokumentasi_dlantunan_group' );
+            do_settings_sections( 'dprd_upload_dokumentasi_dlantunan_group' );
+            $foto_data = get_option( 'dprd_dlantunan_foto_data', '[]' );
+            ?>
+            <input type="hidden" name="dprd_dlantunan_foto_data" id="dprd_dlantunan_foto_data" value="<?php echo esc_attr( $foto_data ); ?>">
+
+            <div id="foto_repeater_container" style="margin-bottom:15px;">
+                <!-- Repeater Items will be injected here via JS -->
+            </div>
+            
+            <button type="button" class="button" id="btn_add_foto_slide" style="margin-bottom: 20px;">+ Tambah Foto Dokumentasi</button>
+            <br>
+            <?php submit_button( 'Simpan Perubahan' ); ?>
+        </form>
+    </div>
+
+    <!-- Cropper Modal -->
+    <div id="cropper_modal_overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:999999;">
+        <div style="background:#fff; width:90%; max-width:1000px; height:90%; margin:2% auto; position:relative; display:flex; flex-direction:column; border-radius: 8px; overflow:hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+            <div style="padding:15px; border-bottom:1px solid #ddd; display:flex; justify-content:space-between; align-items:center; background:#f9f9f9; z-index:10;">
+                <h3 style="margin:0;">Crop Foto Dokumentasi</h3>
+                <button type="button" class="button" id="btn_close_cropper">Batal</button>
+            </div>
+            
+            <div style="flex-grow:1; display:flex; flex-direction:row; overflow:hidden; background:#e5e5e5; z-index:5;">
+                <div style="flex:1; padding:20px; overflow:hidden; background:#333; position:relative;">
+                    <div style="width:100%; height:100%; position:relative; display:block;">
+                        <img id="image_to_crop_doc" src="" style="display:block; max-width:100%; max-height:100%; margin:0 auto;">
+                    </div>
+                </div>
+                <div style="width:250px; padding:20px; background:#f0f0f0; border-left:1px solid #ddd; display:flex; flex-direction:column; align-items:center;">
+                    <h4 style="margin-top:0; margin-bottom:15px;">Preview</h4>
+                    <div class="cropper-preview" style="width: 200px; height: 200px; overflow: hidden; border: 1px solid #ccc; background: #fff;"></div>
+                </div>
+            </div>
+            
+            <div style="padding:15px; border-top:1px solid #ddd; text-align:right; background:#f9f9f9; z-index:10;">
+                <button type="button" class="button button-primary" id="btn_apply_crop_doc">Terapkan Crop &amp; Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var fotoData = [];
+        try {
+            var rawVal = document.getElementById('dprd_dlantunan_foto_data').value;
+            fotoData = JSON.parse(rawVal || '[]');
+        } catch(e) {}
+
+        var container = document.getElementById('foto_repeater_container');
+        var cropperModal = document.getElementById('cropper_modal_overlay');
+        var cropperImage = document.getElementById('image_to_crop_doc');
+        var btnCloseCropper = document.getElementById('btn_close_cropper');
+        var btnApplyCrop = document.getElementById('btn_apply_crop_doc');
+        var activeRow = null;
+        var cropper = null;
+
+        function renderRow(foto, index) {
+            var html = `
+            <div class="foto-slide-row" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background: #fafafa; position: relative;">
+                <h4 style="margin-top:0;">Foto ${index + 1}</h4>
+                <button type="button" class="button button-link-delete btn_remove_foto" style="position:absolute; top:15px; right:15px; color:#a00;">Hapus</button>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">Gambar Foto</th>
+                        <td>
+                            <div style="margin-bottom: 10px;">
+                                <img src="${foto.url || ''}" class="foto_preview_img" style="max-width: 250px; display: ${foto.url ? 'block' : 'none'}; border: 1px solid #ddd; border-radius: 4px;" />
+                            </div>
+                            <input type="hidden" class="foto_input_url" value="${foto.url || ''}">
+                            <input type="file" class="hidden_file_input_foto" accept="image/*" style="display:none;">
+                            <button type="button" class="button btn_upload_foto">Pilih/Unggah Gambar (Lalu Crop)</button>
+                            <span class="upload-status-foto" style="margin-left: 10px; color: #0073aa; font-weight: bold; display: none;">Memproses...</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Deskripsi / Caption</th>
+                        <td><textarea class="foto_input_caption" rows="3" style="width:100%; max-width:500px;">${foto.caption || ''}</textarea></td>
+                    </tr>
+                </table>
+            </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function renderAll() {
+            container.innerHTML = '';
+            fotoData.forEach(function(foto, idx) {
+                renderRow(foto, idx);
+            });
+        }
+        renderAll();
+
+        document.getElementById('btn_add_foto_slide').addEventListener('click', function() {
+            fotoData.push({url:'', caption:''});
+            renderAll();
+        });
+
+        container.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn_remove_foto')) {
+                if(confirm('Hapus foto ini?')) {
+                    var row = e.target.closest('.foto-slide-row');
+                    var index = Array.from(container.children).indexOf(row);
+                    if (index > -1) {
+                        fotoData.splice(index, 1);
+                        renderAll();
+                    }
+                }
+            }
+            if (e.target.classList.contains('btn_upload_foto')) {
+                e.preventDefault();
+                var row = e.target.closest('.foto-slide-row');
+                var fileInput = row.querySelector('.hidden_file_input_foto');
+                if (fileInput) fileInput.click();
+            }
+        });
+
+        container.addEventListener('change', function(e) {
+            if (e.target.classList.contains('hidden_file_input_foto')) {
+                var file = e.target.files[0];
+                if (!file) return;
+                
+                activeRow = e.target.closest('.foto-slide-row');
+                var reader = new FileReader();
+                reader.onload = function(evt) {
+                    cropperModal.style.display = 'block';
+                    cropperImage.src = evt.target.result;
+                    
+                    setTimeout(function() {
+                        if (cropper) {
+                            cropper.destroy();
+                            cropper = null;
+                        }
+                        
+                        var initCropper = function() {
+                            cropper = new Cropper(cropperImage, {
+                                viewMode: 2,
+                                aspectRatio: 1,
+                                dragMode: 'move',
+                                autoCropArea: 1,
+                                restore: false,
+                                guides: true,
+                                center: true,
+                                highlight: true,
+                                cropBoxMovable: true,
+                                cropBoxResizable: true,
+                                toggleDragModeOnDblclick: false,
+                                zoomOnWheel: false,
+                                responsive: true,
+                                preview: '.cropper-preview'
+                            });
+                        };
+
+                        if (typeof Cropper !== 'undefined') {
+                            initCropper();
+                        } else {
+                            // Fallback: Dynamically inject script if enqueue failed
+                            var script = document.createElement('script');
+                            script.src = "<?php echo get_template_directory_uri(); ?>/assets/js/cropper.min.js?v=" + new Date().getTime();
+                            script.onload = function() {
+                                if (typeof Cropper !== 'undefined') {
+                                    initCropper();
+                                } else {
+                                    alert("Pustaka Cropper.js masih gagal dimuat (Internal Error).");
+                                }
+                            };
+                            script.onerror = function() {
+                                alert("Pustaka Cropper.js gagal dimuat secara fatal! Periksa koneksi atau lokasi file.");
+                            };
+                            document.head.appendChild(script);
+                            
+                            // Also inject CSS
+                            var link = document.createElement('link');
+                            link.rel = 'stylesheet';
+                            link.href = "<?php echo get_template_directory_uri(); ?>/assets/css/cropper.min.css?v=" + new Date().getTime();
+                            document.head.appendChild(link);
+                        }
+                    }, 250);
+                };
+                reader.readAsDataURL(file);
+                e.target.value = ''; 
+            }
+        });
+
+        btnCloseCropper.addEventListener('click', function() {
+            cropperModal.style.display = 'none';
+            if (cropper) cropper.destroy();
+            activeRow = null;
+        });
+
+        btnApplyCrop.addEventListener('click', function() {
+            if (!cropper || !activeRow) return;
+            
+            var canvas = cropper.getCroppedCanvas({
+                maxWidth: 1200,
+                maxHeight: 1200
+            });
+            
+            if (!canvas) {
+                alert('Gagal memotong gambar.');
+                return;
+            }
+
+            var base64Data = canvas.toDataURL('image/jpeg', 0.85);
+            var statusEl = activeRow.querySelector('.upload-status-foto');
+            var inputUrl = activeRow.querySelector('.foto_input_url');
+            var previewEl = activeRow.querySelector('.foto_preview_img');
+
+            cropperModal.style.display = 'none';
+            if (cropper) cropper.destroy();
+
+            statusEl.style.display = 'inline-block';
+            statusEl.textContent = 'Menyimpan...';
+
+            var formData = new FormData();
+            formData.append('action', 'dprd_upload_base64_image');
+            formData.append('image_base64', base64Data);
+
+            jQuery.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // response is already parsed JSON if server sends application/json
+                    if (typeof response === 'string') {
+                        try { response = JSON.parse(response); } catch(e) {}
+                    }
+                    if (response && response.success) {
+                        statusEl.style.display = 'inline-block';
+                        statusEl.textContent = 'Berhasil!';
+                        inputUrl.value = response.data.url;
+                        previewEl.src = response.data.url;
+                        previewEl.style.display = 'block';
+                        setTimeout(() => statusEl.style.display = 'none', 2000);
+                    } else {
+                        statusEl.style.display = 'inline-block';
+                        var err = response && response.data ? response.data : 'Tidak diketahui (Server merespons: ' + JSON.stringify(response) + ')';
+                        statusEl.textContent = 'Gagal: ' + err;
+                    }
+                },
+                error: function(xhr, status, error) {
+                    statusEl.style.display = 'inline-block';
+                    statusEl.textContent = 'Server Error: ' + error;
+                    console.error("AJAX Error: ", xhr.responseText);
+                }
+            });
+        });
+
+        var form = document.querySelector('form[action="options.php"]');
+        if (form) {
+            form.addEventListener('submit', function() {
+                var rows = container.querySelectorAll('.foto-slide-row');
+                var newData = [];
+                rows.forEach(function(row) {
+                    newData.push({
+                        url: row.querySelector('.foto_input_url').value,
+                        caption: row.querySelector('.foto_input_caption').value
+                    });
+                });
+                document.getElementById('dprd_dlantunan_foto_data').value = JSON.stringify(newData);
+            });
+        }
+    });
+    </script>
+    <?php
+}
+>>>>>>> 6a831d33d8dbb864a8d4845d9ef5847c14258fce
