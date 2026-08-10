@@ -36,7 +36,13 @@ database.php
 # Folder besar & dependensi
 node_modules/
 vendor/
-wp-content/uploads/
+# Abaikan folder uploads secara default, tapi tetap izinkan file gambar (png, jpg, jpeg, webp)
+wp-content/uploads/*
+!wp-content/uploads/index.php
+!wp-content/uploads/**/*.jpg
+!wp-content/uploads/**/*.jpeg
+!wp-content/uploads/**/*.png
+!wp-content/uploads/**/*.webp
 
 # OS generated files & cache
 .DS_Store
