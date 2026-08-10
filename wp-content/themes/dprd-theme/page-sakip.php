@@ -10,12 +10,15 @@ get_header();
 
   <!-- Hero Section -->
   <section class="hero" id="heroSection" onclick="openLightbox()">
-    <img id="heroImage" src="https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png"
-      alt="Gedung Sekretariat DPRD">
+    <?php 
+      $hero_bg = get_option('dprd_hero_global_image', 'https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png'); 
+      $hero_title = get_option('dprd_hero_sakip_title', 'Sistem Akuntabilitas Kinerja Instansi Pemerintah (SAKIP)');
+      $hero_desc = get_option('dprd_hero_sakip_desc', 'Transparansi dan pertanggungjawaban kinerja Sekretariat DPRD Kabupaten Purbalingga.');
+    ?>
+    <img id="heroImage" src="<?php echo esc_url($hero_bg); ?>" alt="Gedung Sekretariat DPRD">
     <div class="hero-text" id="heroText">
-      <h2>Sakip</h2>
-      <p>Sistem Akuntabilitas Kinerja Instansi Pemerintah (SAKIP) Sekretariat DPRD Kabupaten Purbalingga sebagai wujud
-        komitmen dalam mewujudkan kinerja yang terukur, transparan, dan akuntabel.</p>
+      <h2><?php echo esc_html($hero_title); ?></h2>
+      <p><?php echo esc_html($hero_desc); ?></p>
     </div>
   </section>
 
@@ -98,8 +101,7 @@ get_header();
         <div class="cta-left">
           <div class="cta-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/user account.png" alt=""></div>
           <div>
-            <h4>Butuh Informasi SAKIP Lainnya?</h4>
-            <p>Hubungi kami untuk layanan dan konsultasi akuntabilitas kinerja</p>
+            <?php echo wp_kses_post( get_option('dprd_cta_text_sakip', '<h4>Butuh Informasi SAKIP Lainnya?</h4><p>Hubungi kami untuk layanan dan konsultasi akuntabilitas kinerja</p>') ); ?>
           </div>
         </div>
         <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sekretariat@dprd.purbalingga.go.id&su=Konsultasi+SAKIP+Sekretariat+DPRD&body=Halo+Admin+Sekretariat+DPRD+Kabupaten+Purbalingga%2C%0A%0ASaya+ingin+berkonsultasi+terkait+layanan+atau+informasi+SAKIP.%0A%0ATerima+kasih." target="_blank" rel="noopener noreferrer" class="btn-outline">Hubungi Kami &rsaquo;</a>
@@ -406,3 +408,4 @@ get_header();
   </script>
 
 <?php get_footer(); ?>
+

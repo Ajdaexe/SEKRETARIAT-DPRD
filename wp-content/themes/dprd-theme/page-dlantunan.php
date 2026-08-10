@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Template Name: Dlantunan
  *
@@ -189,13 +189,18 @@ get_header();
 
 <!-- ===== HERO SECTION (FULL-WIDTH DISAMAKAN PERSIS DENGAN PROFIL) ===== -->
 <section class="hero" id="heroSection" onclick="openHeroLightbox()">
-  <img id="heroImage" src="https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png" alt="Gedung Sekretariat DPRD Purbalingga">
+  <?php 
+    $hero_bg = get_option('dprd_hero_global_image', 'https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png'); 
+    $hero_title = get_option('dprd_hero_dlantunan_title', 'D\'Lantunan');
+    $hero_desc = get_option('dprd_hero_dlantunan_desc', 'Portal Layanan digital dan aspirasi masyarakat Sekretariat DPRD Kabupaten Purbalingga untuk permohonan layanan dan kebutuhan administratif secara mudah, cepat, dan transparan.');
+  ?>
+  <img id="heroImage" src="<?php echo esc_url($hero_bg); ?>" alt="Gedung Sekretariat DPRD Purbalingga">
   <div class="hero-overlay-dlantunan"></div>
 
   <!-- Left Side: Title & Description (Directly at left: 40px; bottom: 50px; like Profil) -->
   <div class="hero-text-left" id="heroText">
-    <h2>D'Lantunan</h2>
-    <p>Portal Layanan digital dan aspirasi masyarakat Sekretariat DPRD Kabupaten Purbalingga untuk permohonan layanan dan kebutuhan administratif secara mudah, cepat, dan transparan.</p>
+    <h2><?php echo esc_html($hero_title); ?></h2>
+    <p><?php echo esc_html($hero_desc); ?></p>
   </div>
 
   <!-- Right Side: Floating White Welcome Card -->
@@ -471,7 +476,7 @@ get_header();
         <div class="icon-circle">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/images/user account.png" alt="User Account Icon" style="filter:brightness(0) invert(1); width:22px; height:22px;">
         </div>
-        <h3>Bersama Mewujudkan DPRD yang Berkinerja<br>Tinggi dan Melayani Masyarakat</h3>
+        <h3><?php echo wp_kses_post( get_option('dprd_cta_text_dlantunan', 'Bersama Mewujudkan DPRD yang Berkinerja Tinggi dan Melayani Masyarakat') ); ?></h3>
       </div>
       <a
         href="https://mail.google.com/mail/?view=cm&fs=1&to=sekretariat@dprd.purbalingga.go.id&su=Permohonan%20Informasi"
@@ -487,4 +492,5 @@ get_header();
 </div><!-- /.container -->
 
 <?php get_footer(); ?>
+
 

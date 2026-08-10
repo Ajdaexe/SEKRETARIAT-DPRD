@@ -10,11 +10,15 @@ get_header();
 
   <!-- Hero Section -->
   <section class="hero" id="heroSection" onclick="openLightbox()">
-    <img id="heroImage" src="https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png" alt="Gedung Sekretariat DPRD">
+    <?php 
+      $hero_bg = get_option('dprd_hero_global_image', 'https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png'); 
+      $hero_title = get_option('dprd_hero_ppid_title', 'Layanan Informasi Publik (PPID)');
+      $hero_desc = get_option('dprd_hero_ppid_desc', 'Pejabat Pengelola Informasi dan Dokumentasi (PPID) Sekretariat DPRD Purbalingga melayani permintaan informasi sesuai UU KIP.');
+    ?>
+    <img id="heroImage" src="<?php echo esc_url($hero_bg); ?>" alt="Gedung Sekretariat DPRD">
     <div class="hero-text" id="heroText">
-      <h2>PPID</h2>
-      <p>Layanan informasi publik yang terbuka, cepat, dan transparan. Sekretariat DPRD Kabupaten Purbalingga
-        berkomitmen memberikan informasi yang akurat untuk masyarakat.</p>
+      <h2><?php echo esc_html($hero_title); ?></h2>
+      <p><?php echo esc_html($hero_desc); ?></p>
     </div>
   </section>
 
@@ -162,8 +166,7 @@ get_header();
         <div class="cta-left">
           <div class="cta-ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/Headphones.png" alt=""></div>
           <div>
-            <h4>Butuh Informasi Lain?</h4>
-            <p>Ajukan permohonan informasi jika data yang anda cari belum terdata</p>
+            <?php echo wp_kses_post( get_option('dprd_cta_text_ppid', '<h4>Butuh Informasi Lain?</h4><p>Ajukan permohonan informasi jika data yang anda cari belum terdata</p>') ); ?>
           </div>
         </div>
         <a
@@ -391,3 +394,4 @@ get_header();
   </script>
 
 <?php get_footer(); ?>
+

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Template Name: Beranda
  *
@@ -10,12 +10,18 @@ get_header();
 
 <!-- Hero Section -->
   <section class="hero" id="heroSection" onclick="openLightbox()">
-    <img id="heroImage" src="https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png"
+    <?php 
+      $hero_bg = get_option('dprd_hero_global_image', 'https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png'); 
+      $hero_title = get_option('dprd_hero_beranda_title', 'Beranda');
+      $hero_desc = get_option('dprd_hero_beranda_desc', 'Selamat datang di website resmi Sekretariat DPRD Kabupaten Purbalingga. Kami hadir untuk mendukung keterbukaan informasi dan pelayanan publik.');
+    ?>
+    <img id="heroImage" src="<?php echo esc_url($hero_bg); ?>"
       alt="Gedung Sekretariat DPRD">
     <div class="hero-text" id="heroText">
-      <h2>Beranda</h2>
-      <p>Selamat datang di website resmi Sekretariat DPRD Kabupaten Purbalingga. Kami hadir untuk mendukung keterbukaan
-        informasi dan pelayanan publik.</p>
+      <h2><?php echo esc_html($hero_title); ?></h2>
+      <p>
+        <?php echo esc_html($hero_desc); ?>
+      </p>
     </div>
   </section>
 
@@ -218,7 +224,7 @@ get_header();
     <div class="cta-banner">
       <div class="cta-left">
         <div class="icon-circle"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/user account.png" alt=""></div>
-        <h3>Bersama Mewujudkan DPRD yang Berkinerja<br>Tinggi dan Melayani Masyarakat</h3>
+        <h3><?php echo wp_kses_post( get_option('dprd_cta_text_beranda', 'Bersama Mewujudkan DPRD yang Berkinerja Tinggi dan Melayani Masyarakat') ); ?></h3>
       </div>
       <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sekretariat@dprd.purbalingga.go.id&su=Permohonan%20Informasi"
         target="_blank" rel="noopener noreferrer" class="btn-outline">
@@ -230,4 +236,5 @@ get_header();
 
 
 <?php get_footer(); ?>
+
 

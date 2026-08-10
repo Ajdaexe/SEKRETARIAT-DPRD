@@ -159,10 +159,15 @@ get_header();
 
 <!-- ===== HERO ===== -->
 <section class="hero" id="heroSection" onclick="openLightbox()">
-  <img id="heroImage" src="https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png" alt="Gedung Sekretariat DPRD">
+  <?php 
+    $hero_bg = get_option('dprd_hero_global_image', 'https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png'); 
+    $hero_title = get_option('dprd_hero_profil_title', 'Profil DPRD');
+    $hero_desc = get_option('dprd_hero_profil_desc', 'Informasi mengenai Sekretariat DPRD Kabupaten Purbalingga meliputi kedudukan, struktur organisasi, visi misi, tugas pokok dan fungsi serta dasar hukum.');
+  ?>
+  <img id="heroImage" src="<?php echo esc_url($hero_bg); ?>" alt="Gedung Sekretariat DPRD">
   <div class="hero-text" id="heroText">
-    <h2>Profil DPRD</h2>
-    <p>Informasi mengenai Sekretariat DPRD Kabupaten Purbalingga meliputi kedudukan, struktur organisasi, visi misi, tugas pokok dan fungsi serta dasar hukum.</p>
+    <h2><?php echo esc_html($hero_title); ?></h2>
+    <p><?php echo esc_html($hero_desc); ?></p>
   </div>
 </section>
 

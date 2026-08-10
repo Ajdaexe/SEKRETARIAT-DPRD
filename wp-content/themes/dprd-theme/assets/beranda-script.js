@@ -1,10 +1,3 @@
-const siteData = {
-      totalPegawai: 150,
-      totalAgenda: 45,
-      totalDokumen: 250,
-      persenTransparan: 100
-    };
-
     function renderCounter(el, target, decimals = 0, suffix = "", duration = 2000) {
       if (!el) return;
       let start = 0;
