@@ -108,19 +108,33 @@ get_header();
     <button id="prevBtn" class="ikm-nav-btn" onclick="prevSurvey()">&#10094;</button>
     <div class="ikm-carousel-overflow">
       <div id="surveyTrack" class="ikm-track">
+        <?php
+        $default_ikm = [
+            1 => ['title' => 'SEMESTER I TAHUN 2026', 'score' => '93.275', 'predicate' => 'Sangat Baik'],
+            2 => ['title' => 'SEMESTER II TAHUN 2025', 'score' => '92.150', 'predicate' => 'Sangat Baik'],
+            3 => ['title' => 'SEMESTER I TAHUN 2025', 'score' => '91.500', 'predicate' => 'Sangat Baik'],
+        ];
         
-        <!-- Slide 0 (Current) -->
-        <div class="survey-card-item active">
+        for ($i = 1; $i <= 3; $i++): 
+            $title = get_option('dprd_ikm_title_'.$i, $default_ikm[$i]['title']);
+            $score = get_option('dprd_ikm_score_'.$i, $default_ikm[$i]['score']);
+            $predicate = get_option('dprd_ikm_predicate_'.$i, $default_ikm[$i]['predicate']);
+        ?>
+        <!-- Slide <?php echo $i; ?> -->
+        <div class="survey-card-item <?php if($i == 1) echo 'active'; ?>">
           <div class="ikm-card-new">
             <div class="ikm-top">
               <div class="ikm-top-left">
                 <div class="ikm-title">Hasil Survey Indeks Kepuasan Masyarakat<br>Sekretariat DPRD Kabupaten
-                  Purbalingga<strong>SEMESTER I TAHUN 2026</strong></div>
-                <div class="ikm-score">93.275</div>
+                  Purbalingga<strong><?php echo esc_html($title); ?></strong></div>
+                <div class="ikm-score"><?php echo esc_html($score); ?></div>
                 <div class="ikm-skala">Skala : 0 - 100</div>
               </div>
               <div class="ikm-top-right">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/badge a.png" alt="Sangat Baik" class="ikm-badge">
+                <div class="badge-container">
+                  <img src="<?php echo get_template_directory_uri(); ?>/assets/images/badge.png" alt="Badge IKM" class="ikm-badge">
+                  <span class="badge-text"><?php echo esc_html($predicate); ?></span>
+                </div>
               </div>
             </div>
             <div class="ikm-bottom">
@@ -136,62 +150,7 @@ get_header();
             </div>
           </div>
         </div>
-
-        <!-- Slide 1 -->
-        <div class="survey-card-item">
-          <div class="ikm-card-new">
-            <div class="ikm-top">
-              <div class="ikm-top-left">
-                <div class="ikm-title">Hasil Survey Indeks Kepuasan Masyarakat<br>Sekretariat DPRD Kabupaten
-                  Purbalingga<strong>SEMESTER II TAHUN 2025</strong></div>
-                <div class="ikm-score">92.150</div>
-                <div class="ikm-skala">Skala : 0 - 100</div>
-              </div>
-              <div class="ikm-top-right">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/badge a.png" alt="Sangat Baik" class="ikm-badge">
-              </div>
-            </div>
-            <div class="ikm-bottom">
-              <div class="ikm-bottom-left">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/QR Code.png" alt="QR Code" class="ikm-qr">
-              </div>
-              <div class="ikm-bottom-right">
-                <div class="ikm-bottom-text">
-                  <h4>Berikan Penilaian Anda</h4>
-                  <p>Scan QR code di samping untuk mengisi Survey Kepuasan Masyarakat.<br>Masukan Anda sangat berarti demi peningkatan kualitas layanan kami.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 2 -->
-        <div class="survey-card-item">
-          <div class="ikm-card-new">
-            <div class="ikm-top">
-              <div class="ikm-top-left">
-                <div class="ikm-title">Hasil Survey Indeks Kepuasan Masyarakat<br>Sekretariat DPRD Kabupaten
-                  Purbalingga<strong>SEMESTER I TAHUN 2025</strong></div>
-                <div class="ikm-score">91.500</div>
-                <div class="ikm-skala">Skala : 0 - 100</div>
-              </div>
-              <div class="ikm-top-right">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/badge a.png" alt="Sangat Baik" class="ikm-badge">
-              </div>
-            </div>
-            <div class="ikm-bottom">
-              <div class="ikm-bottom-left">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/QR Code.png" alt="QR Code" class="ikm-qr">
-              </div>
-              <div class="ikm-bottom-right">
-                <div class="ikm-bottom-text">
-                  <h4>Berikan Penilaian Anda</h4>
-                  <p>Scan QR code di samping untuk mengisi Survey Kepuasan Masyarakat.<br>Masukan Anda sangat berarti demi peningkatan kualitas layanan kami.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <?php endfor; ?>
 
       </div>
     </div>

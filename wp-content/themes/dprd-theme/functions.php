@@ -238,6 +238,13 @@ function dprd_theme_settings_init() {
     register_setting( 'dprd_statistik_beranda_group', 'dprd_info_title' );
     register_setting( 'dprd_statistik_beranda_group', 'dprd_info_date' );
     register_setting( 'dprd_statistik_beranda_group', 'dprd_info_file_url' );
+
+    // IKM Survey Settings
+    for ($i = 1; $i <= 3; $i++) {
+        register_setting( 'dprd_statistik_beranda_group', 'dprd_ikm_title_' . $i );
+        register_setting( 'dprd_statistik_beranda_group', 'dprd_ikm_score_' . $i );
+        register_setting( 'dprd_statistik_beranda_group', 'dprd_ikm_predicate_' . $i );
+    }
 }
 add_action( 'admin_init', 'dprd_theme_settings_init' );
 
@@ -341,6 +348,32 @@ function dprd_theme_settings_page_html() {
                     </td>
                 </tr>
             </table>
+
+            <hr style="margin: 30px 0;">
+            <h2>Pengaturan Hasil Survey IKM (3 Slide)</h2>
+            <?php
+            $default_ikm = [
+                1 => ['title' => 'SEMESTER I TAHUN 2026', 'score' => '93.275', 'predicate' => 'Sangat Baik'],
+                2 => ['title' => 'SEMESTER II TAHUN 2025', 'score' => '92.150', 'predicate' => 'Sangat Baik'],
+                3 => ['title' => 'SEMESTER I TAHUN 2025', 'score' => '91.500', 'predicate' => 'Sangat Baik'],
+            ];
+            for ($i = 1; $i <= 3; $i++): ?>
+                <h3>Slide <?php echo $i; ?></h3>
+                <table class="form-table" style="margin-bottom: 20px; border-left: 3px solid #b51c1c; padding-left: 15px; display: block;">
+                    <tr valign="top">
+                        <th scope="row">Semester & Tahun</th>
+                        <td><input type="text" name="dprd_ikm_title_<?php echo $i; ?>" value="<?php echo esc_attr( get_option('dprd_ikm_title_'.$i, $default_ikm[$i]['title']) ); ?>" style="width: 100%; max-width: 300px;" /></td>
+                    </tr>
+                    <tr valign="top">
+                        <th scope="row">Skor (Nilai)</th>
+                        <td><input type="text" name="dprd_ikm_score_<?php echo $i; ?>" value="<?php echo esc_attr( get_option('dprd_ikm_score_'.$i, $default_ikm[$i]['score']) ); ?>" style="width: 100%; max-width: 150px;" /></td>
+                    </tr>
+                    <tr valign="top">
+                        <th scope="row">Teks Predikat (Badge)</th>
+                        <td><input type="text" name="dprd_ikm_predicate_<?php echo $i; ?>" value="<?php echo esc_attr( get_option('dprd_ikm_predicate_'.$i, $default_ikm[$i]['predicate']) ); ?>" style="width: 100%; max-width: 150px;" placeholder="Cth: Sangat Baik" /></td>
+                    </tr>
+                </table>
+            <?php endfor; ?>
 
             <?php submit_button(); ?>
         </form>
