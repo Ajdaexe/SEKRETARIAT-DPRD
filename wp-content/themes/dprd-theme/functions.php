@@ -775,6 +775,9 @@ function dprd_theme_settings_init() {
 
     // CTA Banner Background
     register_setting( 'dprd_statistik_beranda_group', 'dprd_cta_bg_base64', array( 'sanitize_callback' => 'dprd_handle_cta_bg_base64' ) );
+
+    // Reels Settings
+    register_setting( 'dprd_statistik_beranda_group', 'dprd_reels_data' );
 }
 add_action( 'admin_init', 'dprd_theme_settings_init' );
 
@@ -901,6 +904,26 @@ function dprd_theme_settings_page_html() {
             <button type="button" class="button button-primary" id="btn_add_ikm_slide" style="margin-top: 10px;">+ Tambah Slide Baru</button>
 
             
+
+            <hr style="margin: 30px 0;">
+            <h2>Pengaturan Reels / Video Singkat</h2>
+            <p>Tambahkan video pendek / reels. Kosongkan jika belum ada data.</p>
+            
+            <?php
+            $default_reels = json_encode([
+                ['title' => 'Kunjungan Kerja', 'thumb' => get_template_directory_uri() . '/assets/images/placeholder-reel.png', 'url' => '#'],
+                ['title' => 'Rapat Paripurna', 'thumb' => get_template_directory_uri() . '/assets/images/placeholder-reel.png', 'url' => '#']
+            ]);
+            $saved_reels = get_option('dprd_reels_data', '');
+            if (empty($saved_reels) || $saved_reels === '[]' || $saved_reels === 'false') {
+                $saved_reels = $default_reels;
+            }
+            ?>
+            <input type="hidden" name="dprd_reels_data" id="dprd_reels_data" value="<?php echo esc_attr($saved_reels); ?>">
+            
+            <div id="reels_repeater_container"></div>
+            
+            <button type="button" class="button button-primary" id="btn_add_reel_slide" style="margin-top: 10px;">+ Tambah Reel Baru</button>
 
             <br><br>
             <?php submit_button(); ?>
@@ -1083,9 +1106,106 @@ function dprd_theme_settings_page_html() {
                     });
                 });
                 document.getElementById('dprd_ikm_slides_data').value = JSON.stringify(newData);
+                
+                // Save Reels
+                var reelRows = document.getElementById('reels_repeater_container').querySelectorAll('.reel-slide-row');
+                var newReelsData = [];
+                reelRows.forEach(function(row) {
+                    newReelsData.push({
+                        title: row.querySelector('.reel_input_title').value,
+                        thumb: row.querySelector('.reel_input_thumb').value,
+                        url: row.querySelector('.reel_input_url').value
+                    });
+                });
+                if(document.getElementById('dprd_reels_data')) {
+                    document.getElementById('dprd_reels_data').value = JSON.stringify(newReelsData);
+                }
             });
         }
 
+    });
+    
+    // --- JSON REPEATER LOGIC FOR REELS ---
+    document.addEventListener("DOMContentLoaded", function() {
+        var reelsData = [];
+        try {
+            var rawReelsVal = document.getElementById('dprd_reels_data').value;
+            reelsData = JSON.parse(rawReelsVal || '[]');
+        } catch(e) { console.error('Failed parsing Reels JSON data'); }
+
+        var reelsContainer = document.getElementById('reels_repeater_container');
+        if(!reelsContainer) return;
+
+        function renderReelRow(slide, index) {
+            var html = `
+            <div class="reel-slide-row" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background: #fafafa; position: relative;">
+                <h4 style="margin-top:0;">Reel ${index + 1}</h4>
+                <button type="button" class="button button-link-delete btn_remove_reel_slide" style="position:absolute; top:15px; right:15px; color:#a00;">Hapus</button>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">Judul</th>
+                        <td><input type="text" class="reel_input_title" value="${slide.title || ''}" style="width:100%; max-width:300px;"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Gambar Thumbnail</th>
+                        <td>
+                            <input type="url" class="reel_input_thumb" value="${slide.thumb || ''}" style="width:100%; max-width:300px;">
+                            <button type="button" class="button btn_upload_reel_thumb">Pilih Thumbnail</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Link (IG/Video)</th>
+                        <td><input type="url" class="reel_input_url" value="${slide.url || ''}" style="width:100%; max-width:400px;"></td>
+                    </tr>
+                </table>
+            </div>
+            `;
+            reelsContainer.insertAdjacentHTML('beforeend', html);
+        }
+
+        function renderAllReelRows() {
+            reelsContainer.innerHTML = '';
+            reelsData.forEach(function(slide, idx) {
+                renderReelRow(slide, idx);
+            });
+        }
+        renderAllReelRows();
+
+        var btnAddReel = document.getElementById('btn_add_reel_slide');
+        if (btnAddReel) {
+            btnAddReel.addEventListener('click', function() {
+                reelsData.push({title:'', thumb:'', url:''});
+                renderAllReelRows();
+            });
+        }
+
+        reelsContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn_remove_reel_slide')) {
+                if(confirm('Hapus reel ini?')) {
+                    var row = e.target.closest('.reel-slide-row');
+                    var index = Array.from(reelsContainer.children).indexOf(row);
+                    if (index > -1) {
+                        reelsData.splice(index, 1);
+                        renderAllReelRows();
+                    }
+                }
+            }
+            
+            if (e.target.classList.contains('btn_upload_reel_thumb')) {
+                e.preventDefault();
+                var inputThumb = e.target.previousElementSibling;
+                var uploader = wp.media({
+                    title: 'Pilih Gambar Thumbnail',
+                    button: { text: 'Gunakan Gambar Ini' },
+                    multiple: false
+                });
+                uploader.on('select', function() {
+                    var attachment = uploader.state().get('selection').first().toJSON();
+                    inputThumb.value = attachment.url;
+                });
+                uploader.open();
+            }
+        });
     });
     </script>
     <?php

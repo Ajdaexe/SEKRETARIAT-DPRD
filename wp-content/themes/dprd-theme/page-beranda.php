@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Template Name: Beranda
  *
@@ -180,6 +180,46 @@ get_header();
       </div>
     </div>
     <button id="nextBtn" class="ikm-nav-btn" onclick="nextSurvey()">&#10095;</button>
+  </div>
+
+  <!-- REELS SECTION -->
+  <h3 class="quick-title">Reels</h3>
+  <div class="reels-grid-container" style="max-width: 1200px; margin: 0 auto 50px auto; padding: 0 20px;">
+    <div class="reels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
+    <?php
+    $default_reels = json_encode([
+        ['title' => 'Kegiatan Kunjungan', 'thumb' => 'https://via.placeholder.com/270x480.png?text=Reel+1', 'url' => '#'],
+        ['title' => 'Rapat Paripurna', 'thumb' => 'https://via.placeholder.com/270x480.png?text=Reel+2', 'url' => '#']
+    ]);
+    $saved_reels = get_option('dprd_reels_data', '');
+    if (empty($saved_reels) || $saved_reels === '[]' || $saved_reels === 'false') {
+        $saved_reels = $default_reels;
+    }
+    $reels = json_decode($saved_reels, true);
+    if(is_array($reels)):
+        foreach($reels as $reel):
+            $title = isset($reel['title']) ? $reel['title'] : '';
+            $thumb = isset($reel['thumb']) && !empty($reel['thumb']) ? $reel['thumb'] : 'https://via.placeholder.com/270x480.png?text=Reel';
+            $url = isset($reel['url']) ? $reel['url'] : '#';
+    ?>
+        <a href="<?php echo esc_url($url); ?>" target="_blank" class="reel-item" style="position: relative; display: block; border-radius: 12px; overflow: hidden; aspect-ratio: 9/16; background: #000; text-decoration: none; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+            <img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($title); ?>" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: transform 0.3s ease;">
+            <!-- Play Icon overlay -->
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: rgba(255,255,255,0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+            <div style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px 12px 12px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: #fff; font-size: 14px; font-weight: 600; line-height: 1.3;">
+                <?php echo esc_html($title); ?>
+            </div>
+        </a>
+    <?php 
+        endforeach;
+    endif; 
+    ?>
+    </div>
+    <style>
+        .reel-item:hover img { transform: scale(1.05); }
+    </style>
   </div>
 
   <!-- QUICK ACCESS -->
