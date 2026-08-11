@@ -296,6 +296,7 @@ function dprd_render_struktur_options_page() {
                         </div>
                         
                         <input type="hidden" name="dprd_struktur_img_url" id="dprd_struktur_img_url" value="<?php echo esc_url( $current_img ); ?>">
+                        <input type="file" id="dprd_upload_struktur_file" accept="image/*" style="position:absolute; width:1px; height:1px; opacity:0; z-index:-1;">
                         <button type="button" class="button button-primary" id="dprd_upload_struktur_btn" style="margin-right:8px; background:#A5182B; border-color:#8B1E1E;">
                             <span class="dashicons dashicons-upload" style="vertical-align:middle; margin-right:4px;"></span> Unggah / Pilih Gambar Bagan
                         </button>
@@ -331,6 +332,7 @@ function dprd_render_struktur_options_page() {
                         </div>
                         
                         <input type="hidden" name="dprd_susunan_organisasi_photo" id="dprd_susunan_organisasi_photo" value="<?php echo esc_url( $susunan_photo ); ?>">
+                        <input type="file" id="dprd_upload_susunan_file" accept="image/*" style="position:absolute; width:1px; height:1px; opacity:0; z-index:-1;">
                         <button type="button" class="button button-primary" id="dprd_upload_susunan_btn" style="margin-right:8px; background:#A5182B; border-color:#8B1E1E;">
                             <span class="dashicons dashicons-upload" style="vertical-align:middle; margin-right:4px;"></span> Unggah / Pilih Foto Susunan
                         </button>
@@ -371,7 +373,7 @@ function dprd_render_struktur_options_page() {
                 </div>
 
                 <!-- RIGHT COLUMN: REALTIME COMBINED LIVE PREVIEW WITH TEXT & FADE -->
-                <div style="flex:1; padding:20px; background:#f8fafc; overflow-y:auto; display:flex; flex-direction:column; justify-content:center;">
+                <div id="crop_right_column" style="flex:1; padding:20px; background:#f8fafc; overflow-y:auto; display:flex; flex-direction:column; justify-content:center;">
                     <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:20px; box-shadow:0 4px 18px rgba(0,0,0,0.06); position:relative; font-family:'Poppins', sans-serif;">
                         
                         <!-- HEADER CARD SIMULASI WEBSITE -->
@@ -436,9 +438,10 @@ function dprd_render_struktur_options_page() {
         var selectedOriginalUrl = '';
         var cropper = null;
         var updatePreviewTimeout = null;
+        var currentCropTarget = ''; // 'struktur' or 'susunan'
 
         function updateLiveImg() {
-            if (!cropper) return;
+            if (!cropper || currentCropTarget !== 'susunan') return;
             try {
                 var canvas = cropper.getCroppedCanvas({ width: 800, height: 260 });
                 if (canvas) {
@@ -447,28 +450,106 @@ function dprd_render_struktur_options_page() {
             } catch(e) {}
         }
 
-        // 1. Media Uploader untuk Struktur Organisasi
-        var frameStruktur;
-        $('#dprd_upload_struktur_btn').on('click', function(e){
-            e.preventDefault();
-            if (frameStruktur) {
-                frameStruktur.open();
-                return;
+        function openCropper(imageSrc, target) {
+            currentCropTarget = target;
+            selectedOriginalUrl = imageSrc;
+            $('#dprd_crop_target_img').attr('src', imageSrc);
+            
+            if (target === 'struktur') {
+                $('#crop_right_column').hide();
+                $('#crop_aspect_ratio').val('NaN'); // Default freeform
+            } else {
+                $('#crop_right_column').show();
+                $('#crop_aspect_ratio').val('3.076923076923077'); // Default profile ratio
             }
-            frameStruktur = wp.media({
-                title: 'Pilih atau Unggah Gambar Struktur Organisasi',
-                button: { text: 'Gunakan Gambar Ini' },
-                multiple: false
+
+            $('#dprd_cropper_modal').css('display', 'flex');
+
+            if (cropper) {
+                cropper.destroy();
+            }
+
+            var image = document.getElementById('dprd_crop_target_img');
+            var currentRatioVal = parseFloat($('#crop_aspect_ratio').val());
+            cropper = new Cropper(image, {
+                aspectRatio: isNaN(currentRatioVal) ? NaN : currentRatioVal,
+                viewMode: 1,
+                autoCropArea: 0.95,
+                responsive: true,
+                background: false,
+                crop: function() {
+                    if (updatePreviewTimeout) clearTimeout(updatePreviewTimeout);
+                    updatePreviewTimeout = setTimeout(updateLiveImg, 40);
+                },
+                ready: function() {
+                    updateLiveImg();
+                }
             });
-            frameStruktur.on('select', function(){
-                var attachment = frameStruktur.state().get('selection').first().toJSON();
-                $('#dprd_struktur_img_url').val(attachment.url);
-                $('#dprd_struktur_img_preview').html('<img src="' + attachment.url + '" style="max-width:100%; max-height:380px; border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,0.1);" alt="Preview Struktur Organisasi">');
-                $('#dprd_remove_struktur_btn').show();
+        }
+
+        function uploadCroppedImage(base64Data, $btn) {
+            $btn.prop('disabled', true).text('Memproses Potong Gambar...');
+            $.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'dprd_save_cropped_image',
+                    nonce: cropNonce,
+                    image_data: base64Data
+                },
+                success: function(response) {
+                    $btn.prop('disabled', false).html('<span class="dashicons dashicons-yes"></span> Potong & Simpan Hasil Crop');
+                    if (response.success && response.data.url) {
+                        var finalUrl = response.data.url;
+                        if (currentCropTarget === 'struktur') {
+                            $('#dprd_struktur_img_url').val(finalUrl);
+                            $('#dprd_struktur_img_preview').html('<img src="' + finalUrl + '" style="max-width:100%; max-height:380px; border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,0.1);" alt="Preview">');
+                            $('#dprd_remove_struktur_btn').show();
+                        } else {
+                            $('#dprd_susunan_organisasi_photo').val(finalUrl);
+                            $('#dprd_susunan_photo_preview').html('<img src="' + finalUrl + '" style="max-width:100%; max-height:300px; border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,0.1);" alt="Preview">');
+                            $('#dprd_remove_susunan_btn').show();
+                        }
+                        if (cropper) cropper.destroy();
+                        $('#dprd_cropper_modal').hide();
+                    } else {
+                        alert('Gagal menyimpan gambar: ' + (response.data || 'Error'));
+                    }
+                },
+                error: function() {
+                    $btn.prop('disabled', false).html('<span class="dashicons dashicons-yes"></span> Potong & Simpan Hasil Crop');
+                    alert('Terjadi kesalahan server.');
+                }
             });
-            frameStruktur.open();
+        }
+
+        // TRIGGER FILE INPUTS
+        $('#dprd_upload_struktur_btn').on('click', function(e) {
+            e.preventDefault();
+            $('#dprd_upload_struktur_file').click();
         });
 
+        $('#dprd_upload_susunan_btn').on('click', function(e) {
+            e.preventDefault();
+            $('#dprd_upload_susunan_file').click();
+        });
+
+        // HANDLE FILE SELECTION (Local FileReader)
+        $('#dprd_upload_struktur_file, #dprd_upload_susunan_file').on('change', function(e) {
+            var file = e.target.files[0];
+            if (!file) return;
+            
+            var targetType = $(this).attr('id') === 'dprd_upload_struktur_file' ? 'struktur' : 'susunan';
+            
+            var reader = new FileReader();
+            reader.onload = function(evt) {
+                openCropper(evt.target.result, targetType);
+            };
+            reader.readAsDataURL(file);
+            $(this).val(''); // Reset input
+        });
+
+        // REMOVE BUTTONS
         $('#dprd_remove_struktur_btn').on('click', function(e){
             e.preventDefault();
             $('#dprd_struktur_img_url').val('');
@@ -476,52 +557,14 @@ function dprd_render_struktur_options_page() {
             $(this).hide();
         });
 
-        // 2. Media Uploader + CROPPER INTERAKTIF & LIVE PREVIEW untuk Susunan Organisasi
-        var frameSusunan;
-        $('#dprd_upload_susunan_btn').on('click', function(e){
+        $('#dprd_remove_susunan_btn').on('click', function(e){
             e.preventDefault();
-            if (frameSusunan) {
-                frameSusunan.open();
-                return;
-            }
-            frameSusunan = wp.media({
-                title: 'Pilih atau Unggah Foto Susunan Organisasi',
-                button: { text: 'Pilih & Potong Gambar' },
-                multiple: false
-            });
-            frameSusunan.on('select', function(){
-                var attachment = frameSusunan.state().get('selection').first().toJSON();
-                selectedOriginalUrl = attachment.url;
-
-                // Buka Cropper Modal
-                $('#dprd_crop_target_img').attr('src', selectedOriginalUrl);
-                $('#dprd_cropper_modal').css('display', 'flex');
-
-                if (cropper) {
-                    cropper.destroy();
-                }
-
-                var image = document.getElementById('dprd_crop_target_img');
-                var currentRatioVal = parseFloat($('#crop_aspect_ratio').val());
-                cropper = new Cropper(image, {
-                    aspectRatio: isNaN(currentRatioVal) ? NaN : currentRatioVal,
-                    viewMode: 1,
-                    autoCropArea: 0.95,
-                    responsive: true,
-                    background: false,
-                    crop: function() {
-                        if (updatePreviewTimeout) clearTimeout(updatePreviewTimeout);
-                        updatePreviewTimeout = setTimeout(updateLiveImg, 40);
-                    },
-                    ready: function() {
-                        updateLiveImg();
-                    }
-                });
-            });
-            frameSusunan.open();
+            $('#dprd_susunan_organisasi_photo').val('');
+            $('#dprd_susunan_photo_preview').html('<p style="color:#64748b; margin:20px 0; font-size:14px;">Belum ada foto Susunan Organisasi yang diunggah.</p>');
+            $(this).hide();
         });
 
-        // Controls Cropper
+        // CROPPER CONTROLS
         $('#crop_rotate_left').on('click', function(){ if (cropper) { cropper.rotate(-90); updateLiveImg(); } });
         $('#crop_rotate_right').on('click', function(){ if (cropper) { cropper.rotate(90); updateLiveImg(); } });
         $('#crop_zoom_in').on('click', function(){ if (cropper) { cropper.zoom(0.1); updateLiveImg(); } });
@@ -534,71 +577,29 @@ function dprd_render_struktur_options_page() {
             }
         });
 
-        // Close Modal
+        // CLOSE CROPPER MODAL
         $('#dprd_close_crop_modal').on('click', function(){
             if (cropper) cropper.destroy();
             $('#dprd_cropper_modal').hide();
         });
 
-        // Use Original (Tanpa Crop)
-        $('#btn_use_original').on('click', function(){
-            if (selectedOriginalUrl) {
-                $('#dprd_susunan_organisasi_photo').val(selectedOriginalUrl);
-                $('#dprd_susunan_photo_preview').html('<img src="' + selectedOriginalUrl + '" style="max-width:100%; max-height:300px; border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,0.1);" alt="Preview Foto Susunan Organisasi">');
-                $('#dprd_remove_susunan_btn').show();
-            }
-            if (cropper) cropper.destroy();
-            $('#dprd_cropper_modal').hide();
-        });
-
-        // Apply Crop & Upload via AJAX
+        // APPLY CROP (AJAX UPLOAD)
         $('#btn_apply_crop').on('click', function(){
             if (!cropper) return;
-            var $btn = $(this);
-            $btn.prop('disabled', true).text('Memproses Potong Gambar...');
-
             var canvas = cropper.getCroppedCanvas({
                 maxWidth: 1920,
                 maxHeight: 1080,
                 imageSmoothingEnabled: true,
                 imageSmoothingQuality: 'high'
             });
-
-            var croppedDataUrl = canvas.toDataURL('image/jpeg', 0.92);
-
-            $.ajax({
-                url: ajaxurl,
-                type: 'POST',
-                data: {
-                    action: 'dprd_save_cropped_image',
-                    nonce: cropNonce,
-                    image_data: croppedDataUrl
-                },
-                success: function(response) {
-                    $btn.prop('disabled', false).html('<span class="dashicons dashicons-yes"></span> Potong & Simpan Hasil Crop');
-                    if (response.success && response.data.url) {
-                        var croppedUrl = response.data.url;
-                        $('#dprd_susunan_organisasi_photo').val(croppedUrl);
-                        $('#dprd_susunan_photo_preview').html('<img src="' + croppedUrl + '" style="max-width:100%; max-height:300px; border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,0.1);" alt="Preview Foto Susunan Organisasi">');
-                        $('#dprd_remove_susunan_btn').show();
-                        if (cropper) cropper.destroy();
-                        $('#dprd_cropper_modal').hide();
-                    } else {
-                        alert('Gagal menyimpan gambar hasil potong: ' + (response.data || 'Error'));
-                    }
-                },
-                error: function() {
-                    $btn.prop('disabled', false).html('<span class="dashicons dashicons-yes"></span> Potong & Simpan Hasil Crop');
-                    alert('Terjadi kesalahan server saat menyimpan gambar.');
-                }
-            });
+            uploadCroppedImage(canvas.toDataURL('image/jpeg', 0.92), $(this));
         });
 
-        $('#dprd_remove_susunan_btn').on('click', function(e){
-            e.preventDefault();
-            $('#dprd_susunan_organisasi_photo').val('');
-            $('#dprd_susunan_photo_preview').html('<p style="color:#64748b; margin:20px 0; font-size:14px;">Belum ada foto Susunan Organisasi yang diunggah.</p>');
-            $(this).hide();
+        // USE ORIGINAL IMAGE
+        $('#btn_use_original').on('click', function(){
+            if (selectedOriginalUrl) {
+                uploadCroppedImage(selectedOriginalUrl, $('#btn_apply_crop'));
+            }
         });
     });
     </script>
