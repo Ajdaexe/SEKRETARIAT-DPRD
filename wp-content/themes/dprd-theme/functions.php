@@ -287,9 +287,9 @@ function dprd_render_struktur_options_page() {
                 <tr>
                     <th scope="row"><label for="dprd_struktur_img_url">Gambar Bagan / Diagram</label></th>
                     <td>
-                        <div id="dprd_struktur_img_preview" style="margin-bottom:15px; background:#fafafa; padding:16px; border:2px dashed #cbd5e1; border-radius:8px; text-align:center; max-width:580px;">
+                        <div id="dprd_struktur_img_preview" style="margin-bottom:15px; background:#fafafa; padding:16px; border:2px dashed #cbd5e1; border-radius:8px; text-align:center; width:100%;">
                             <?php if ( $current_img ) : ?>
-                                <img src="<?php echo esc_url( $current_img ); ?>" style="max-width:100%; max-height:380px; border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,0.1);" alt="Preview Struktur Organisasi">
+                                <img src="<?php echo esc_url( $current_img ); ?>" style="max-width:100%; height:auto; display:block; margin:0 auto; border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,0.1);" alt="Preview Struktur Organisasi">
                             <?php else : ?>
                                 <p style="color:#64748b; margin:20px 0; font-size:14px;">Belum ada gambar Struktur Organisasi yang diunggah.</p>
                             <?php endif; ?>
@@ -503,7 +503,7 @@ function dprd_render_struktur_options_page() {
                         var finalUrl = response.data.url;
                         if (currentCropTarget === 'struktur') {
                             $('#dprd_struktur_img_url').val(finalUrl);
-                            $('#dprd_struktur_img_preview').html('<img src="' + finalUrl + '" style="max-width:100%; max-height:380px; border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,0.1);" alt="Preview">');
+                            $('#dprd_struktur_img_preview').html('<img src="' + finalUrl + '" style="max-width:100%; height:auto; display:block; margin:0 auto; border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,0.1);" alt="Preview">');
                             $('#dprd_remove_struktur_btn').show();
                         } else {
                             $('#dprd_susunan_organisasi_photo').val(finalUrl);
