@@ -227,8 +227,10 @@ get_header();
 <!-- Modal Lightbox untuk Foto Hero -->
 <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox(event)">
   <span class="lightbox-close" onclick="closeLightbox(event)">&times;</span>
-  <img id="lightboxImg" src="" alt="Zoom Foto">
-  <div id="lightboxCaption" style="color:#ffffff; margin-top:10px; font-weight:600; text-align:center;"></div>
+  <div class="lightbox-content" onclick="event.stopPropagation()">
+    <img id="lightboxImg" src="" alt="Zoom Foto">
+    <div id="lightboxCaption" class="lightbox-caption" style="color:#ffffff; margin-top:10px; font-weight:600; text-align:center;"></div>
+  </div>
 </div>
 
 <!-- Modal Video -->
@@ -292,7 +294,7 @@ get_header();
             <?php echo wp_kses_post( wpautop( $desc ) ); ?>
           </div>
           <a class="btn-ajukan" href="<?php echo esc_url($url); ?>" target="_blank" rel="noopener">
-            Ajukan Sekarang <span class="arrow-icon">&rsaquo;</span>
+            Ajukan Permohonan <span class="arrow-icon">&rsaquo;</span>
           </a>
         </div>
         <?php

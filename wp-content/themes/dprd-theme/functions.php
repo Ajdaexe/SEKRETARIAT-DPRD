@@ -2256,12 +2256,65 @@ function dprd_upload_dokumentasi_dlantunan_page_html() {
             <?php
             settings_fields( 'dprd_upload_dokumentasi_dlantunan_group' );
             do_settings_sections( 'dprd_upload_dokumentasi_dlantunan_group' );
-            $foto_data = get_option( 'dprd_dlantunan_foto_data', '[]' );
+            
+            $defaults = json_encode([
+                ['caption' => '', 'url' => '']
+            ]);
+            $foto_data = get_option( 'dprd_dlantunan_foto_data', '' );
+            if (empty($foto_data) || $foto_data === '[]' || $foto_data === 'false') {
+                $foto_data = $defaults;
+            }
             ?>
             <input type="hidden" name="dprd_dlantunan_foto_data" id="dprd_dlantunan_foto_data" value="<?php echo esc_attr( $foto_data ); ?>">
 
             <div id="foto_repeater_container" style="margin-bottom:15px;">
-                <!-- Repeater Items will be injected here via JS -->
+                <?php
+                $foto_data_arr = json_decode($foto_data, true);
+                if (!is_array($foto_data_arr) || empty($foto_data_arr)) {
+                    $foto_data_arr = [['caption' => '', 'url' => '']];
+                }
+                
+                foreach ($foto_data_arr as $index => $foto) {
+                    $idx = $index;
+                    $caption = isset($foto['caption']) ? esc_attr($foto['caption']) : '';
+                    $url = isset($foto['url']) ? esc_url($foto['url']) : '';
+                    $display_img = $url ? 'block' : 'none';
+                    $display_empty = $url ? 'none' : 'block';
+                    $display_btn_remove = $url ? 'inline-block' : 'none';
+                    ?>
+                    <div class="foto-slide-row" style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 25px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); position: relative;">
+                        <h4 style="margin-top:0; color:#334155; font-size:15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px;">Item Foto <span class="row-index"><?php echo $idx + 1; ?></span></h4>
+                        <button type="button" class="button button-link-delete btn_remove_foto" style="position:absolute; top:20px; right:20px; color:#d63638; border: 1px solid #fca5a5; border-radius: 4px; padding: 2px 10px; text-decoration:none; background:#fef2f2;">Hapus Item</button>
+                        <table class="form-table" style="margin-top:0;">
+                            <tr>
+                                <th scope="row" style="padding-top:25px; font-weight:600; color:#334155; width:220px;">Judul Foto</th>
+                                <td style="padding-top:25px;">
+                                    <input type="text" class="foto_input_caption" value="<?php echo $caption; ?>" style="width:100%; max-width:100%; padding: 8px; border-color: #cbd5e1; border-radius: 4px; box-shadow: none;" placeholder="Contoh: Kegiatan Rapat Paripurna DPRD...">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" style="padding-top:20px; font-weight:600; color:#334155;">Gambar Foto Dokumentasi</th>
+                                <td style="padding-top:20px;">
+                                    <div class="foto-preview-container" style="border: 2px dashed #cbd5e1; border-radius: 8px; padding: 30px 20px; text-align: center; background: #f8fafc; margin-bottom: 15px; position: relative; min-height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                        <span class="empty-state-text" style="color: #64748b; font-size: 14px; display: <?php echo $display_empty; ?>;">Belum ada gambar foto yang diunggah.</span>
+                                        <img src="<?php echo $url; ?>" class="foto_preview_img" style="max-width: 100%; max-height: 300px; border-radius: 4px; display: <?php echo $display_img; ?>; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" />
+                                        <button type="button" class="button btn_remove_foto_image" style="margin-top: 15px; color: #d63638; border-color: transparent; box-shadow: none; text-decoration: underline; display: <?php echo $display_btn_remove; ?>;">Hapus Gambar Ini</button>
+                                    </div>
+                                    <input type="hidden" class="foto_input_url" value="<?php echo $url; ?>">
+                                    <input type="file" class="hidden_file_input_foto" accept="image/*" style="display:none;">
+                                    
+                                    <button type="button" class="button button-primary btn_upload_foto" style="background:#A5182B; border-color:#8B1E1E; padding: 4px 16px; height: auto; min-height: 36px; display:inline-flex; align-items:center;">
+                                        <span class="dashicons dashicons-upload" style="margin-right:6px; font-size: 18px; width: 18px; height: 18px;"></span> Unggah / Pilih Gambar Foto
+                                    </button>
+                                    <span class="upload-status-foto" style="margin-left: 10px; color: #0073aa; font-weight: bold; display: none;">Memproses...</span>
+                                    <p class="description" style="margin-top:12px; font-size:13px; color:#64748b;">Format gambar yang disarankan: PNG, JPG, WebP, atau SVG dengan resolusi tinggi.</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <?php
+                }
+                ?>
             </div>
             
             <button type="button" class="button" id="btn_add_foto_slide" style="margin-bottom: 20px;">+ Tambah Foto Dokumentasi</button>
@@ -2286,7 +2339,7 @@ function dprd_upload_dokumentasi_dlantunan_page_html() {
                 </div>
                 <div style="width:250px; padding:20px; background:#f0f0f0; border-left:1px solid #ddd; display:flex; flex-direction:column; align-items:center;">
                     <h4 style="margin-top:0; margin-bottom:15px;">Preview</h4>
-                    <div class="cropper-preview" style="width: 200px; height: 200px; overflow: hidden; border: 1px solid #ccc; background: #fff;"></div>
+                    <div class="cropper-preview" style="width: 240px; height: 135px; overflow: hidden; border: 1px solid #ccc; background: #fff;"></div>
                 </div>
             </div>
             
@@ -2297,12 +2350,16 @@ function dprd_upload_dokumentasi_dlantunan_page_html() {
     </div>
 
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    (function() {
         var fotoData = [];
         try {
             var rawVal = document.getElementById('dprd_dlantunan_foto_data').value;
             fotoData = JSON.parse(rawVal || '[]');
         } catch(e) {}
+
+        if (!Array.isArray(fotoData) || fotoData.length === 0) {
+            fotoData = [{caption: '', url: ''}];
+        }
 
         var container = document.getElementById('foto_repeater_container');
         var cropperModal = document.getElementById('cropper_modal_overlay');
@@ -2314,25 +2371,33 @@ function dprd_upload_dokumentasi_dlantunan_page_html() {
 
         function renderRow(foto, index) {
             var html = `
-            <div class="foto-slide-row" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background: #fafafa; position: relative;">
-                <h4 style="margin-top:0;">Foto ${index + 1}</h4>
-                <button type="button" class="button button-link-delete btn_remove_foto" style="position:absolute; top:15px; right:15px; color:#a00;">Hapus</button>
-                <table class="form-table">
+            <div class="foto-slide-row" style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 25px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); position: relative;">
+                <h4 style="margin-top:0; color:#334155; font-size:15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px;">Item Foto <span class="row-index">${index + 1}</span></h4>
+                <button type="button" class="button button-link-delete btn_remove_foto" style="position:absolute; top:20px; right:20px; color:#d63638; border: 1px solid #fca5a5; border-radius: 4px; padding: 2px 10px; text-decoration:none; background:#fef2f2;">Hapus Item</button>
+                <table class="form-table" style="margin-top:0;">
                     <tr>
-                        <th scope="row">Gambar Foto</th>
-                        <td>
-                            <div style="margin-bottom: 10px;">
-                                <img src="${foto.url || ''}" class="foto_preview_img" style="max-width: 250px; display: ${foto.url ? 'block' : 'none'}; border: 1px solid #ddd; border-radius: 4px;" />
-                            </div>
-                            <input type="hidden" class="foto_input_url" value="${foto.url || ''}">
-                            <input type="file" class="hidden_file_input_foto" accept="image/*" style="display:none;">
-                            <button type="button" class="button btn_upload_foto">Pilih/Unggah Gambar (Lalu Crop)</button>
-                            <span class="upload-status-foto" style="margin-left: 10px; color: #0073aa; font-weight: bold; display: none;">Memproses...</span>
+                        <th scope="row" style="padding-top:25px; font-weight:600; color:#334155; width:220px;">Judul Foto</th>
+                        <td style="padding-top:25px;">
+                            <input type="text" class="foto_input_caption" value="${foto.caption || ''}" style="width:100%; max-width:100%; padding: 8px; border-color: #cbd5e1; border-radius: 4px; box-shadow: none;" placeholder="Contoh: Kegiatan Rapat Paripurna DPRD...">
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row">Deskripsi / Caption</th>
-                        <td><textarea class="foto_input_caption" rows="3" style="width:100%; max-width:500px;">${foto.caption || ''}</textarea></td>
+                        <th scope="row" style="padding-top:20px; font-weight:600; color:#334155;">Gambar Foto Dokumentasi</th>
+                        <td style="padding-top:20px;">
+                            <div class="foto-preview-container" style="border: 2px dashed #cbd5e1; border-radius: 8px; padding: 30px 20px; text-align: center; background: #f8fafc; margin-bottom: 15px; position: relative; min-height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <span class="empty-state-text" style="color: #64748b; font-size: 14px; display: ${foto.url ? 'none' : 'block'};">Belum ada gambar foto yang diunggah.</span>
+                                <img src="${foto.url || ''}" class="foto_preview_img" style="max-width: 100%; max-height: 300px; border-radius: 4px; display: ${foto.url ? 'block' : 'none'}; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" />
+                                <button type="button" class="button btn_remove_foto_image" style="margin-top: 15px; color: #d63638; border-color: transparent; box-shadow: none; text-decoration: underline; display: ${foto.url ? 'inline-block' : 'none'};">Hapus Gambar Ini</button>
+                            </div>
+                            <input type="hidden" class="foto_input_url" value="${foto.url || ''}">
+                            <input type="file" class="hidden_file_input_foto" accept="image/*" style="position:absolute; width:1px; height:1px; opacity:0; z-index:-1;">
+                            
+                            <button type="button" class="button button-primary btn_upload_foto" style="background:#A5182B; border-color:#8B1E1E; padding: 4px 16px; height: auto; min-height: 36px; display:inline-flex; align-items:center;">
+                                <span class="dashicons dashicons-upload" style="margin-right:6px; font-size: 18px; width: 18px; height: 18px;"></span> Unggah / Pilih Gambar Foto
+                            </button>
+                            <span class="upload-status-foto" style="margin-left: 10px; color: #0073aa; font-weight: bold; display: none;">Memproses...</span>
+                            <p class="description" style="margin-top:12px; font-size:13px; color:#64748b;">Format gambar yang disarankan: PNG, JPG, WebP, atau SVG dengan resolusi tinggi.</p>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -2340,35 +2405,56 @@ function dprd_upload_dokumentasi_dlantunan_page_html() {
             container.insertAdjacentHTML('beforeend', html);
         }
 
-        function renderAll() {
-            container.innerHTML = '';
-            fotoData.forEach(function(foto, idx) {
-                renderRow(foto, idx);
+        function reindexRows() {
+            var rows = container.querySelectorAll('.foto-slide-row');
+            rows.forEach(function(row, idx) {
+                var indexSpan = row.querySelector('.row-index');
+                if (indexSpan) indexSpan.textContent = idx + 1;
             });
         }
-        renderAll();
 
         document.getElementById('btn_add_foto_slide').addEventListener('click', function() {
-            fotoData.push({url:'', caption:''});
-            renderAll();
+            var currentRows = container.querySelectorAll('.foto-slide-row').length;
+            renderRow({url:'', caption:''}, currentRows);
         });
 
         container.addEventListener('click', function(e) {
-            if (e.target.classList.contains('btn_remove_foto')) {
+            var targetEl = e.target.nodeType === 3 ? e.target.parentNode : e.target;
+            if (!targetEl || !targetEl.closest) return;
+            
+            var btnRemoveFoto = targetEl.closest('.btn_remove_foto');
+            if (btnRemoveFoto) {
                 if(confirm('Hapus foto ini?')) {
-                    var row = e.target.closest('.foto-slide-row');
-                    var index = Array.from(container.children).indexOf(row);
-                    if (index > -1) {
-                        fotoData.splice(index, 1);
-                        renderAll();
-                    }
+                    var row = btnRemoveFoto.closest('.foto-slide-row');
+                    row.remove();
+                    reindexRows();
                 }
+                return;
             }
-            if (e.target.classList.contains('btn_upload_foto')) {
+            
+            var btnUploadFoto = targetEl.closest('.btn_upload_foto');
+            if (btnUploadFoto) {
                 e.preventDefault();
-                var row = e.target.closest('.foto-slide-row');
+                var row = btnUploadFoto.closest('.foto-slide-row');
                 var fileInput = row.querySelector('.hidden_file_input_foto');
                 if (fileInput) fileInput.click();
+                return;
+            }
+            
+            var btnRemoveImg = targetEl.closest('.btn_remove_foto_image');
+            if (btnRemoveImg) {
+                e.preventDefault();
+                var row = btnRemoveImg.closest('.foto-slide-row');
+                var inputUrl = row.querySelector('.foto_input_url');
+                var previewImg = row.querySelector('.foto_preview_img');
+                var emptyState = row.querySelector('.empty-state-text');
+                
+                inputUrl.value = '';
+                previewImg.src = '';
+                previewImg.style.display = 'none';
+                btnRemoveImg.style.display = 'none';
+                if(emptyState) emptyState.style.display = 'block';
+                return;
             }
         });
 
@@ -2392,7 +2478,7 @@ function dprd_upload_dokumentasi_dlantunan_page_html() {
                         var initCropper = function() {
                             cropper = new Cropper(cropperImage, {
                                 viewMode: 2,
-                                aspectRatio: 1,
+                                aspectRatio: 16 / 9,
                                 dragMode: 'move',
                                 autoCropArea: 1,
                                 restore: false,
@@ -2490,201 +2576,13 @@ function dprd_upload_dokumentasi_dlantunan_page_html() {
                         inputUrl.value = response.data.url;
                         previewEl.src = response.data.url;
                         previewEl.style.display = 'block';
-                        setTimeout(() => statusEl.style.display = 'none', 2000);
-                    } else {
-                        statusEl.style.display = 'inline-block';
-                        var err = response && response.data ? response.data : 'Tidak diketahui (Server merespons: ' + JSON.stringify(response) + ')';
-                        statusEl.textContent = 'Gagal: ' + err;
-                    }
-                },
-                error: function(xhr, status, error) {
-                    statusEl.style.display = 'inline-block';
-                    statusEl.textContent = 'Server Error: ' + error;
-                    console.error("AJAX Error: ", xhr.responseText);
-                }
-            });
-        });
-
-        var form = document.querySelector('form[action="options.php"]');
-        if (form) {
-            form.addEventListener('submit', function() {
-                var rows = container.querySelectorAll('.foto-slide-row');
-                var newData = [];
-                rows.forEach(function(row) {
-                    newData.push({
-                        url: row.querySelector('.foto_input_url').value,
-                        caption: row.querySelector('.foto_input_caption').value
-                    });
-                });
-                            <div style="margin-bottom: 10px;">
-                                <img src="${foto.url || ''}" class="foto_preview_img" style="max-width: 250px; display: ${foto.url ? 'block' : 'none'}; border: 1px solid #ddd; border-radius: 4px;" />
-                            </div>
-                            <input type="hidden" class="foto_input_url" value="${foto.url || ''}">
-                            <input type="file" class="hidden_file_input_foto" accept="image/*" style="display:none;">
-                            <button type="button" class="button btn_upload_foto">Pilih/Unggah Gambar (Lalu Crop)</button>
-                            <span class="upload-status-foto" style="margin-left: 10px; color: #0073aa; font-weight: bold; display: none;">Memproses...</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Deskripsi / Caption</th>
-                        <td><textarea class="foto_input_caption" rows="3" style="width:100%; max-width:500px;">${foto.caption || ''}</textarea></td>
-                    </tr>
-                </table>
-            </div>
-            `;
-            container.insertAdjacentHTML('beforeend', html);
-        }
-
-        function renderAll() {
-            container.innerHTML = '';
-            fotoData.forEach(function(foto, idx) {
-                renderRow(foto, idx);
-            });
-        }
-        renderAll();
-
-        document.getElementById('btn_add_foto_slide').addEventListener('click', function() {
-            fotoData.push({url:'', caption:''});
-            renderAll();
-        });
-
-        container.addEventListener('click', function(e) {
-            if (e.target.classList.contains('btn_remove_foto')) {
-                if(confirm('Hapus foto ini?')) {
-                    var row = e.target.closest('.foto-slide-row');
-                    var index = Array.from(container.children).indexOf(row);
-                    if (index > -1) {
-                        fotoData.splice(index, 1);
-                        renderAll();
-                    }
-                }
-            }
-            if (e.target.classList.contains('btn_upload_foto')) {
-                e.preventDefault();
-                var row = e.target.closest('.foto-slide-row');
-                var fileInput = row.querySelector('.hidden_file_input_foto');
-                if (fileInput) fileInput.click();
-            }
-        });
-
-        container.addEventListener('change', function(e) {
-            if (e.target.classList.contains('hidden_file_input_foto')) {
-                var file = e.target.files[0];
-                if (!file) return;
-                
-                activeRow = e.target.closest('.foto-slide-row');
-                var reader = new FileReader();
-                reader.onload = function(evt) {
-                    cropperModal.style.display = 'block';
-                    cropperImage.src = evt.target.result;
-                    
-                    setTimeout(function() {
-                        if (cropper) {
-                            cropper.destroy();
-                            cropper = null;
-                        }
                         
-                        var initCropper = function() {
-                            cropper = new Cropper(cropperImage, {
-                                viewMode: 2,
-                                aspectRatio: 1,
-                                dragMode: 'move',
-                                autoCropArea: 1,
-                                restore: false,
-                                guides: true,
-                                center: true,
-                                highlight: true,
-                                cropBoxMovable: true,
-                                cropBoxResizable: true,
-                                toggleDragModeOnDblclick: false,
-                                zoomOnWheel: false,
-                                responsive: true,
-                                preview: '.cropper-preview'
-                            });
-                        };
-
-                        if (typeof Cropper !== 'undefined') {
-                            initCropper();
-                        } else {
-                            // Fallback: Dynamically inject script if enqueue failed
-                            var script = document.createElement('script');
-                            script.src = "<?php echo get_template_directory_uri(); ?>/assets/js/cropper.min.js?v=" + new Date().getTime();
-                            script.onload = function() {
-                                if (typeof Cropper !== 'undefined') {
-                                    initCropper();
-                                } else {
-                                    alert("Pustaka Cropper.js masih gagal dimuat (Internal Error).");
-                                }
-                            };
-                            script.onerror = function() {
-                                alert("Pustaka Cropper.js gagal dimuat secara fatal! Periksa koneksi atau lokasi file.");
-                            };
-                            document.head.appendChild(script);
-                            
-                            // Also inject CSS
-                            var link = document.createElement('link');
-                            link.rel = 'stylesheet';
-                            link.href = "<?php echo get_template_directory_uri(); ?>/assets/css/cropper.min.css?v=" + new Date().getTime();
-                            document.head.appendChild(link);
-                        }
-                    }, 250);
-                };
-                reader.readAsDataURL(file);
-                e.target.value = ''; 
-            }
-        });
-
-        btnCloseCropper.addEventListener('click', function() {
-            cropperModal.style.display = 'none';
-            if (cropper) cropper.destroy();
-            activeRow = null;
-        });
-
-        btnApplyCrop.addEventListener('click', function() {
-            if (!cropper || !activeRow) return;
-            
-            var canvas = cropper.getCroppedCanvas({
-                maxWidth: 1200,
-                maxHeight: 1200
-            });
-            
-            if (!canvas) {
-                alert('Gagal memotong gambar.');
-                return;
-            }
-
-            var base64Data = canvas.toDataURL('image/jpeg', 0.85);
-            var statusEl = activeRow.querySelector('.upload-status-foto');
-            var inputUrl = activeRow.querySelector('.foto_input_url');
-            var previewEl = activeRow.querySelector('.foto_preview_img');
-
-            cropperModal.style.display = 'none';
-            if (cropper) cropper.destroy();
-
-            statusEl.style.display = 'inline-block';
-            statusEl.textContent = 'Menyimpan...';
-
-            var formData = new FormData();
-            formData.append('action', 'dprd_upload_base64_image');
-            formData.append('image_base64', base64Data);
-
-            jQuery.ajax({
-                url: ajaxurl,
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    // response is already parsed JSON if server sends application/json
-                    if (typeof response === 'string') {
-                        try { response = JSON.parse(response); } catch(e) {}
-                    }
-                    if (response && response.success) {
-                        statusEl.style.display = 'inline-block';
-                        statusEl.textContent = 'Berhasil!';
-                        inputUrl.value = response.data.url;
-                        previewEl.src = response.data.url;
-                        previewEl.style.display = 'block';
+                        var btnRemoveImg = activeRow.querySelector('.btn_remove_foto_image');
+                        if (btnRemoveImg) btnRemoveImg.style.display = 'inline-block';
+                        
+                        var emptyState = activeRow.querySelector('.empty-state-text');
+                        if (emptyState) emptyState.style.display = 'none';
+                        
                         setTimeout(() => statusEl.style.display = 'none', 2000);
                     } else {
                         statusEl.style.display = 'inline-block';
@@ -2714,7 +2612,7 @@ function dprd_upload_dokumentasi_dlantunan_page_html() {
                 document.getElementById('dprd_dlantunan_foto_data').value = JSON.stringify(newData);
             });
         }
-    });
+    })();
     </script>
     <?php
 }
