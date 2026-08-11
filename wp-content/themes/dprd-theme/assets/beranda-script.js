@@ -16,15 +16,20 @@
     }
 
     let currentSurveyIndex = 0;
-    const totalSurveys = 3;
 
     function updateSurveyCarousel() {
       const track = document.getElementById('surveyTrack');
       const cards = document.querySelectorAll('.survey-card-item');
       const prevBtn = document.getElementById('prevBtn');
       const nextBtn = document.getElementById('nextBtn');
+      const totalSurveys = cards.length;
 
-      if (!track) return;
+      if (!track || totalSurveys === 0) {
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'none';
+        return;
+      }
+      
       track.style.transform = `translateX(-${currentSurveyIndex * 100}%)`;
 
       cards.forEach((card, idx) => {
@@ -36,25 +41,33 @@
       });
 
       // Sembunyikan/munculkan panah di ujung slide
-      if (currentSurveyIndex === 0) {
-        prevBtn.style.display = 'none';
-      } else {
-        prevBtn.style.display = 'flex';
+      if (prevBtn) {
+        if (currentSurveyIndex <= 0) {
+          prevBtn.style.display = 'none';
+        } else {
+          prevBtn.style.display = 'flex';
+        }
       }
 
-      if (currentSurveyIndex === totalSurveys - 1) {
-        nextBtn.style.display = 'none';
-      } else {
-        nextBtn.style.display = 'flex';
+      if (nextBtn) {
+        if (currentSurveyIndex >= totalSurveys - 1) {
+          nextBtn.style.display = 'none';
+        } else {
+          nextBtn.style.display = 'flex';
+        }
       }
     }
 
     function prevSurvey() {
+      const totalSurveys = document.querySelectorAll('.survey-card-item').length;
+      if (totalSurveys === 0) return;
       currentSurveyIndex = (currentSurveyIndex - 1 + totalSurveys) % totalSurveys;
       updateSurveyCarousel();
     }
 
     function nextSurvey() {
+      const totalSurveys = document.querySelectorAll('.survey-card-item').length;
+      if (totalSurveys === 0) return;
       currentSurveyIndex = (currentSurveyIndex + 1) % totalSurveys;
       updateSurveyCarousel();
     }

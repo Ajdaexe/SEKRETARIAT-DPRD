@@ -990,29 +990,29 @@ function dprd_theme_settings_page_html() {
         function renderIkmRow(slide, index) {
             var html = `
             <div class="ikm-slide-row" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background: #fafafa; position: relative;">
-                <h4 style="margin-top:0;">Slide \${index + 1}</h4>
+                <h4 style="margin-top:0;">Slide ${index + 1}</h4>
                 <button type="button" class="button button-link-delete btn_remove_ikm_slide" style="position:absolute; top:15px; right:15px; color:#a00;">Hapus Slide</button>
                 <table class="form-table">
                     <tr>
                         <th scope="row">Semester & Tahun</th>
-                        <td><input type="text" class="ikm_input_title" value="\${slide.title || ''}" style="width:100%; max-width:300px;"></td>
+                        <td><input type="text" class="ikm_input_title" value="${slide.title || ''}" style="width:100%; max-width:300px;"></td>
                     </tr>
                     <tr>
                         <th scope="row">Skor (Nilai)</th>
-                        <td><input type="text" class="ikm_input_score" value="\${slide.score || ''}" style="width:150px;"></td>
+                        <td><input type="text" class="ikm_input_score" value="${slide.score || ''}" style="width:150px;"></td>
                     </tr>
                     <tr>
                         <th scope="row">Huruf Mutu (Grade)</th>
-                        <td><input type="text" class="ikm_input_grade" value="\${slide.grade || ''}" style="width:50px;" maxlength="2"></td>
+                        <td><input type="text" class="ikm_input_grade" value="${slide.grade || ''}" style="width:50px;" maxlength="2"></td>
                     </tr>
                     <tr>
                         <th scope="row">Teks Predikat (Badge)</th>
-                        <td><input type="text" class="ikm_input_predicate" value="\${slide.predicate || ''}" style="width:100%; max-width:150px;"></td>
+                        <td><input type="text" class="ikm_input_predicate" value="${slide.predicate || ''}" style="width:100%; max-width:150px;"></td>
                     </tr>
                     <tr>
                         <th scope="row">Gambar QR Code</th>
                         <td>
-                            <input type="url" class="ikm_input_qr" value="\${slide.qr || ''}" style="width:100%; max-width:300px;">
+                            <input type="url" class="ikm_input_qr" value="${slide.qr || ''}" style="width:100%; max-width:300px;">
                             <button type="button" class="button btn_upload_ikm_qr">Pilih Gambar</button>
                         </td>
                     </tr>
