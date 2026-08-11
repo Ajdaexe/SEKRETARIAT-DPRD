@@ -331,18 +331,33 @@ get_header();
         
         if (is_array($docs_data) && !empty($docs_data)) {
             foreach ($docs_data as $doc) {
-                $type = strtoupper(isset($doc['type']) ? $doc['type'] : 'FILE');
+                $raw_type = strtoupper(isset($doc['type']) ? $doc['type'] : 'FILE');
+                $display_type = $raw_type;
                 $icon_name = 'pdf.svg';
-                if (in_array($type, ['DOC', 'DOCX', 'WORD'])) $icon_name = 'document.svg';
-                elseif (in_array($type, ['XLS', 'XLSX', 'EXCEL'])) $icon_name = 'document.svg';
+                
+                if (strpos($raw_type, 'DOC') !== false || strpos($raw_type, 'WORD') !== false) {
+                    $icon_name = 'document.svg';
+                    $display_type = 'DOCX';
+                } elseif (strpos($raw_type, 'XLS') !== false || strpos($raw_type, 'SPREADSHEET') !== false) {
+                    $icon_name = 'document.svg';
+                    $display_type = 'XLSX';
+                } elseif (strpos($raw_type, 'PPT') !== false || strpos($raw_type, 'PRESENTATION') !== false) {
+                    $icon_name = 'document.svg';
+                    $display_type = 'PPTX';
+                } elseif (strpos($raw_type, 'PDF') !== false) {
+                    $icon_name = 'pdf.svg';
+                    $display_type = 'PDF';
+                } elseif (strlen($raw_type) > 10) {
+                    $display_type = 'FILE';
+                }
                 ?>
                 <div class="dokumen-item">
                   <div class="pdf-icon-badge">
-                    <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/<?php echo $icon_name; ?>" alt="<?php echo esc_attr($type); ?>" onerror="this.onerror=null; this.src='<?php echo get_template_directory_uri(); ?>/assets/images/PDF.png';">
+                    <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/<?php echo $icon_name; ?>" alt="<?php echo esc_attr($display_type); ?>" onerror="this.onerror=null; this.src='<?php echo get_template_directory_uri(); ?>/assets/images/PDF.png';">
                   </div>
                   <div class="file-info">
                     <span class="file-title"><?php echo esc_html($doc['title']); ?></span>
-                    <span class="file-meta"><?php echo esc_html($type); ?> &bull; <?php echo esc_html($doc['date']); ?></span>
+                    <span class="file-meta"><?php echo esc_html($display_type); ?> &bull; <?php echo esc_html($doc['date']); ?></span>
                   </div>
                   <a class="btn-download" href="<?php echo esc_url($doc['url']); ?>" download aria-label="Unduh" target="_blank" rel="noopener">
                     <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/unduh.svg" alt="Unduh" onerror="this.onerror=null; this.src='<?php echo get_template_directory_uri(); ?>/assets/images/unduh.png';">
