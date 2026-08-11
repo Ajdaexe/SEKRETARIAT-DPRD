@@ -43,6 +43,7 @@ wp-content/uploads/*
 !wp-content/uploads/**/*.jpeg
 !wp-content/uploads/**/*.png
 !wp-content/uploads/**/*.webp
+!wp-content/uploads/**/*.mp4
 
 # OS generated files & cache
 .DS_Store
