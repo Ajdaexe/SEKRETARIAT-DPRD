@@ -766,6 +766,10 @@ section {
   color: #ffffff;
 }
 
+.dokumen-item:hover .pdf-icon-badge img {
+  filter: brightness(0) invert(1);
+}
+
 .file-info {
   flex-grow: 1;
   min-width: 0;
@@ -806,6 +810,10 @@ section {
   background: var(--merah);
   color: #ffffff;
   transform: scale(1.08);
+}
+
+.btn-download:hover img {
+  filter: brightness(0) invert(1);
 }
 
 .extra-doc {

@@ -1696,18 +1696,7 @@ function dprd_ppid_settings_page_html() {
 // PENGATURAN HALAMAN D'LANTUNAN
 // ==========================================
 
-function dprd_dlantunan_settings_menu() {
-    add_menu_page(
-        'Kartu Sambutan D\'Lantunan', 
-        'Kartu Sambutan D\'Lantunan', 
-        'manage_options', 
-        'dprd-dlantunan-settings', 
-        'dprd_dlantunan_settings_page_html', 
-        'dashicons-format-aside', 
-        36
-    );
-}
-add_action( 'admin_menu', 'dprd_dlantunan_settings_menu' );
+// Menu dipindahkan ke dprd_pengaturan_dlantunan_menu
 
 function dprd_dlantunan_settings_init() {
     register_setting( 'dprd_dlantunan_settings_group', 'dprd_dlantunan_welcome_title' );
@@ -1860,20 +1849,67 @@ add_action('admin_init', 'dprd_seed_layanan_dlantunan');
 // PENGATURAN 3 LAYANAN D'LANTUNAN (SETTINGS PAGE)
 // ==========================================
 
-function dprd_3layanan_settings_menu() {
+function dprd_pengaturan_dlantunan_menu() {
+    // Menu Utama
     add_menu_page(
-        '3 Layanan D\'Lantunan', 
-        '3 Layanan D\'Lantunan', 
+        'Pengaturan D\'Lantunan', 
+        'Pengaturan D\'Lantunan', 
         'manage_options', 
-        'dprd-3layanan-settings', 
+        'dprd-pengaturan-dlantunan', 
         'dprd_3layanan_settings_page_html', 
         'dashicons-clipboard', 
         30
     );
+    // Submenu 1: 3 Layanan (Sekaligus rename parent item)
+    add_submenu_page(
+        'dprd-pengaturan-dlantunan',
+        '3 Layanan D\'Lantunan',
+        '3 Layanan',
+        'manage_options',
+        'dprd-pengaturan-dlantunan',
+        'dprd_3layanan_settings_page_html'
+    );
+    // Submenu 2: Kartu Sambutan
+    add_submenu_page(
+        'dprd-pengaturan-dlantunan',
+        'Kartu Sambutan D\'Lantunan', 
+        'Kartu Sambutan', 
+        'manage_options', 
+        'dprd-dlantunan-settings', 
+        'dprd_dlantunan_settings_page_html'
+    );
+    // Submenu 3: Upload File
+    add_submenu_page(
+        'dprd-pengaturan-dlantunan',
+        'Upload File D\'Lantunan', 
+        'Upload File', 
+        'manage_options', 
+        'dprd-upload-dlantunan-settings', 
+        'dprd_upload_dlantunan_settings_page_html'
+    );
+    // Submenu 4: Upload Video
+    add_submenu_page(
+        'dprd-pengaturan-dlantunan',
+        'Upload Video D\'Lantunan', 
+        'Upload Video', 
+        'manage_options', 
+        'dprd-upload-video-dlantunan', 
+        'dprd_upload_video_dlantunan_page_html'
+    );
+    // Submenu 5: Upload Dokumentasi
+    add_submenu_page(
+        'dprd-pengaturan-dlantunan',
+        'Upload Dokumentasi D\'Lantunan', 
+        'Upload Dokumentasi', 
+        'manage_options', 
+        'dprd-upload-dokumentasi-dlantunan', 
+        'dprd_upload_dokumentasi_dlantunan_page_html'
+    );
+
     // Sembunyikan CPT lama agar admin tidak bingung
     remove_menu_page( 'edit.php?post_type=layanan_dlantunan' );
 }
-add_action( 'admin_menu', 'dprd_3layanan_settings_menu', 999 );
+add_action( 'admin_menu', 'dprd_pengaturan_dlantunan_menu', 999 );
 
 function dprd_3layanan_settings_init() {
     for ($i = 1; $i <= 3; $i++) {
@@ -1936,18 +1972,7 @@ function dprd_3layanan_settings_page_html() {
 // PENGATURAN UPLOAD FILE D'LANTUNAN (SETTINGS PAGE)
 // ==========================================
 
-function dprd_upload_file_dlantunan_menu() {
-    add_menu_page(
-        'Upload File D\'Lantunan', 
-        'Upload File D\'Lantunan', 
-        'manage_options', 
-        'dprd-upload-dlantunan-settings', 
-        'dprd_upload_dlantunan_settings_page_html', 
-        'dashicons-media-document', 
-        31
-    );
-}
-add_action( 'admin_menu', 'dprd_upload_file_dlantunan_menu' );
+// Menu dipindahkan ke dprd_pengaturan_dlantunan_menu
 
 function dprd_upload_dlantunan_settings_init() {
     register_setting( 'dprd_upload_dlantunan_settings_group', 'dprd_dlantunan_docs_data' );
@@ -2113,18 +2138,7 @@ function dprd_upload_dlantunan_settings_page_html() {
 // PENGATURAN UPLOAD VIDEO D'LANTUNAN (SETTINGS PAGE)
 // ==========================================
 
-function dprd_upload_video_dlantunan_menu() {
-    add_menu_page(
-        'Upload Video D\'Lantunan', 
-        'Upload Video D\'Lantunan', 
-        'manage_options', 
-        'dprd-upload-video-dlantunan', 
-        'dprd_upload_video_dlantunan_page_html', 
-        'dashicons-video-alt3', 
-        32
-    );
-}
-add_action( 'admin_menu', 'dprd_upload_video_dlantunan_menu' );
+// Menu dipindahkan ke dprd_pengaturan_dlantunan_menu
 
 function dprd_upload_video_dlantunan_init() {
     register_setting( 'dprd_upload_video_dlantunan_group', 'dprd_dlantunan_video_data' );
@@ -2349,18 +2363,7 @@ function dprd_upload_video_dlantunan_page_html() {
 // PENGATURAN FOTO DOKUMENTASI D'LANTUNAN
 // ==========================================
 
-function dprd_upload_dokumentasi_dlantunan_menu() {
-    add_menu_page(
-        'Upload Dokumentasi D\'Lantunan', 
-        'Upload Dokumentasi D\'Lantunan', 
-        'manage_options', 
-        'dprd-upload-dokumentasi-dlantunan', 
-        'dprd_upload_dokumentasi_dlantunan_page_html', 
-        'dashicons-format-gallery', 
-        33
-    );
-}
-add_action( 'admin_menu', 'dprd_upload_dokumentasi_dlantunan_menu' );
+// Menu dipindahkan ke dprd_pengaturan_dlantunan_menu
 
 function dprd_upload_dokumentasi_dlantunan_init() {
     register_setting( 'dprd_upload_dokumentasi_dlantunan_group', 'dprd_dlantunan_foto_data' );
