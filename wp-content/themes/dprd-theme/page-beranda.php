@@ -116,9 +116,9 @@ get_header();
       <div id="surveyTrack" class="ikm-track">
         <?php
         $default_slides = json_encode([
-            ['title' => 'SEMESTER I TAHUN 2026', 'score' => '93.275', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png'],
-            ['title' => 'SEMESTER II TAHUN 2025', 'score' => '92.150', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png'],
-            ['title' => 'SEMESTER I TAHUN 2025', 'score' => '91.500', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/QR Code.png']
+            ['title' => 'SEMESTER I TAHUN 2026', 'score' => '93.275', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/qr-code.png'],
+            ['title' => 'SEMESTER II TAHUN 2025', 'score' => '92.150', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/qr-code.png'],
+            ['title' => 'SEMESTER I TAHUN 2025', 'score' => '91.500', 'predicate' => 'Sangat Baik', 'grade' => 'A', 'qr' => get_template_directory_uri() . '/assets/images/qr-code.png']
         ]);
         $saved_slides = get_option('dprd_ikm_slides_data', '');
         if (empty($saved_slides) || $saved_slides === '[]' || $saved_slides === 'false') {
@@ -132,7 +132,7 @@ get_header();
                 $score = isset($slide['score']) ? $slide['score'] : '';
                 $predicate = isset($slide['predicate']) ? $slide['predicate'] : '';
                 $grade = isset($slide['grade']) ? $slide['grade'] : '';
-                $qr = isset($slide['qr']) && !empty($slide['qr']) ? $slide['qr'] : get_template_directory_uri() . '/assets/images/QR Code.png';
+                $qr = isset($slide['qr']) && !empty($slide['qr']) ? $slide['qr'] : get_template_directory_uri() . '/assets/images/qr-code.png';
         ?>
         <!-- Slide <?php echo $index + 1; ?> -->
         <div class="survey-card-item <?php if($index == 0) echo 'active'; ?>">
