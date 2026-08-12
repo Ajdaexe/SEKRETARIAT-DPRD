@@ -3019,3 +3019,7 @@ function dprd_track_dokumen_download() {
     }
 }
 add_action( 'template_redirect', 'dprd_track_dokumen_download' );
+
+// Include Footer Settings
+require get_template_directory() . '/footer-settings.php';
+
