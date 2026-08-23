@@ -256,11 +256,8 @@ get_header();
   </div>
 </section>
 
-</div>
-
 <!-- ===== CTA BANNER (HUBUNGI KAMI) ===== -->
 <section class="cta-section">
-  <div class="wrap">
     <div class="cta-banner">
       <div class="cta-left">
         <div class="icon-circle"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/user account.svg" alt=""></div>
@@ -274,8 +271,9 @@ get_header();
         Hubungi Kami
       </a>
     </div>
-  </div>
 </section>
+
+</div>
 
 
 

@@ -226,12 +226,14 @@ get_header();
         wp_reset_postdata();
     }
     
-    // Fallback if no documents found at all
-    if (empty($dokumen_array)) {
-        $dokumen_array = array(
-            array("judul" => "Belum ada dokumen PPID", "kategori" => "Informasi Berkala", "tanggal" => date('d F Y'), "tahun" => date('Y'), "file" => "#")
-        );
-    }
+    // Fallback if no documents found at all (or add dummy for testing)
+    $dokumen_array[] = array("judul" => "Dokumen Dummy 1: Laporan Kinerja Instansi Pemerintah (LKjIP) 2026", "kategori" => "Laporan PPID", "tanggal" => "10 Januari 2026", "tahun" => "2026", "file" => "#");
+    $dokumen_array[] = array("judul" => "Dokumen Dummy 2: Rencana Strategis (Renstra) DPRD 2021-2026", "kategori" => "Informasi Berkala", "tanggal" => "15 Februari 2026", "tahun" => "2026", "file" => "#");
+    $dokumen_array[] = array("judul" => "Dokumen Dummy 3: Ringkasan Daftar Isian Pelaksanaan Anggaran (DIPA) 2025", "kategori" => "Informasi Berkala", "tanggal" => "20 Maret 2025", "tahun" => "2025", "file" => "#");
+    $dokumen_array[] = array("judul" => "Dokumen Dummy 4: Informasi Kebencanaan Daerah Purbalingga", "kategori" => "Informasi Serta Merta", "tanggal" => "05 April 2025", "tahun" => "2025", "file" => "#");
+    $dokumen_array[] = array("judul" => "Dokumen Dummy 5: Prosedur Permintaan Informasi Publik", "kategori" => "Informasi Setiap Saat", "tanggal" => "12 Mei 2024", "tahun" => "2024", "file" => "#");
+    $dokumen_array[] = array("judul" => "Dokumen Dummy 6: Daftar Aset dan Inventaris Sekretariat DPRD", "kategori" => "Informasi Setiap Saat", "tanggal" => "30 Juni 2024", "tahun" => "2024", "file" => "#");
+
     ?>
     const dokumenData = <?php echo json_encode($dokumen_array); ?>;
 
@@ -322,11 +324,16 @@ get_header();
       const bottomBtn = document.getElementById('bottom-lihat-semua');
 
       if (showAll) {
-        if(topBtn) topBtn.innerHTML = '&lt; kembali';
-        if(bottomBtn) bottomBtn.innerHTML = '&lt; kembali';
+        if(topBtn) { topBtn.style.display = 'inline-block'; topBtn.innerHTML = '&lt; kembali'; }
+        if(bottomBtn) { bottomBtn.innerHTML = '&lt; kembali'; bottomBtn.style.pointerEvents = 'auto'; bottomBtn.style.color = ''; }
       } else {
-        if(topBtn) topBtn.innerHTML = 'Lihat Semua &rsaquo;';
-        if(bottomBtn) bottomBtn.innerHTML = 'Lihat Semua Dokumen &rsaquo;';
+        if (data.length > 5) {
+          if(topBtn) { topBtn.style.display = 'inline-block'; topBtn.innerHTML = 'Lihat Semua &rsaquo;'; }
+          if(bottomBtn) { bottomBtn.innerHTML = 'Lihat Semua Dokumen &rsaquo;'; bottomBtn.style.pointerEvents = 'auto'; bottomBtn.style.color = ''; }
+        } else {
+          if(topBtn) topBtn.style.display = 'none';
+          if(bottomBtn) { bottomBtn.innerHTML = 'Anda sudah mencapai akhir dokumen'; bottomBtn.style.pointerEvents = 'none'; bottomBtn.style.color = '#888'; }
+        }
       }
     }
 

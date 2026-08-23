@@ -302,7 +302,7 @@
     .stat-item {
       flex: 1;
       display: flex;
-      align-items: center;
+      align-items: flex-start; /* Mengubah center ke flex-start agar sejajar atas */
       gap: 16px;
       padding: 0 24px;
       border-right: 1px solid var(--border);
@@ -728,21 +728,87 @@
     }
 
     @media(max-width: 768px) {
+      .about-card h3 { font-size: 20px; }
+      .about-card p { font-size: 13px; }
+      .quick-grid { align-items: stretch; }
+      .quick-title { font-size: 16px; margin: 24px 20px 12px !important; }
+      .quick-card { padding: 12px; height: 100%; box-sizing: border-box; }
+      .quick-card h5 { font-size: 13px; }
+      .quick-card p { font-size: 11px; margin-bottom: 8px; line-height: 1.3; }
+      .quick-ic { width: 30px; height: 30px; }
+      .quick-ic .icon-img { width: 16px; height: 16px; }
+      .quick-card-top { margin-bottom: 8px; }
+      .quick-arrow { width: 24px; height: 24px; font-size: 14px; }
+
+      .ikm-card-new {
+        padding: 16px;
+      }
+      .ikm-title {
+        font-size: 11px;
+        margin-bottom: 4px;
+      }
+      .ikm-title strong {
+        font-size: 11px;
+      }
+      .ikm-score {
+        font-size: 26px;
+        margin-bottom: 2px;
+      }
+      .ikm-skala {
+        font-size: 10px;
+      }
+      .ikm-badge {
+        width: 80px;
+      }
+      .badge-grade {
+        font-size: 32px;
+      }
+      .ikm-qr {
+        width: 60px;
+        height: 60px;
+        padding: 3px;
+      }
+      
       .ikm-top {
-        flex-direction: column;
+        flex-direction: row;
+        padding-bottom: 12px;
       }
 
       .ikm-top-left {
-        border-right: none;
-        border-bottom: 1px solid #c9a3a6;
-        padding-right: 0;
-        padding-bottom: 20px;
-        margin-bottom: 20px;
+        border-right: 1px solid #c9a3a6;
+        border-bottom: none;
+        padding-right: 12px;
+        padding-bottom: 0;
+        margin-bottom: 0;
+        flex: 1.2;
+      }
+      
+      .ikm-top-right {
+        flex: 0.8;
       }
 
       .ikm-bottom {
-        flex-direction: column;
-        text-align: center;
+        flex-direction: row;
+        text-align: left;
+        padding-top: 12px;
+      }
+      
+      .ikm-bottom-left {
+        padding-right: 12px;
+      }
+      
+      .ikm-bottom-right {
+        padding-left: 0;
+      }
+
+      .ikm-bottom-text h4 {
+        font-size: 12px;
+        margin-bottom: 2px;
+      }
+
+      .ikm-bottom-text p {
+        font-size: 10px;
+        line-height: 1.3;
       }
     }
 
@@ -1277,14 +1343,39 @@
       }
 
       .stats {
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
         margin: -24px 20px 0;
+        padding: 20px 10px;
       }
 
       .stat-item {
-        flex: 1 1 50%;
         border-right: none;
-        margin-bottom: 16px;
+        margin-bottom: 0;
+        padding: 0 5px;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+      }
+      
+      .stat-item .stat-icon {
+        width: 44px;
+        height: 44px;
+      }
+      
+      .stat-item .stat-icon .icon-img {
+        width: 22px;
+        height: 22px;
+      }
+      
+      .stat-item .stat-num {
+        font-size: 20px;
+      }
+      
+      .stat-item .stat-label {
+        font-size: 12px;
+        margin-top: 2px;
       }
 
       .content-grid {
@@ -1402,3 +1493,366 @@
       object-fit: contain;
       flex-shrink: 0;
     }
+
+
+/* REELS GRID */
+.reels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+@media(max-width: 768px) {
+  .reels-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+/* FIX QUICK ACCESS SIZING AND ALIGNMENT */
+.quick-grid {
+    align-items: stretch !important;
+}
+.quick-card {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important;
+}
+
+@media(max-width: 980px) {
+    .quick-title {
+        font-size: 18px !important;
+        margin: 24px 20px 12px !important;
+    }
+    .quick-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 12px !important;
+        margin: 0 16px !important;
+        align-items: stretch !important;
+    }
+    .quick-card {
+        padding: 14px !important;
+    }
+    .quick-card h5 {
+        font-size: 14px !important;
+    }
+    .quick-card p {
+        font-size: 12px !important;
+        margin-bottom: 12px !important;
+        line-height: 1.4 !important;
+    }
+    .quick-ic {
+        width: 34px !important;
+        height: 34px !important;
+    }
+    .quick-ic .icon-img {
+        width: 18px !important;
+        height: 18px !important;
+    }
+    .quick-arrow {
+        width: 26px !important;
+        height: 26px !important;
+        font-size: 14px !important;
+    }
+}
+
+@media(max-width: 600px) {
+    .quick-title { font-size: 16px !important; }
+    .quick-card { padding: 12px !important; }
+    .quick-card h5 { font-size: 13px !important; }
+    .quick-card p { font-size: 11px !important; margin-bottom: 8px !important; line-height: 1.3 !important; }
+    .quick-ic { width: 30px !important; height: 30px !important; }
+    .quick-ic .icon-img { width: 15px !important; height: 15px !important; }
+    .quick-arrow { width: 24px !important; height: 24px !important; font-size: 14px !important; }
+}
+
+/* FIX CTA MOBILE SIZING */
+@media(max-width: 980px) {
+  .cta-section {
+    margin: 24px 16px 0 !important;
+  }
+  .cta-banner {
+    padding: 20px 16px !important;
+    min-height: auto !important;
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 16px !important;
+  }
+  .cta-left {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  .cta-left .icon-circle {
+    width: 46px !important;
+    height: 46px !important;
+  }
+  .cta-left .icon-circle img {
+    width: 22px !important;
+    height: 22px !important;
+  }
+  .cta-left h3 {
+    font-size: 16px !important;
+    line-height: 1.4 !important;
+  }
+  .btn-outline {
+    padding: 10px 20px !important;
+    font-size: 13.5px !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  .btn-outline::after {
+    font-size: 20px !important;
+  }
+}
+
+/* FIX HERO TEXT ALIGNMENT AND SIZING MOBILE */
+@media(max-width: 980px) {
+  .hero-text {
+    left: 20px !important;
+    right: 20px !important; /* Constrain right side so it doesn't hit edge */
+    width: calc(100% - 40px) !important; /* Force width within bounds */
+    bottom: 24px !important;
+  }
+  .hero-text h2 {
+    font-size: 26px !important;
+    margin-bottom: 8px !important;
+  }
+  .hero-text p {
+    font-size: 13.5px !important;
+    line-height: 1.5 !important;
+  }
+}
+@media(max-width: 600px) {
+  .hero-text h2 {
+    font-size: 24px !important;
+  }
+  .hero-text p {
+    font-size: 13px !important;
+  }
+}
+
+/* SUPER COMPACT CTA AND FOOTER FOR MOBILE */
+@media(max-width: 768px) {
+  /* CTA Extra Small */
+  .cta-section {
+    margin: 16px 12px 0 !important;
+  }
+  .cta-banner {
+    padding: 16px 12px !important;
+    gap: 12px !important;
+  }
+  .cta-left {
+    gap: 8px !important;
+  }
+  .cta-left .icon-circle {
+    width: 36px !important;
+    height: 36px !important;
+  }
+  .cta-left .icon-circle img {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  .cta-left h3 {
+    font-size: 14px !important;
+    line-height: 1.3 !important;
+  }
+  .btn-outline {
+    padding: 8px 16px !important;
+    font-size: 12px !important;
+  }
+  .btn-outline::after {
+    font-size: 16px !important;
+  }
+
+  /* Footer Extra Small */
+  footer {
+    padding: 24px 16px 12px !important;
+    margin-top: 32px !important;
+  }
+  .footer-grid {
+    gap: 20px !important;
+  }
+  .footer-logo img {
+    width: 36px !important;
+    height: 36px !important;
+  }
+  .footer-logo h3 {
+    font-size: 15px !important;
+  }
+  .footer-logo p {
+    font-size: 10px !important;
+  }
+  .footer-desc {
+    font-size: 11.5px !important;
+    line-height: 1.4 !important;
+    margin-bottom: 12px !important;
+  }
+  footer h6 {
+    font-size: 14px !important;
+    margin-bottom: 10px !important;
+  }
+  .contact-item, .jam-item {
+    font-size: 11.5px !important;
+    margin-bottom: 8px !important;
+    gap: 8px !important;
+  }
+  .jam-item b {
+    font-size: 11.5px !important;
+  }
+  .contact-item .ic-foot, .jam-item .ic-foot {
+    width: 18px !important;
+    height: 18px !important;
+  }
+  .contact-item .ic-foot img, .jam-item .ic-foot img {
+    width: 12px !important;
+    max-width: 12px !important;
+    height: 12px !important;
+    max-height: 12px !important;
+  }
+  .jam-item img.icon-img,
+  .jam-item img[alt='Clock'],
+  .jam-item .icon-img {
+      width: 16px !important;
+      height: 16px !important;
+      max-width: 16px !important;
+      max-height: 16px !important;
+  }
+  .socials span {
+    width: 26px !important;
+    height: 26px !important;
+  }
+  .socials span .icon-img {
+    width: 11px !important;
+    height: 11px !important;
+  }
+  .socials svg.icon-img {
+    width: 11px !important;
+    height: 11px !important;
+  }
+  .copyright {
+    padding: 10px !important;
+    font-size: 10px !important;
+    margin-top: 20px !important;
+  }
+}
+
+/* NEW REELS GRID - HORIZONTAL SCROLL */
+.reels-grid {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  gap: 20px !important;
+  padding-bottom: 16px !important;
+  scroll-snap-type: x mandatory !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+.reels-grid::after, .reels-grid::before {
+  display: none !important; /* prevent grid-template overrides from messing flex up if applied by some library */
+}
+.reel-item {
+  flex: 0 0 220px !important;
+  width: 220px !important;
+  max-width: 220px !important;
+  scroll-snap-align: start !important;
+}
+
+.reels-grid::-webkit-scrollbar {
+  height: 6px;
+}
+.reels-grid::-webkit-scrollbar-track {
+  background: transparent; 
+}
+.reels-grid::-webkit-scrollbar-thumb {
+  background: #d4d4d4; 
+  border-radius: 10px;
+}
+.reels-grid::-webkit-scrollbar-thumb:hover {
+  background: #b0b0b0; 
+}
+
+@media(max-width: 768px) {
+  .reels-grid {
+    gap: 12px !important;
+  }
+  .reel-item {
+    flex: 0 0 150px !important;
+    width: 150px !important;
+    max-width: 150px !important;
+  }
+}
+
+/* FIX GAP BETWEEN HERO AND CONTENT MOBILE */
+@media(max-width: 980px) {
+  .batik-user-divider-container {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    transform: scale(0.9); /* make the batik slightly smaller */
+  }
+  .container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+  .info-card, .type-grid, .about-section, .contact-section {
+    margin-top: 0 !important;
+  }
+}
+@media(max-width: 600px) {
+  .batik-user-divider-container {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    transform: scale(0.8);
+  }
+}
+
+/* FOOTER GRID 2-COLUMNS FOR CONTACT & HOURS ON MOBILE */
+@media(max-width: 980px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px !important;
+  }
+  .footer-grid > div:first-child {
+    grid-column: 1 / -1 !important;
+    text-align: left;
+  }
+}
+
+/* FIX FOOTER JAM LAYANAN BALANCING MOBILE */
+@media(max-width: 980px) {
+  .jam-item {
+    gap: 8px !important;
+    margin-bottom: 8px !important;
+  }
+  .jam-item div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px !important;
+  }
+  .jam-item b {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+  }
+  .jam-item span {
+    font-size: 10px !important;
+  }
+  .jam-item img.icon-img, .jam-item img[alt='Clock'] {
+    width: 14px !important;
+    height: 14px !important;
+    margin-top: 2px !important;
+  }
+  /* Ensure contact-item also matches the scale */
+  .contact-item {
+    gap: 8px !important;
+    margin-bottom: 8px !important;
+    font-size: 11px !important;
+  }
+  .contact-item span, .contact-item a {
+    font-size: 10px !important;
+  }
+  .contact-item img.icon-img {
+    width: 14px !important;
+    height: 14px !important;
+    margin-top: 2px !important;
+  }
+}

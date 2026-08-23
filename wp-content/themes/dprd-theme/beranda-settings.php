@@ -7,7 +7,7 @@ function dprd_beranda_settings_menu_new() {
     // Parent Menu
     add_menu_page(
         'Pengaturan Beranda', 
-        'Pengaturan Beranda', 
+        'Beranda', 
         'manage_options', 
         'dprd-beranda-settings', 
         'dprd_beranda_statistik_html',
@@ -56,6 +56,14 @@ function dprd_beranda_settings_menu_new() {
         'dprd-beranda-reels',
         'dprd_beranda_reels_html'
     );
+    add_submenu_page(
+        'dprd-beranda-settings',
+        'Galeri Kegiatan',
+        'Galeri Kegiatan',
+        'manage_options',
+        'dprd-beranda-galeri',
+        'dprd_beranda_galeri_html'
+    );
 }
 add_action( 'admin_menu', 'dprd_beranda_settings_menu_new' );
 
@@ -85,6 +93,9 @@ function dprd_beranda_settings_init_new() {
 
     // Reels Fields
     register_setting( 'dprd_beranda_reels_group', 'dprd_reels_data' );
+
+    // Galeri Fields
+    register_setting( 'dprd_beranda_galeri_group', 'dprd_galeri_data' );
 }
 add_action( 'admin_init', 'dprd_beranda_settings_init_new' );
 
@@ -572,6 +583,141 @@ function dprd_beranda_reels_html() {
                     });
                 });
                 document.getElementById('dprd_reels_data').value = JSON.stringify(newReelsData);
+            });
+        }
+    });
+    </script>
+    <?php
+}
+
+/* ==========================================================================
+ * 6. GALERI KEGIATAN HTML
+ * ========================================================================== */
+function dprd_beranda_galeri_html() {
+    if ( ! current_user_can( 'manage_options' ) ) return;
+    ?>
+    <div class="wrap">
+        <h1>Pengaturan Galeri Kegiatan</h1>
+        <p>Tambahkan foto galeri kegiatan yang mengarah ke link Instagram. Kosongkan jika belum ada data.</p>
+        
+        <form action="options.php" method="post" id="galeri_form">
+            <?php
+            settings_fields( 'dprd_beranda_galeri_group' );
+            do_settings_sections( 'dprd_beranda_galeri_group' );
+            
+            $default_galeri = json_encode([
+                ['title' => 'Galeri 1', 'thumb' => get_template_directory_uri() . '/assets/images/placeholder-reel.png', 'url' => '#'],
+                ['title' => 'Galeri 2', 'thumb' => get_template_directory_uri() . '/assets/images/placeholder-reel.png', 'url' => '#']
+            ]);
+            $saved_galeri = get_option('dprd_galeri_data', '');
+            if (empty($saved_galeri) || $saved_galeri === '[]' || $saved_galeri === 'false') {
+                $saved_galeri = $default_galeri;
+            }
+            ?>
+            <input type="hidden" name="dprd_galeri_data" id="dprd_galeri_data" value="<?php echo esc_attr($saved_galeri); ?>">
+            
+            <div id="galeri_repeater_container"></div>
+            <button type="button" class="button button-primary" id="btn_add_galeri_slide" style="margin-top: 10px;">+ Tambah Galeri Baru</button>
+            <br><br>
+            <?php submit_button(); ?>
+        </form>
+    </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var galeriData = [];
+        try {
+            var rawGaleriVal = document.getElementById('dprd_galeri_data').value;
+            galeriData = JSON.parse(rawGaleriVal || '[]');
+        } catch(e) { console.error('Failed parsing Galeri JSON data'); }
+
+        var galeriContainer = document.getElementById('galeri_repeater_container');
+        if(!galeriContainer) return;
+
+        function renderGaleriRow(slide, index) {
+            var html = `
+            <div class="galeri-slide-row" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background: #fafafa; position: relative;">
+                <h4 style="margin-top:0;">Galeri ${index + 1}</h4>
+                <button type="button" class="button button-link-delete btn_remove_galeri_slide" style="position:absolute; top:15px; right:15px; color:#a00;">Hapus</button>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">Judul</th>
+                        <td><input type="text" class="galeri_input_title" value="${slide.title || ''}" style="width:100%; max-width:300px;"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Gambar Thumbnail</th>
+                        <td>
+                            <input type="url" class="galeri_input_thumb" value="${slide.thumb || ''}" style="width:100%; max-width:300px;">
+                            <button type="button" class="button btn_upload_galeri_thumb">Pilih Thumbnail</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Link Instagram</th>
+                        <td><input type="url" class="galeri_input_url" value="${slide.url || ''}" style="width:100%; max-width:400px;"></td>
+                    </tr>
+                </table>
+            </div>
+            `;
+            galeriContainer.insertAdjacentHTML('beforeend', html);
+        }
+
+        function renderAllGaleriRows() {
+            galeriContainer.innerHTML = '';
+            galeriData.forEach(function(slide, idx) {
+                renderGaleriRow(slide, idx);
+            });
+        }
+        renderAllGaleriRows();
+
+        var btnAddGaleri = document.getElementById('btn_add_galeri_slide');
+        if (btnAddGaleri) {
+            btnAddGaleri.addEventListener('click', function() {
+                galeriData.push({title:'', thumb:'', url:''});
+                renderAllGaleriRows();
+            });
+        }
+
+        galeriContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn_remove_galeri_slide')) {
+                if(confirm('Hapus galeri ini?')) {
+                    var row = e.target.closest('.galeri-slide-row');
+                    var index = Array.from(galeriContainer.children).indexOf(row);
+                    if (index > -1) {
+                        galeriData.splice(index, 1);
+                        renderAllGaleriRows();
+                    }
+                }
+            }
+            
+            if (e.target.classList.contains('btn_upload_galeri_thumb')) {
+                e.preventDefault();
+                var inputThumb = e.target.previousElementSibling;
+                var uploader = wp.media({
+                    title: 'Pilih Gambar Thumbnail',
+                    button: { text: 'Gunakan Gambar Ini' },
+                    multiple: false
+                });
+                uploader.on('select', function() {
+                    var attachment = uploader.state().get('selection').first().toJSON();
+                    inputThumb.value = attachment.url;
+                });
+                uploader.open();
+            }
+        });
+
+        // Update JSON before saving
+        var form = document.getElementById('galeri_form');
+        if (form) {
+            form.addEventListener('submit', function() {
+                var galeriRows = galeriContainer.querySelectorAll('.galeri-slide-row');
+                var newGaleriData = [];
+                galeriRows.forEach(function(row) {
+                    newGaleriData.push({
+                        title: row.querySelector('.galeri_input_title').value,
+                        thumb: row.querySelector('.galeri_input_thumb').value,
+                        url: row.querySelector('.galeri_input_url').value
+                    });
+                });
+                document.getElementById('dprd_galeri_data').value = JSON.stringify(newGaleriData);
             });
         }
     });

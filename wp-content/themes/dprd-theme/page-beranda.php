@@ -181,21 +181,123 @@ get_header();
     </div>
     <button id="nextBtn" class="ikm-nav-btn" onclick="nextSurvey()">&#10095;</button>
   </div>
+  <!-- GALERI KEGIATAN SECTION -->
+  <h3 class="quick-title">Galeri Kegiatan</h3>
+  <div class="galeri-grid-container" style="max-width: 1180px; width: calc(100% - 80px); margin: 0 auto 50px auto;">
+    <?php
+    $saved_galeri = get_option('dprd_galeri_data', '');
+    if (empty($saved_galeri) || $saved_galeri === '[]' || $saved_galeri === 'false') {
+        $saved_galeri = json_encode([
+            ['title' => 'Galeri Kegiatan 1', 'thumb' => get_template_directory_uri() . '/assets/images/placeholder-reel.png', 'url' => '#'],
+            ['title' => 'Galeri Kegiatan 2', 'thumb' => get_template_directory_uri() . '/assets/images/placeholder-reel.png', 'url' => '#']
+        ]);
+    }
+    $galeris = json_decode($saved_galeri, true);
+    if (!is_array($galeris)) $galeris = [];
+    ?>
+    <div class="galeri-grid">
+    <?php
+    if(is_array($galeris)):
+        foreach($galeris as $galeri):
+            $title = isset($galeri['title']) ? $galeri['title'] : '';
+            $thumb = isset($galeri['thumb']) && !empty($galeri['thumb']) ? $galeri['thumb'] : 'https://via.placeholder.com/400x400.png?text=Galeri';
+            $url = isset($galeri['url']) ? $galeri['url'] : '#';
+    ?>
+        <a href="<?php echo esc_url($url); ?>" target="_blank" class="galeri-item" style="position: relative; display: block; scroll-snap-align: start; border-radius: 12px; overflow: hidden; aspect-ratio: 1/1; background: #000; text-decoration: none; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+            <img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($title); ?>" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: transform 0.3s ease;">
+            <!-- Hover overlay icon -->
+            <div style="position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; background: rgba(0,0,0,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/instagram.svg" alt="IG" style="width: 16px; height: 16px; filter: brightness(0) invert(1);">
+            </div>
+            <div style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 40px 16px 16px; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); color: #fff; font-size: 15px; font-weight: 600; line-height: 1.3;">
+                <?php echo esc_html($title); ?>
+            </div>
+        </a>
+    <?php 
+        endforeach;
+    endif; 
+    ?>
+    </div>
+    <style>
+        .galeri-item:hover img { transform: scale(1.08); }
+
+        /* Kustomisasi scrollbar agar rapi */
+        .galeri-grid::-webkit-scrollbar { height: 8px; }
+        .galeri-grid::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .galeri-grid::-webkit-scrollbar-thumb { background: var(--krem); border-radius: 4px; }
+        .galeri-grid::-webkit-scrollbar-thumb:hover { background: var(--merah); }
+
+        /* DESKTOP (> 980px): Max 5x2 = 10 items */
+        .galeri-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-auto-flow: row;
+            gap: 12px;
+        }
+        /* Jika item lebih dari 10, ubah ke mode scroll menyamping */
+        .galeri-grid:has(.galeri-item:nth-child(11)) {
+            grid-template-rows: 1fr 1fr;
+            grid-auto-flow: column;
+            grid-template-columns: none;
+            grid-auto-columns: calc((100% - 48px) / 5);
+            overflow-x: auto;
+            padding-bottom: 20px;
+            scroll-snap-type: x mandatory;
+        }
+
+        /* TABLET (769px - 1100px): Max 4x2 = 8 items */
+        @media(max-width: 1100px) {
+            .galeri-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            /* Jika item lebih dari 8, mode scroll */
+            .galeri-grid:has(.galeri-item:nth-child(9)) {
+                grid-template-rows: 1fr 1fr;
+                grid-auto-flow: column;
+                grid-template-columns: none;
+                grid-auto-columns: calc((100% - 60px) / 4);
+                overflow-x: auto;
+                padding-bottom: 20px;
+                scroll-snap-type: x mandatory;
+            }
+        }
+
+        /* MOBILE (<= 768px): Max 2x2 = 4 items */
+        @media(max-width: 768px) {
+            .galeri-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            /* Jika item lebih dari 4, mode scroll */
+            .galeri-grid:has(.galeri-item:nth-child(5)) {
+                grid-template-rows: 1fr 1fr;
+                grid-auto-flow: column;
+                grid-template-columns: none;
+                grid-auto-columns: calc((100% - 12px) / 2);
+                overflow-x: auto;
+                padding-bottom: 20px;
+                scroll-snap-type: x mandatory;
+            }
+        }
+    </style>
+  </div>
 
   <!-- REELS SECTION -->
   <h3 class="quick-title">Reels</h3>
-  <div class="reels-grid-container" style="max-width: 1200px; margin: 0 auto 50px auto; padding: 0 20px;">
-    <div class="reels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
+  <div class="reels-grid-container" style="max-width: 1180px; width: calc(100% - 80px); margin: 0 auto 50px auto;">
+    <div class="reels-grid">
     <?php
-    $default_reels = json_encode([
-        ['title' => 'Kegiatan Kunjungan', 'thumb' => 'https://via.placeholder.com/270x480.png?text=Reel+1', 'url' => '#'],
-        ['title' => 'Rapat Paripurna', 'thumb' => 'https://via.placeholder.com/270x480.png?text=Reel+2', 'url' => '#']
-    ]);
     $saved_reels = get_option('dprd_reels_data', '');
     if (empty($saved_reels) || $saved_reels === '[]' || $saved_reels === 'false') {
-        $saved_reels = $default_reels;
+        $saved_reels = json_encode([
+            ['title' => 'Kunjungan Kerja', 'thumb' => get_template_directory_uri() . '/assets/images/placeholder-reel.png', 'url' => '#'],
+            ['title' => 'Rapat Paripurna', 'thumb' => get_template_directory_uri() . '/assets/images/placeholder-reel.png', 'url' => '#']
+        ]);
     }
     $reels = json_decode($saved_reels, true);
+    
+    if (!is_array($reels)) $reels = [];
+
     if(is_array($reels)):
         foreach($reels as $reel):
             $title = isset($reel['title']) ? $reel['title'] : '';

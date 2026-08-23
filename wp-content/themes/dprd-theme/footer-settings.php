@@ -4,7 +4,7 @@
 function dprd_footer_settings_menu() {
     add_menu_page(
         'Pengaturan Footer', 
-        'Pengaturan Footer', 
+        'Footer', 
         'manage_options', 
         'dprd-footer-settings', 
         'dprd_footer_settings_page_html',

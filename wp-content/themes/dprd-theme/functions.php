@@ -744,7 +744,7 @@ require get_template_directory() . '/beranda-settings.php';
 function dprd_hero_settings_menu() {
     add_menu_page(
         'Pengaturan Hero', 
-        'Pengaturan Hero', 
+        'Hero', 
         'manage_options', 
         'dprd-pengaturan-hero', 
         'dprd_hero_settings_page_html', 
@@ -920,7 +920,7 @@ function dprd_hero_settings_page_html() {
 function dprd_cta_settings_menu() {
     add_menu_page(
         'Pengaturan CTA', 
-        'Pengaturan CTA', 
+        'CTA Banner', 
         'manage_options', 
         'dprd-cta-settings', 
         'dprd_cta_settings_page_html', 
@@ -1251,7 +1251,7 @@ function dprd_pengaturan_dlantunan_menu() {
     // Menu Utama
     add_menu_page(
         'Pengaturan D\'Lantunan', 
-        'Pengaturan D\'Lantunan', 
+        'D\'Lantunan', 
         'manage_options', 
         'dprd-pengaturan-dlantunan', 
         'dprd_3layanan_settings_page_html', 

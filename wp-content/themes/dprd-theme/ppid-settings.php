@@ -7,7 +7,7 @@ function dprd_ppid_settings_menu() {
     // Menu Utama (akan otomatis membuka submenu pertama)
     add_menu_page(
         'Pengaturan PPID', 
-        'Pengaturan PPID', 
+        'PPID', 
         'manage_options', 
         'dprd-ppid-settings', 
         'dprd_ppid_stat_page_html', 
