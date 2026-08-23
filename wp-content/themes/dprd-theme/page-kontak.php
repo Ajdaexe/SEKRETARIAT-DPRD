@@ -9,118 +9,150 @@ get_header();
 ?>
 
 <style>
-/* ===== HERO (DISAMAKAN PERSIS SEPERTI HALAMAN PROFIL) ===== */
+/* ===== HERO ===== */
 .hero {
-  position: relative !important;
-  width: 100% !important;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  border-radius: 0 !important;
-  overflow: hidden !important;
-  height: calc(100vh - 96px) !important;
-  min-height: 540px !important;
-  cursor: pointer !important;
-  transition: height 0.2s ease-out !important;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  overflow: hidden;
+  height: calc(100vh - 96px);
+  min-height: 540px;
+  cursor: pointer;
+  transition: height 0.2s ease-out;
 }
 
 .hero img#heroImage {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  object-position: center 60% !important;
-  transform: scale(1.05) !important;
-  transition: transform 0.5s ease !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 60%;
+  transform: scale(1.05);
+  transition: transform 0.5s ease;
+  z-index: 1;
 }
 
 .hero:hover img#heroImage {
-  transform: scale(1.1) !important;
+  transform: scale(1.1);
 }
 
 .hero::after {
-  content: '' !important;
-  position: absolute !important;
-  inset: 0 !important;
-  background: linear-gradient(90deg, rgba(0, 0, 0, .65) 0%, rgba(0, 0, 0, .3) 50%, rgba(0, 0, 0, 0) 70%) !important;
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, .65) 0%, rgba(0, 0, 0, .3) 50%, rgba(0, 0, 0, 0) 70%);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .hero-text {
-  position: absolute !important;
-  left: 60px !important;
-  bottom: 60px !important;
-  color: #fff !important;
-  max-width: 600px !important;
-  z-index: 2 !important;
+  position: absolute;
+  left: 60px;
+  bottom: 60px;
+  color: #fff;
+  max-width: 600px;
+  z-index: 3;
 }
 
 .hero-text h2 {
-  font-size: 44px !important;
-  font-weight: 800 !important;
-  margin-bottom: 16px !important;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.4) !important;
+  font-size: 44px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
 
 .hero-text p {
-  font-size: 16px !important;
-  line-height: 1.6 !important;
-  opacity: .95 !important;
-  text-shadow: 0 1px 5px rgba(0,0,0,0.4) !important;
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: .95;
+  text-shadow: 0 1px 5px rgba(0,0,0,0.4);
 }
 
-/* ===== BATIK DIVIDER CENTER SECTION (DISAMAKAN PERSIS SEPERTI HALAMAN PROFIL) ===== */
+/* ===== BATIK DIVIDER CENTER SECTION ===== */
 .batik-user-divider-container {
-  width: calc(100% - 80px) !important;
-  max-width: 1180px !important;
-  margin: 24px auto !important;
-  padding: 0 !important;
-  position: relative !important;
-  z-index: 3 !important;
-  overflow: visible !important;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto 24px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 3;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .batik-user-divider-inner {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  width: 100% !important;
-  gap: 12px !important;
-  padding: 0 4px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 12px;
 }
 
 .batik-line-img {
-  flex-grow: 1 !important;
-  height: 14px !important;
-  width: 100% !important;
-  object-fit: fill !important;
-  display: block !important;
+  flex: 1 1 0;
+  height: 14px;
+  object-fit: fill;
+  display: block;
 }
 
 .batik-img-center {
-  height: 80px !important;
-  width: auto !important;
-  object-fit: contain !important;
-  flex-shrink: 0 !important;
-  display: block !important;
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
 }
 
-/* BACKGROUND BATIK MOTIF PINGGIR KIRI & KANAN (TOP: 380PX - TITIK TENGAH IDEAL DISAMAKAN 100% PROFIL) */
+/* BACKGROUND BATIK MOTIF PINGGIR KIRI & KANAN */
 .batik-desktop-edge {
-  position: absolute !important;
-  top: 380px !important;
-  height: 480px !important;
-  width: auto !important;
-  object-fit: contain !important;
-  z-index: 2 !important;
-  pointer-events: none !important;
-  opacity: 0.96 !important;
-  overflow: visible !important;
+  position: absolute;
+  top: 380px;
+  height: 480px;
+  width: auto;
+  object-fit: contain;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.96;
+  overflow: visible;
 }
 
 .batik-desktop-edge-left {
-  left: 0 !important;
+  left: 0;
 }
 
 .batik-desktop-edge-right {
-  right: 0 !important;
+  right: 0;
+}
+
+@media (max-width: 980px) {
+  .hero {
+    height: 380px !important;
+    min-height: auto !important;
+  }
+  .hero-text {
+    left: 20px;
+    right: 20px;
+    bottom: 24px;
+    max-width: 100%;
+  }
+  .hero-text h2 {
+    font-size: 28px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .hero-text p {
+    font-size: 14px;
+  }
+  .batik-user-divider-container {
+    padding: 0 16px;
+    margin: 10px auto 20px;
+  }
+  .batik-img-center {
+    height: 50px;
+  }
 }
 </style>
 
@@ -168,8 +200,8 @@ get_header();
         <div class="info-item">
           <div class="ic"><img class="icon-img icon-maps" src="<?php echo get_template_directory_uri(); ?>/assets/images/maps.svg" alt="Alamat"></div>
           <div>
-            <strong>Alamat Sekretariat DPRD Kabupaten Purbalingga</strong>
-            <p>Jl. Onje No.2a, Purbalingga, Purbalingga Lor, Kec. Purbalingga, Kabupaten Purbalingga, Jawa Tengah 53311</p>
+            <strong>Alamat <?php echo esc_html( get_option('dprd_kontak_nama_lokasi', 'Sekretariat DPRD Kabupaten Purbalingga') ); ?></strong>
+            <p><?php echo esc_html( get_option('dprd_kontak_alamat', 'Jl. Onje No.2a, Purbalingga, Purbalingga Lor, Kec. Purbalingga, Kabupaten Purbalingga, Jawa Tengah 53311') ); ?></p>
           </div>
         </div>
 
@@ -177,7 +209,7 @@ get_header();
           <div class="ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/phone.svg" alt="Telepon"></div>
           <div>
             <strong>Telp.</strong>
-            <p>(0281) 891058</p>
+            <p><?php echo esc_html( get_option('dprd_kontak_telp', '(0281) 891058') ); ?></p>
           </div>
         </div>
 
@@ -185,7 +217,7 @@ get_header();
           <div class="ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/email.svg" alt="Email"></div>
           <div>
             <strong>Email</strong>
-            <p>sekretariat@dprd.purbalingga.go.id</p>
+            <p><?php echo esc_html( get_option('dprd_kontak_email', 'sekretariat@dprd.purbalingga.go.id') ); ?></p>
           </div>
         </div>
 
@@ -193,7 +225,7 @@ get_header();
           <div class="ic"><img class="icon-img icon-website" src="<?php echo get_template_directory_uri(); ?>/assets/images/website.svg" alt="Website"></div>
           <div>
             <strong>Website</strong>
-            <p>www.dprd.purbalingga.go.id</p>
+            <p><?php echo esc_html( get_option('dprd_kontak_website', 'www.dprd.purbalingga.go.id') ); ?></p>
           </div>
         </div>
 
@@ -201,8 +233,8 @@ get_header();
           <div class="ic"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/clock tebel.svg" alt="Jam Layanan"></div>
           <div>
             <strong>Jam Layanan</strong>
-            <p>Senin - Jum'at<br>08.00 - 16.00 WIB</p>
-            <p class="note">*Kecuali hari libur nasional</p>
+            <p><?php echo esc_html( get_option('dprd_kontak_jam_hari', "Senin - Jum'at") ); ?><br><?php echo esc_html( get_option('dprd_kontak_jam_waktu', '08.00 - 16.00 WIB') ); ?></p>
+            <p class="note"><?php echo esc_html( get_option('dprd_kontak_jam_note', '*Kecuali hari libur nasional') ); ?></p>
           </div>
         </div>
       </div>
@@ -214,16 +246,16 @@ get_header();
         <h2 class="section-title">Lokasi Kantor</h2>
         <div class="lokasi-frame">
           <iframe
-            src="https://www.google.com/maps?q=Kantor+DPRD+Kabupaten+Purbalingga&z=17&output=embed"
+            src="<?php echo esc_url( get_option('dprd_kontak_maps_url', 'https://www.google.com/maps?q=Kantor+DPRD+Kabupaten+Purbalingga&z=17&output=embed') ); ?>"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
-            title="Lokasi Sekretariat DPRD Kabupaten Purbalingga">
+            title="Lokasi <?php echo esc_attr( get_option('dprd_kontak_nama_lokasi', 'Sekretariat DPRD Kabupaten Purbalingga') ); ?>">
           </iframe>
           <div class="lokasi-card">
             <div class="pin"><img class="icon-img icon-maps" src="<?php echo get_template_directory_uri(); ?>/assets/images/maps.svg" alt="Lokasi"></div>
             <div>
-              <strong>Sekretariat DPRD Kabupaten Purbalingga</strong>
-              <span>Jl. Onje No.2a, Purbalingga, Purbalingga Lor, Kec. Purbalingga, Kabupaten Purbalingga, Jawa Tengah 53311</span>
+              <strong><?php echo esc_html( get_option('dprd_kontak_nama_lokasi', 'Sekretariat DPRD Kabupaten Purbalingga') ); ?></strong>
+              <span><?php echo esc_html( get_option('dprd_kontak_alamat', 'Jl. Onje No.2a, Purbalingga, Purbalingga Lor, Kec. Purbalingga, Kabupaten Purbalingga, Jawa Tengah 53311') ); ?></span>
             </div>
           </div>
         </div>

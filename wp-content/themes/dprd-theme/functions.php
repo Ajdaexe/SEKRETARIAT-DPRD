@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Tema Kustom DPRD functions and definitions
  *
@@ -194,13 +194,53 @@ function dprd_get_page_url( $slug, $anchor = '' ) {
 // 1. Registrasi Menu "Profile" di WP-Admin Sidebar
 function dprd_register_struktur_menu() {
     add_menu_page(
-        'Profile',
-        'Profile',
+        'Pengaturan Profile',
+        'Pengaturan Profile',
         'manage_options',
         'dprd-profile',
         'dprd_render_struktur_options_page',
         'dashicons-id-alt',
         31
+    );
+    add_submenu_page(
+        'dprd-profile',
+        'Struktur & Susunan Organisasi',
+        'Struktur & Susunan Organisasi',
+        'manage_options',
+        'dprd-profile',
+        'dprd_render_struktur_options_page'
+    );
+    add_submenu_page(
+        'dprd-profile',
+        'Tentang & Nilai Utama',
+        'Tentang & Nilai Utama',
+        'manage_options',
+        'dprd-profile-tentang',
+        'dprd_render_tentang_options_page'
+    );
+    add_submenu_page(
+        'dprd-profile',
+        'Dasar Hukum',
+        'Dasar Hukum',
+        'manage_options',
+        'dprd-profile-hukum',
+        'dprd_render_hukum_options_page'
+    );
+    add_submenu_page(
+        'dprd-profile',
+        'Visi dan Misi',
+        'Visi dan Misi',
+        'manage_options',
+        'dprd-profile-visimisi',
+        'dprd_render_visimisi_options_page'
+    );
+    add_submenu_page(
+        'dprd-profile',
+        'Tugas Pokok & Fungsi',
+        'Tugas Pokok & Fungsi',
+        'manage_options',
+        'dprd-profile-tupoksi',
+        'dprd_render_tupoksi_options_page'
     );
 }
 add_action( 'admin_menu', 'dprd_register_struktur_menu' );
@@ -257,10 +297,12 @@ function dprd_render_struktur_options_page() {
         $img_url       = isset( $_POST['dprd_struktur_img_url'] ) ? esc_url_raw( $_POST['dprd_struktur_img_url'] ) : '';
         $desc_txt      = isset( $_POST['dprd_struktur_desc'] ) ? sanitize_textarea_field( $_POST['dprd_struktur_desc'] ) : '';
         $susunan_photo = isset( $_POST['dprd_susunan_organisasi_photo'] ) ? esc_url_raw( $_POST['dprd_susunan_organisasi_photo'] ) : '';
+        $susunan_teks  = isset( $_POST['dprd_susunan_organisasi_teks'] ) ? wp_kses_post( wp_unslash( $_POST['dprd_susunan_organisasi_teks'] ) ) : '';
         
         update_option( 'dprd_struktur_organisasi_img', $img_url );
         update_option( 'dprd_struktur_organisasi_desc', $desc_txt );
         update_option( 'dprd_susunan_organisasi_photo', $susunan_photo );
+        update_option( 'dprd_susunan_organisasi_teks', $susunan_teks );
         
         echo '<div class="notice notice-success is-dismissible"><p><strong>Berhasil!</strong> Data & gambar Halaman Profile (Struktur & Susunan Organisasi) telah disimpan dan diperbarui.</p></div>';
     }
@@ -268,6 +310,42 @@ function dprd_render_struktur_options_page() {
     $current_img      = get_option( 'dprd_struktur_organisasi_img', '' );
     $current_desc     = get_option( 'dprd_struktur_organisasi_desc', '' );
     $susunan_photo    = get_option( 'dprd_susunan_organisasi_photo', 'https://www.purbalinggakab.go.id/wp-content/uploads/2024/08/50-Anggota-DPRD-Purbalingga-Periode-2024-2029-Dilantik-1280x640.jpeg' );
+    $susunan_teks     = get_option( 'dprd_susunan_organisasi_teks', '' );
+    if ( empty( $susunan_teks ) ) {
+        $susunan_teks = '<p>A. Sekretaris DPRD.</p>
+<p>B. Bagian terdiri dari:</p>
+<ul>
+  <li>
+    1. Bagian Perundang-undangan
+    <div class="sub-bagian">
+      <ul>
+        <li>Subbagian Produk Hukum</li>
+        <li>Subbagian Dokumentasi Hukum</li>
+      </ul>
+    </div>
+  </li>
+  <li>
+    2. Bagian Persidangan
+    <div class="sub-bagian">
+      <ul>
+        <li>Subbagian Rapat</li>
+        <li>Subbagian Risalah</li>
+      </ul>
+    </div>
+  </li>
+  <li>
+    3. Bagian Umum
+    <div class="sub-bagian">
+      <ul>
+        <li>Subbagian Tata Usaha dan Perlengkapan</li>
+        <li>Subbagian Keuangan</li>
+        <li>Subbagian Humas dan Protokol</li>
+      </ul>
+    </div>
+  </li>
+</ul>
+<p class="kelompok">C. Kelompok Jabatan Fungsional.</p>';
+    }
     ?>
     <div class="wrap">
         <h1 style="display:flex; align-items:center; gap:10px;">
@@ -306,19 +384,31 @@ function dprd_render_struktur_options_page() {
                         <p class="description" style="margin-top:8px;">Format gambar yang disarankan: PNG, JPG, WebP, atau SVG dengan resolusi tinggi.</p>
                     </td>
                 </tr>
+            </table>
+
+            <!-- SECTION 2: SUSUNAN ORGANISASI (TEKS & FOTO) -->
+            <h2 style="border-bottom:2px solid #A5182B; padding-bottom:8px; margin-bottom:16px; margin-top:32px; color:#A5182B; font-size:18px; display:flex; align-items:center; gap:8px;">
+                <span class="dashicons dashicons-groups"></span> 2. Susunan Organisasi (Teks & Foto)
+            </h2>
+            
+            <table class="form-table" role="presentation">
                 <tr>
-                    <th scope="row"><label for="dprd_struktur_desc">Keterangan / Catatan Gambar (Opsional)</label></th>
+                    <th scope="row"><label>Isi Teks Susunan Organisasi</label></th>
                     <td>
-                        <textarea name="dprd_struktur_desc" id="dprd_struktur_desc" rows="2" class="large-text" placeholder="Contoh: Bagan Struktur Organisasi Sekretariat DPRD Kabupaten Purbalingga sesuai Perbup Nomor 76 Tahun 2016"><?php echo esc_textarea( $current_desc ); ?></textarea>
+                        <?php 
+                        wp_editor( $susunan_teks, 'dprd_susunan_organisasi_teks', array(
+                            'textarea_name' => 'dprd_susunan_organisasi_teks',
+                            'media_buttons' => false,
+                            'textarea_rows' => 12,
+                            'teeny'         => false
+                        )); 
+                        ?>
+                        <p class="description">Gunakan mode "Text" untuk mengatur class HTML khusus jika dibutuhkan.</p>
                     </td>
                 </tr>
             </table>
 
-            <!-- SECTION 2: SUSUNAN ORGANISASI (FOTO ANGGOTA / PEJABAT) -->
-            <h2 style="border-bottom:2px solid #A5182B; padding-bottom:8px; margin-bottom:16px; margin-top:32px; color:#A5182B; font-size:18px; display:flex; align-items:center; gap:8px;">
-                <span class="dashicons dashicons-groups"></span> 2. Susunan Organisasi (Foto Anggota / Pejabat)
-            </h2>
-            <p class="description" style="margin-bottom:16px;">Foto ini tampil di bagian bawah section <strong>Susunan Organisasi</strong> dengan efek linier fade putih halus.</p>
+            <p class="description" style="margin-bottom:16px; margin-top:20px;">Foto ini tampil di bagian bawah section <strong>Susunan Organisasi</strong> dengan efek linier fade putih halus.</p>
             <table class="form-table" role="presentation">
                 <tr>
                     <th scope="row"><label for="dprd_susunan_organisasi_photo">Foto Susunan Organisasi</label></th>
@@ -2420,4 +2510,8 @@ add_action( 'template_redirect', 'dprd_track_dokumen_download' );
 
 // Include Footer Settings
 require get_template_directory() . '/footer-settings.php';
+// Include Profile Settings
+require get_template_directory() . '/profile-settings.php';
+// Include Kontak Settings
+require get_template_directory() . '/kontak-settings.php';
 

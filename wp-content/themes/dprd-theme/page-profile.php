@@ -9,151 +9,185 @@ get_header();
 ?>
 
 <style>
-/* ===== HERO (DISAMAKAN PERSIS SEPERTI HALAMAN KONTAK) ===== */
+/* ===== HERO ===== */
 .hero {
-  position: relative !important;
-  width: 100% !important;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  border-radius: 0 !important;
-  overflow: hidden !important;
-  height: calc(100vh - 96px) !important;
-  min-height: 540px !important;
-  cursor: pointer !important;
-  box-shadow: none !important;
-  transition: height 0.2s ease-out, box-shadow 0.3s ease-in-out !important;
-}
-
-.hero:hover {
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  overflow: hidden;
+  height: calc(100vh - 96px);
+  min-height: 540px;
+  cursor: pointer;
+  transition: height 0.2s ease-out;
 }
 
 .hero img#heroImage {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  object-position: center 60% !important;
-  transform: scale(1.05) !important;
-  transition: transform 0.5s ease !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 60%;
+  transform: scale(1.05);
+  transition: transform 0.5s ease;
+  z-index: 1;
 }
 
 .hero:hover img#heroImage {
-  transform: scale(1.1) !important;
+  transform: scale(1.1);
 }
 
 .hero::after {
-  content: '' !important;
-  position: absolute !important;
-  inset: 0 !important;
-  background: linear-gradient(90deg, rgba(0, 0, 0, .65) 0%, rgba(0, 0, 0, .3) 50%, rgba(0, 0, 0, 0) 70%) !important;
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, .65) 0%, rgba(0, 0, 0, .3) 50%, rgba(0, 0, 0, 0) 70%);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .hero-text {
-  position: absolute !important;
-  left: 60px !important;
-  bottom: 60px !important;
-  color: #fff !important;
-  max-width: 600px !important;
-  z-index: 2 !important;
+  position: absolute;
+  left: 60px;
+  bottom: 60px;
+  color: #fff;
+  max-width: 600px;
+  z-index: 3;
 }
 
 .hero-text h2 {
-  font-size: 44px !important;
-  font-weight: 800 !important;
-  margin-bottom: 16px !important;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.4) !important;
+  font-size: 44px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
 
 .hero-text p {
-  font-size: 16px !important;
-  line-height: 1.6 !important;
-  opacity: .95 !important;
-  text-shadow: 0 1px 5px rgba(0,0,0,0.4) !important;
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: .95;
+  text-shadow: 0 1px 5px rgba(0,0,0,0.4);
 }
 
-/* ===== BATIK DIVIDER CENTER SECTION (DISAMAKAN PERSIS SEPERTI HALAMAN KONTAK) ===== */
+/* ===== BATIK DIVIDER CENTER SECTION ===== */
 .batik-user-divider-container {
-  width: calc(100% - 80px) !important;
-  max-width: 1180px !important;
-  margin: 24px auto !important;
-  padding: 0 !important;
-  position: relative !important;
-  z-index: 3 !important;
-  overflow: visible !important;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto 24px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 3;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .batik-user-divider-inner {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  width: 100% !important;
-  gap: 12px !important;
-  padding: 0 4px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 12px;
 }
 
 .batik-line-img {
-  flex-grow: 1 !important;
-  height: 14px !important;
-  width: 100% !important;
-  object-fit: fill !important;
-  display: block !important;
+  flex: 1 1 0;
+  height: 14px;
+  object-fit: fill;
+  display: block;
 }
 
 .batik-img-center {
-  height: 80px !important;
-  width: auto !important;
-  object-fit: contain !important;
-  flex-shrink: 0 !important;
-  display: block !important;
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
 }
 
-/* SECTION DIVIDER (UNIFIED FLEXBOX WITH PSEUDO LINES) */
+/* SECTION DIVIDER */
 .section-divider {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: calc(100% - 80px) !important;
-  max-width: 1180px !important;
-  margin: 24px auto !important;
-  position: relative !important;
-  z-index: 10 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 80px);
+  max-width: 1180px;
+  margin: 24px auto;
+  position: relative;
+  z-index: 10;
 }
 
 .section-divider::before,
 .section-divider::after {
-  content: "" !important;
-  flex: 1 !important;
-  height: 2px !important;
-  background-color: #d8b4b4 !important;
-  margin: 0 15px !important;
+  content: "";
+  flex: 1;
+  height: 2px;
+  background-color: #d8b4b4;
+  margin: 0 15px;
 }
 
 .section-divider img {
-  max-height: 48px !important;
-  width: auto !important;
-  flex-shrink: 0 !important;
-  display: block !important;
+  max-height: 48px;
+  width: auto;
+  flex-shrink: 0;
+  display: block;
 }
 
-/* BACKGROUND BATIK MOTIF PINGGIR KIRI & KANAN (TOP: 380PX - TITIK TENGAH IDEAL SISI RUANG KOSONG) */
+/* BACKGROUND BATIK MOTIF PINGGIR KIRI & KANAN */
 .batik-desktop-edge {
-  position: absolute !important;
-  top: 380px !important;
-  height: 480px !important;
-  width: auto !important;
-  object-fit: contain !important;
-  z-index: 2 !important;
-  pointer-events: none !important;
-  opacity: 0.96 !important;
-  overflow: visible !important;
+  position: absolute;
+  top: 380px;
+  height: 480px;
+  width: auto;
+  object-fit: contain;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.96;
+  overflow: visible;
 }
 
 .batik-desktop-edge-left {
-  left: 0 !important;
+  left: 0;
 }
 
 .batik-desktop-edge-right {
-  right: 0 !important;
+  right: 0;
+}
+
+@media (max-width: 980px) {
+  .hero {
+    height: 380px !important;
+    min-height: auto !important;
+  }
+  .hero-text {
+    left: 20px;
+    right: 20px;
+    bottom: 24px;
+    max-width: 100%;
+  }
+  .hero-text h2 {
+    font-size: 28px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .hero-text p {
+    font-size: 14px;
+  }
+  .batik-user-divider-container {
+    padding: 0 16px;
+    margin: 10px auto 20px;
+  }
+  .batik-img-center {
+    height: 50px;
+  }
+  .fungsi-item {
+    order: var(--mobile-order) !important;
+    align-items: flex-start !important;
+  }
+  .fungsi-item .num {
+    margin-top: 2px !important;
+  }
 }
 </style>
 
@@ -200,34 +234,45 @@ get_header();
     <div class="intro-card intro-card-main">
       <div class="icon-badge"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/university.svg" alt="Sekretariat DPRD"></div>
       <h3>Sekretariat DPRD</h3>
-      <p>Sekretariat DPRD Kabupaten Purbalingga merupakan unsur pelayanan, administrasi dan pendukung pelaksanaan tugas dan fungsi DPRD dalam penyelenggaraan pemerintahan daerah.</p>
+      <?php
+        $tentang_desc = get_option( 'dprd_tentang_teks', 'Sekretariat DPRD Kabupaten Purbalingga merupakan unsur pelayanan, administrasi dan pendukung pelaksanaan tugas dan fungsi DPRD dalam penyelenggaraan pemerintahan daerah.' );
+        $pilar_1_title = get_option('dprd_pilar_1_title', 'Unsur Pelayanan');
+        $pilar_1_desc  = get_option('dprd_pilar_1_desc', 'Memberikan dukungan administrasi kepada DPRD');
+        $pilar_2_title = get_option('dprd_pilar_2_title', 'Profesional');
+        $pilar_2_desc  = get_option('dprd_pilar_2_desc', 'Bekerja secara profesional dan berintegritas');
+        $pilar_3_title = get_option('dprd_pilar_3_title', 'Akuntabel');
+        $pilar_3_desc  = get_option('dprd_pilar_3_desc', 'Transparan, akuntabel, dan bertanggung jawab');
+        $pilar_4_title = get_option('dprd_pilar_4_title', 'Kolaboratif');
+        $pilar_4_desc  = get_option('dprd_pilar_4_desc', 'Bersinergi untuk mendukung kinerja DPRD');
+      ?>
+      <p><?php echo esc_html($tentang_desc); ?></p>
       <div class="value-grid">
         <div class="value-item">
-          <div class="dot"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/department.svg" alt="Unsur Pelayanan"></div>
+          <div class="dot"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/department.svg" alt="<?php echo esc_attr($pilar_1_title); ?>"></div>
           <div class="content-box">
-            <strong>Unsur Pelayanan</strong>
-            <span>Memberikan dukungan administrasi kepada DPRD</span>
+            <strong><?php echo esc_html($pilar_1_title); ?></strong>
+            <span><?php echo esc_html($pilar_1_desc); ?></span>
           </div>
         </div>
         <div class="value-item">
-          <div class="dot"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/verif.svg" alt="Profesional"></div>
+          <div class="dot"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/verif.svg" alt="<?php echo esc_attr($pilar_2_title); ?>"></div>
           <div class="content-box">
-            <strong>Profesional</strong>
-            <span>Bekerja secara profesional dan berintegritas</span>
+            <strong><?php echo esc_html($pilar_2_title); ?></strong>
+            <span><?php echo esc_html($pilar_2_desc); ?></span>
           </div>
         </div>
         <div class="value-item">
-          <div class="dot"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/clock tebel.svg" alt="Akuntabel"></div>
+          <div class="dot"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/clock tebel.svg" alt="<?php echo esc_attr($pilar_3_title); ?>"></div>
           <div class="content-box">
-            <strong>Akuntabel</strong>
-            <span>Transparan, akuntabel, dan bertanggung jawab</span>
+            <strong><?php echo esc_html($pilar_3_title); ?></strong>
+            <span><?php echo esc_html($pilar_3_desc); ?></span>
           </div>
         </div>
         <div class="value-item">
-          <div class="dot"><img class="icon-img icon-besar" src="<?php echo get_template_directory_uri(); ?>/assets/images/user account.svg" alt="Kolaboratif"></div>
+          <div class="dot"><img class="icon-img icon-besar" src="<?php echo get_template_directory_uri(); ?>/assets/images/user account.svg" alt="<?php echo esc_attr($pilar_4_title); ?>"></div>
           <div class="content-box">
-            <strong>Kolaboratif</strong>
-            <span>Bersinergi untuk mendukung kinerja DPRD</span>
+            <strong><?php echo esc_html($pilar_4_title); ?></strong>
+            <span><?php echo esc_html($pilar_4_desc); ?></span>
           </div>
         </div>
       </div>
@@ -263,7 +308,10 @@ get_header();
 <section class="dasar-hukum">
   <div class="card-panel">
     <h2 class="section-title">Dasar Hukum</h2>
-    <p>Dasar Peraturan Bupati Purbalingga Nomor 76 Tahun 2016 tentang Kedudukan, Susunan Organisasi, Tugas dan Fungsi serta Tata Kerja Sekretariat Daerah Kabupaten Purbalingga.</p>
+    <?php
+      $dasar_hukum = get_option('dprd_dasar_hukum', 'Dasar Peraturan Bupati Purbalingga Nomor 76 Tahun 2016 tentang Kedudukan, Susunan Organisasi, Tugas dan Fungsi serta Tata Kerja Sekretariat Daerah Kabupaten Purbalingga.');
+    ?>
+    <p><?php echo esc_html($dasar_hukum); ?></p>
   </div>
 </section>
 
@@ -299,39 +347,42 @@ get_header();
   <div class="card-panel">
     <h2 class="section-title">Susunan Organisasi</h2>
     <div class="susunan-list">
-      <p>A. Sekretaris DPRD.</p>
-      <p>B. Bagian terdiri dari:</p>
+      <?php 
+        $default_susunan_teks = '<p>A. Sekretaris DPRD.</p>
+<p>B. Bagian terdiri dari:</p>
+<ul>
+  <li>
+    1. Bagian Perundang-undangan
+    <div class="sub-bagian">
       <ul>
-        <li>
-          1. Bagian Perundang-undangan
-          <div class="sub-bagian">
-            <ul>
-              <li>Subbagian Produk Hukum</li>
-              <li>Subbagian Dokumentasi Hukum</li>
-            </ul>
-          </div>
-        </li>
-        <li>
-          2. Bagian Persidangan
-          <div class="sub-bagian">
-            <ul>
-              <li>Subbagian Rapat</li>
-              <li>Subbagian Risalah</li>
-            </ul>
-          </div>
-        </li>
-        <li>
-          3. Bagian Umum
-          <div class="sub-bagian">
-            <ul>
-              <li>Subbagian Tata Usaha dan Perlengkapan</li>
-              <li>Subbagian Keuangan</li>
-              <li>Subbagian Humas dan Protokol</li>
-            </ul>
-          </div>
-        </li>
+        <li>Subbagian Produk Hukum</li>
+        <li>Subbagian Dokumentasi Hukum</li>
       </ul>
-      <p class="kelompok">C. Kelompok Jabatan Fungsional.</p>
+    </div>
+  </li>
+  <li>
+    2. Bagian Persidangan
+    <div class="sub-bagian">
+      <ul>
+        <li>Subbagian Rapat</li>
+        <li>Subbagian Risalah</li>
+      </ul>
+    </div>
+  </li>
+  <li>
+    3. Bagian Umum
+    <div class="sub-bagian">
+      <ul>
+        <li>Subbagian Tata Usaha dan Perlengkapan</li>
+        <li>Subbagian Keuangan</li>
+        <li>Subbagian Humas dan Protokol</li>
+      </ul>
+    </div>
+  </li>
+</ul>
+<p class="kelompok">C. Kelompok Jabatan Fungsional.</p>';
+        echo get_option('dprd_susunan_organisasi_teks', $default_susunan_teks); 
+      ?>
     </div>
     <?php 
       $susunan_photo = get_option( 'dprd_susunan_organisasi_photo', 'https://www.purbalinggakab.go.id/wp-content/uploads/2024/08/50-Anggota-DPRD-Purbalingga-Periode-2024-2029-Dilantik-1280x640.jpeg' );
@@ -352,23 +403,45 @@ get_header();
 <!-- ===== VISI MISI ===== -->
 <section class="visi-misi" id="visi-misi">
   <div class="card-panel">
+    <?php
+      $visi_teks = get_option( 'dprd_visi_teks', 'Terwujudnya Optimalisasi Fungsi Substansial dan Administrasi Sekretariat DPRD Kabupaten Purbalingga dalam Mendukung Sinergitas Legislatif dan Eksekutif sebagai Unsur Penyelenggara Pemerintahan Daerah' );
+    ?>
     <h2 class="section-title">VISI</h2>
-    <p class="lede">Terwujudnya Optimalisasi Fungsi Substansial dan Administrasi Sekretariat DPRD Kabupaten Purbalingga dalam Mendukung Sinergitas Legislatif dan Eksekutif sebagai Unsur Penyelenggara Pemerintahan Daerah</p>
+    <p class="lede"><?php echo esc_html($visi_teks); ?></p>
 
     <h2 class="section-title">MISI</h2>
     <div class="misi-container">
+      <?php 
+        $count = 1;
+        for ($i=1; $i<=5; $i++) :
+          $misi_title = get_option('dprd_misi_'.$i.'_title', '');
+          $misi_desc = get_option('dprd_misi_'.$i.'_desc', '');
+          
+          if ($i == 1 && empty($misi_title) && empty($misi_desc)) {
+            $misi_title = 'Pilar Demokrasi:';
+            $misi_desc = 'Mewujudkan DPRD sebagai salah satu pilar kehidupan demokratis yang berlandaskan Pancasila dan Undang-Undang Dasar 1945.';
+          } elseif ($i == 2 && empty($misi_title) && empty($misi_desc)) {
+            $misi_title = 'Dukungan Kinerja:';
+            $misi_desc = 'Memberikan pelayanan prima dan dukungan administratif serta keahlian yang optimal bagi pelaksanaan tugas kedewanan.';
+          } elseif ($i == 3 && empty($misi_title) && empty($misi_desc)) {
+            $misi_title = 'Sinergi Pemerintahan:';
+            $misi_desc = 'Memperkuat kerja sama yang harmonis antara jajaran legislatif dan eksekutif demi kelancaran pembangunan daerah.';
+          }
+
+          if ( !empty($misi_title) || !empty($misi_desc) ) :
+      ?>
       <div class="misi-item">
-        <div class="num">1</div>
-        <div><strong>Pilar Demokrasi:</strong> Mewujudkan DPRD sebagai salah satu pilar kehidupan demokratis yang berlandaskan Pancasila dan Undang-Undang Dasar 1945.</div>
+        <div class="num"><?php echo $count; ?></div>
+        <div>
+          <?php if (!empty($misi_title)) : ?><strong><?php echo esc_html($misi_title); ?></strong> <?php endif; ?>
+          <?php echo nl2br(esc_html($misi_desc)); ?>
+        </div>
       </div>
-      <div class="misi-item">
-        <div class="num">2</div>
-        <div><strong>Dukungan Kinerja:</strong> Memberikan pelayanan prima dan dukungan administratif serta keahlian yang optimal bagi pelaksanaan tugas kedewanan.</div>
-      </div>
-      <div class="misi-item">
-        <div class="num">3</div>
-        <div><strong>Sinergi Pemerintahan:</strong> Memperkuat kerja sama yang harmonis antara jajaran legislatif dan eksekutif demi kelancaran pembangunan daerah.</div>
-      </div>
+      <?php 
+          $count++;
+          endif; 
+        endfor; 
+      ?>
     </div>
   </div>
 </section>
@@ -383,16 +456,57 @@ get_header();
         aria-hidden="true"
       >
     </div>
+    <?php
+      $tugas_pokok = get_option('dprd_tugas_pokok', 'Sekretariat DPRD mempunyai tugas pokok melaksanakan pelayanan terhadap DPRD dan tugas administrasi kesekretariatan DPRD serta administrasi keuangan DPRD dalam mendukung kelancaran pelaksanaan tugas dan fungsi DPRD.');
+    ?>
     <h2 class="section-title">TUGAS POKOK DAN FUNGSI</h2>
-    <p class="lede">Sekretariat DPRD mempunyai tugas pokok melaksanakan pelayanan terhadap DPRD dan tugas administrasi kesekretariatan DPRD serta administrasi keuangan DPRD dalam mendukung kelancaran pelaksanaan tugas dan fungsi DPRD.</p>
+    <p class="lede"><?php echo esc_html($tugas_pokok); ?></p>
     <h4>Sekretariat DPRD mempunyai fungsi :</h4>
     <div class="fungsi-grid">
-      <div class="fungsi-item"><div class="num">1</div><span>Unsur pelayanan terhadap DPRD.</span></div>
-      <div class="fungsi-item"><div class="num">4</div><span>Mendukung pelaksanaan tugas dan fungsi DPRD.</span></div>
-      <div class="fungsi-item"><div class="num">2</div><span>Tugas administrasi kesekretariatan DPRD.</span></div>
-      <div class="fungsi-item"><div class="num">5</div><span>Menyediakan serta mengoordinasikan tenaga ahli yang diperlukan oleh DPRD.</span></div>
-      <div class="fungsi-item"><div class="num">3</div><span>Administrasi keuangan DPRD.</span></div>
-      <div class="fungsi-item"><div class="num">6</div><span>Pelaksanaan fungsi lain yang diberikan oleh Bupati sesuai dengan tugas dan fungsinya.</span></div>
+      <?php 
+        $default_fungsi = [
+            1 => 'Unsur pelayanan terhadap DPRD.',
+            2 => 'Tugas administrasi kesekretariatan DPRD.',
+            3 => 'Administrasi keuangan DPRD.',
+            4 => 'Mendukung pelaksanaan tugas dan fungsi DPRD.',
+            5 => 'Menyediakan serta mengoordinasikan tenaga ahli yang diperlukan oleh DPRD.',
+            6 => 'Pelaksanaan fungsi lain yang diberikan oleh Bupati sesuai dengan tugas dan fungsinya.'
+        ];
+
+        // Retrieve existing options or use defaults
+        $active_fungsi = [];
+        for ($i = 1; $i <= 8; $i++) {
+            $fungsi = get_option('dprd_fungsi_'.$i, '');
+            if (empty($fungsi) && isset($default_fungsi[$i])) {
+                $fungsi = $default_fungsi[$i];
+            }
+            if (!empty($fungsi)) {
+                $active_fungsi[] = [
+                    'num' => count($active_fungsi) + 1,
+                    'text' => $fungsi
+                ];
+            }
+        }
+
+        // Interleave for a 2-column grid reading downwards
+        $total = count($active_fungsi);
+        $half = ceil($total / 2);
+        
+        $ordered_fungsi = [];
+        for ($i = 0; $i < $half; $i++) {
+            $ordered_fungsi[] = $active_fungsi[$i]; // Left column item
+            if ($i + $half < $total) {
+                $ordered_fungsi[] = $active_fungsi[$i + $half]; // Right column item
+            }
+        }
+
+        // Output items
+        foreach ($ordered_fungsi as $item) :
+      ?>
+      <div class="fungsi-item" style="--mobile-order: <?php echo $item['num']; ?>;"><div class="num"><?php echo $item['num']; ?></div><span><?php echo esc_html($item['text']); ?></span></div>
+      <?php 
+        endforeach; 
+      ?>
     </div>
   </div>
 </section>

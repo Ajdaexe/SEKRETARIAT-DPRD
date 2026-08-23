@@ -460,7 +460,7 @@
 
   /* ===== Susunan Organisasi ===== */
   .susunan-wrap .card-panel{padding:28px 48px 0; overflow:hidden;}
-  .susunan-list{max-width:900px; margin:0 auto; padding-bottom: 30px;}
+  .susunan-list{width:-moz-fit-content; width:fit-content; max-width:100%; margin:0 auto; padding-bottom: 30px;}
   .susunan-list > p{color:var(--merah); font-size:16px; font-weight:700; margin:0 0 16px;}
   .susunan-list > ul{color:var(--abu); font-size:15px; line-height:1.5; margin:0 0 16px; padding-left:22px;}
   .susunan-list > ul > li{margin-bottom:16px; padding: 4px 8px;}
@@ -766,6 +766,14 @@
       height: 220px;
       margin-left: -24px;
       margin-right: -24px;
+    }
+
+    .susunan-wrap .card-panel {
+      padding: 24px 24px 0;
+    }
+
+    .susunan-list {
+      transform: translateX(-12px);
     }
 
     .footer-grid {

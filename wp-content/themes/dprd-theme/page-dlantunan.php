@@ -9,180 +9,372 @@ get_header();
 ?>
 
 <style>
-/* ===== BATIK EDGE MOTIFS (100% DISAMAKAN DENGAN HALAMAN PROFIL) ===== */
-.batik-desktop-edge {
-  position: absolute !important;
-  top: 380px !important;
-  height: 480px !important;
-  width: auto !important;
-  object-fit: contain !important;
-  z-index: 2 !important;
-  pointer-events: none !important;
-  opacity: 0.96 !important;
-  overflow: visible !important;
-}
-
-.batik-desktop-edge-left {
-  left: 0 !important;
-}
-
-.batik-desktop-edge-right {
-  right: 0 !important;
-}
-
-/* ===== HERO SECTION (FULL-WIDTH DISAMAKAN PERSIS DENGAN PROFIL) ===== */
+/* ===== HERO ===== */
 .hero {
-  position: relative !important;
-  width: 100% !important;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  border-radius: 0 !important;
-  overflow: hidden !important;
-  height: calc(100vh - 96px) !important;
-  min-height: 540px !important;
-  cursor: pointer !important;
-  box-shadow: none !important;
-  transition: height 0.2s ease-out, box-shadow 0.3s ease-in-out !important;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  overflow: hidden;
+  height: calc(100vh - 96px);
+  min-height: 540px;
+  cursor: pointer;
+  box-shadow: none;
+  transition: height 0.2s ease-out, box-shadow 0.3s ease-in-out;
 }
 
 .hero:hover {
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 .hero img#heroImage {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  object-position: center 60% !important;
-  transform: scale(1.05) !important;
-  transition: transform 0.5s ease !important;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 60%;
+  transform: scale(1.05);
+  transition: transform 0.5s ease;
 }
 
 .hero:hover img#heroImage {
-  transform: scale(1.1) !important;
+  transform: scale(1.1);
 }
 
 .hero-overlay-dlantunan {
-  position: absolute !important;
-  inset: 0 !important;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.15) 100%) !important;
-  z-index: 1 !important;
-  pointer-events: none !important;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.15) 100%);
+  z-index: 1;
+  pointer-events: none;
 }
 
 .hero-text-left {
-  position: absolute !important;
-  left: 60px !important;
-  bottom: 65px !important;
-  max-width: 480px !important;
-  color: #ffffff !important;
-  pointer-events: auto !important;
-  z-index: 3 !important;
+  position: absolute;
+  left: 60px;
+  bottom: 60px;
+  max-width: 480px;
+  color: #ffffff;
+  pointer-events: auto;
+  z-index: 3;
 }
 
 .hero-text-left h2 {
-  font-size: 44px !important;
-  font-weight: 800 !important;
-  margin-bottom: 16px !important;
-  line-height: 1.1 !important;
-  color: #ffffff !important;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4) !important;
+  font-size: 44px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  line-height: 1.1;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 
 .hero-text-left p {
-  font-size: 15px !important;
-  line-height: 1.65 !important;
-  color: rgba(255, 255, 255, 0.95) !important;
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.4) !important;
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 }
 
 .figma-welcome-card {
-  pointer-events: auto !important;
-  position: absolute !important;
-  right: 40px !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-  z-index: 3 !important;
-  width: 390px !important;
-  max-width: 100% !important;
-  background: #ffffff !important;
-  border-radius: 20px !important;
-  padding: 26px 26px !important;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18) !important;
-  border: 1px solid rgba(255, 255, 255, 0.6) !important;
-  flex-shrink: 0 !important;
-  cursor: pointer !important;
-  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out !important;
+  pointer-events: auto;
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 390px;
+  max-width: 100%;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 26px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 .figma-welcome-card:hover {
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
-  transform: translateY(calc(-50% - 4px)) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(calc(-50% - 4px));
 }
 
 .card-header-row {
-  display: flex !important;
-  align-items: flex-start !important;
-  gap: 14px !important;
-  margin-bottom: 16px !important;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 16px;
 }
 
 .card-icon-bubble {
-  width: 44px !important;
-  height: 44px !important;
-  border-radius: 50% !important;
-  background: #FCE8E8 !important;
-  color: #A5182B !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  flex-shrink: 0 !important;
-  transition: transform 0.35s ease, background-color 0.3s ease, color 0.3s ease !important;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #FCE8E8;
+  color: #A5182B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.35s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
 .card-icon-bubble svg {
-  transition: fill 0.3s ease !important;
+  transition: fill 0.3s ease;
 }
 
 .figma-welcome-card:hover .card-icon-bubble {
-  transform: scale(1.12) rotate(-5deg) !important;
-  background: #A5182B !important;
-  color: #ffffff !important;
+  transform: scale(1.12) rotate(-5deg);
+  background: #A5182B;
+  color: #ffffff;
 }
 
 .figma-welcome-card:hover .card-icon-bubble svg {
-  fill: #ffffff !important;
+  fill: #ffffff;
 }
 
 .card-header-row h3 {
-  font-size: 20px !important;
-  font-weight: 700 !important;
-  color: #111111 !important;
-  line-height: 1.25 !important;
-  margin: 0 !important;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111111;
+  line-height: 1.25;
+  margin: 0;
 }
 
 .figma-welcome-card p {
-  font-size: 13px !important;
-  color: #666666 !important;
-  line-height: 1.6 !important;
-  margin-bottom: 12px !important;
+  font-size: 13px;
+  color: #666666;
+  line-height: 1.6;
+  margin-bottom: 12px;
 }
 
 .figma-welcome-card p:last-child {
-  margin-bottom: 0 !important;
+  margin-bottom: 0;
 }
 
-@media (max-width: 992px) {
+/* ===== BATIK DIVIDER CENTER SECTION ===== */
+.batik-user-divider-container {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto 24px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 3;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.batik-user-divider-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 12px;
+}
+
+.batik-line-img {
+  flex: 1 1 0;
+  height: 14px;
+  object-fit: fill;
+  display: block;
+}
+
+.batik-img-center {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
+}
+
+/* BACKGROUND BATIK MOTIF PINGGIR KIRI & KANAN */
+.batik-desktop-edge {
+  position: absolute;
+  top: 380px;
+  height: 480px;
+  width: auto;
+  object-fit: contain;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.96;
+  overflow: visible;
+}
+
+.batik-desktop-edge-left {
+  left: 0;
+}
+
+.batik-desktop-edge-right {
+  right: 0;
+}
+
+@media (max-width: 980px) {
+  .hero {
+    height: auto !important;
+    min-height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 20px 20px 32px !important;
+    box-sizing: border-box !important;
+  }
+  .hero img#heroImage {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+  }
+  .hero-overlay-dlantunan {
+    z-index: 1 !important;
+  }
   .hero-text-left {
-    left: 20px !important;
-    bottom: 30px !important;
-    max-width: calc(100% - 40px) !important;
+    position: relative !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    max-width: 100% !important;
+    margin-bottom: 0 !important;
+    margin-top: 12px !important;
+    z-index: 3 !important;
+    order: 2 !important;
+  }
+  .hero-text-left h2 {
+    font-size: 28px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 8px !important;
+  }
+  .hero-text-left p {
+    font-size: 14px !important;
+  }
+  .figma-welcome-card {
+    position: relative !important;
+    right: 0 !important;
+    top: 0 !important;
+    transform: none !important;
+    width: 100% !important;
+    z-index: 3 !important;
+    padding: 16px !important;
+    order: 1 !important;
+  }
+  .card-header-row {
+    margin-bottom: 8px !important;
+  }
+  .card-header-row h3 {
+    font-size: 15px !important;
+  }
+  .card-icon-bubble {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .card-icon-bubble svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  .figma-welcome-card p {
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    margin-bottom: 6px !important;
+  }
+  .batik-user-divider-container {
+    padding: 0 16px !important;
+    margin: 10px auto 20px !important;
+  }
+  .batik-img-center {
+    height: 50px !important;
+  }
+  .batik-desktop-edge {
+    top: 310px !important;
   }
 
-  .figma-welcome-card {
-    right: 20px !important;
-    width: calc(100% - 40px) !important;
+  /* GRID AND OVERFLOW FIXES */
+  .layanan-grid,
+  .mid-info-grid,
+  .video-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .foto-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+  .dokumen-card,
+  .alur-card,
+  .layanan-card {
+    padding: 16px !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* TUKAR POSISI CARD INFO DAN ALUR DI MOBILE */
+  .dokumen-card {
+    order: 2 !important;
+  }
+  .alur-card {
+    order: 1 !important;
+  }
+  
+  .dokumen-list {
+    max-height: 250px !important;
+    padding-right: 4px !important;
+  }
+  .dokumen-item {
+    padding: 10px 12px !important;
+    gap: 10px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+  }
+  .pdf-icon-badge {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .file-info {
+    min-width: 0 !important; /* ensures truncation works */
+  }
+  .file-title {
+    font-size: 12px !important;
+  }
+  .file-meta {
+    font-size: 10.5px !important;
+  }
+  .btn-download {
+    width: 30px !important;
+    height: 30px !important;
+  }
+  .btn-download img {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  
+  /* ALUR LAYANAN FIX - JADIKAN GRID */
+  .alur-step {
+    display: grid !important;
+    grid-template-columns: auto auto 1fr !important;
+    grid-template-rows: auto auto !important;
+    column-gap: 14px !important;
+    row-gap: 6px !important;
+    text-align: left !important;
+    align-items: center !important;
+    padding-bottom: 16px !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+  }
+  .alur-step:last-child {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+  }
+  .step-number-bubble {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    margin: 0 !important;
+  }
+  .step-icon-box {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    margin: 0 !important;
+  }
+  .alur-step h4 {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    margin: 0 !important;
+  }
+  .alur-step p {
+    grid-column: 2 / 4 !important;
+    grid-row: 2 !important;
+    margin: 0 !important;
   }
 }
 </style>
@@ -418,7 +610,6 @@ get_header();
 <!-- ===== SECTION VIDEO ===== -->
 <section class="video-section">
   <div class="section-title-wrap">
-    <span class="title-pill-tag"></span>
     <h3 class="section-title">Video</h3>
   </div>
 
@@ -466,7 +657,6 @@ get_header();
 <!-- ===== SECTION FOTO DOKUMENTASI ===== -->
 <section class="foto-section">
   <div class="section-title-wrap foto-title-wrap">
-    <span class="title-pill-tag"></span>
     <h3 class="section-title">Foto Dokumentasi</h3>
   </div>
 

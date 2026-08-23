@@ -10,7 +10,7 @@
 
 </head>
 
-<body>
+<body <?php body_class(); ?>>
 
   <header id="mainHeader">
     <div class="logo-wrap">
