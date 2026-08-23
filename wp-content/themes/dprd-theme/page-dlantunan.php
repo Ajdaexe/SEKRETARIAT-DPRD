@@ -284,7 +284,6 @@ get_header();
 
   /* GRID AND OVERFLOW FIXES */
   .layanan-grid,
-  .mid-info-grid,
   .video-grid {
     grid-template-columns: 1fr !important;
     gap: 16px !important;
@@ -300,6 +299,24 @@ get_header();
     box-sizing: border-box !important;
   }
   
+  .dokumen-list {
+    max-height: 250px !important;
+    padding-right: 4px !important;
+  }
+  
+  .dokumen-item {
+    padding: 10px 12px !important;
+    gap: 10px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .mid-info-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
   /* TUKAR POSISI CARD INFO DAN ALUR DI MOBILE */
   .dokumen-card {
     order: 2 !important;
@@ -307,17 +324,9 @@ get_header();
   .alur-card {
     order: 1 !important;
   }
-  
-  .dokumen-list {
-    max-height: 250px !important;
-    padding-right: 4px !important;
-  }
-  .dokumen-item {
-    padding: 10px 12px !important;
-    gap: 10px !important;
-    box-sizing: border-box !important;
-    width: 100% !important;
-  }
+}
+
+@media (max-width: 980px) {
   .pdf-icon-badge {
     width: 32px !important;
     height: 32px !important;
