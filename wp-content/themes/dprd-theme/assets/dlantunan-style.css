@@ -1548,7 +1548,41 @@ footer .contact-item .ic-foot img[alt="Maps"] {
    RESPONSIVE MEDIA QUERIES
    ========================================================================== */
 @media (max-width: 1024px) {
+  .hero-text {
+    left: 24px !important;
+    bottom: 30px !important;
+  }
 
+  .hero-text h2, .hero-text-left h2, .figma-hero-text h2 {
+    font-size: 30px !important;
+  }
+
+  .hero-text p, .hero-text-left p, .figma-hero-text p {
+    font-size: 16px !important;
+  }
+
+  .figma-welcome-card {
+    width: 280px !important;
+    padding: 16px 20px !important;
+    right: 20px !important;
+  }
+  .figma-welcome-card h3 {
+    font-size: 16px !important;
+    margin-bottom: 8px !important;
+  }
+  .figma-welcome-card p {
+    font-size: 11.5px !important;
+    line-height: 1.4 !important;
+    margin-bottom: 8px !important;
+  }
+  .figma-welcome-card .icon-circle.red-bubble {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  .figma-welcome-card .icon-circle.red-bubble .icon-img {
+    width: 16px !important;
+    height: 16px !important;
+  }
 
   .layanan-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1579,48 +1613,12 @@ footer .contact-item .ic-foot img[alt="Maps"] {
     height: 340px;
   }
 
-  .hero-text {
-    left: 24px;
-    bottom: 30px;
-  }
-
-  .hero-text h2, .hero-text-left h2, .figma-hero-text h2 {
-    font-size: 30px !important;
-  }
-
-  .hero-text p, .hero-text-left p, .figma-hero-text p {
-    font-size: 16px !important;
-  }
-
   .layanan-grid {
     grid-template-columns: 1fr;
   }
 
   .video-grid {
     grid-template-columns: 1fr;
-  }
-
-  .figma-welcome-card {
-    width: 280px !important;
-    padding: 16px 20px !important;
-    right: 20px !important;
-  }
-  .figma-welcome-card h3 {
-    font-size: 16px !important;
-    margin-bottom: 8px !important;
-  }
-  .figma-welcome-card p {
-    font-size: 11.5px !important;
-    line-height: 1.4 !important;
-    margin-bottom: 8px !important;
-  }
-  .figma-welcome-card .icon-circle.red-bubble {
-    width: 34px !important;
-    height: 34px !important;
-  }
-  .figma-welcome-card .icon-circle.red-bubble .icon-img {
-    width: 16px !important;
-    height: 16px !important;
   }
 
   .foto-grid {
