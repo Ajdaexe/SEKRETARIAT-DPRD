@@ -235,12 +235,20 @@ get_header();
     order: 2 !important;
   }
   .hero-text-left h2 {
-    font-size: 28px !important;
+    font-size: 26px !important;
     line-height: 1.2 !important;
     margin-bottom: 8px !important;
   }
   .hero-text-left p {
-    font-size: 14px !important;
+    font-size: 13.5px !important;
+  }
+}
+@media (max-width: 600px) {
+  .hero-text-left h2 {
+    font-size: 24px !important;
+  }
+  .hero-text-left p {
+    font-size: 13px !important;
   }
   .figma-welcome-card {
     position: relative !important;

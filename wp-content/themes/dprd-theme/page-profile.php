@@ -167,12 +167,20 @@ get_header();
     max-width: 100%;
   }
   .hero-text h2 {
-    font-size: 28px;
+    font-size: 26px !important;
     line-height: 1.2;
-    margin-bottom: 8px;
+    margin-bottom: 8px !important;
   }
   .hero-text p {
-    font-size: 14px;
+    font-size: 13.5px !important;
+  }
+}
+@media (max-width: 600px) {
+  .hero-text h2 {
+    font-size: 24px !important;
+  }
+  .hero-text p {
+    font-size: 13px !important;
   }
   .batik-user-divider-container {
     padding: 0 16px;
