@@ -506,11 +506,10 @@ get_header();
             Ajukan Permohonan <span class="arrow-icon">&rsaquo;</span>
           </a>
         </div>
-        <?php
+    <?php
     }
     ?>
 
-  </div>
     <!-- Kolom Kiri: Informasi & Dokumen Terkait -->
     <div class="card-panel dokumen-card">
       <div class="dokumen-head">
