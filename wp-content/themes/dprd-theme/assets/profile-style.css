@@ -302,7 +302,7 @@
 
   /* ===== Intro (Sekretariat DPRD + Sekilas) ===== */
   .intro-section{padding-top:24px;}
-  .intro-grid{display:grid; grid-template-columns:1fr; gap:20px; align-items:stretch;}
+  .intro-grid{display:grid; grid-template-columns:minmax(0, 1.8fr) minmax(320px, 1fr); gap:20px; align-items:stretch;}
   .intro-card{background:#fff; border:1px solid var(--border); border-radius:var(--radius); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02); padding:24px;}
 
   .intro-card-main{
@@ -1316,5 +1316,12 @@
   }
   .intro-card-main h3, .sekilas h3 {
     font-size: 16px !important;
+  }
+}
+
+/* ===== Stack Intro Grid on Smaller Tablets and Phones ===== */
+@media(max-width: 900px) {
+  .intro-grid {
+    grid-template-columns: 1fr;
   }
 }
