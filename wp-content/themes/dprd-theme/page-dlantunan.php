@@ -471,8 +471,8 @@ get_header();
 <div class="container">
 
 <!-- ===== 3 LAYANAN CARDS ===== -->
-<section class="layanan-section">
-  <div class="wrap layanan-grid" style="padding:0; max-width:none;">
+<section class="layanan-section" style="margin-bottom: 60px;">
+  <div class="wrap dlantunan-master-grid" style="padding:0; max-width:none;">
     
     <?php
     $icons = array('tas kerja.svg', 'document.svg', 'user account.svg');
@@ -511,12 +511,6 @@ get_header();
     ?>
 
   </div>
-</section>
-
-<!-- ===== INFORMASI & DOKUMEN TERKAIT + ALUR LAYANAN ===== -->
-<section class="mid-info-section">
-  <div class="wrap mid-info-grid" style="padding:0; max-width:none;">
-
     <!-- Kolom Kiri: Informasi & Dokumen Terkait -->
     <div class="card-panel dokumen-card">
       <div class="dokumen-head">
