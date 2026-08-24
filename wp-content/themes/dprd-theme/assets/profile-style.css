@@ -750,10 +750,7 @@
       padding-right: 20px;
     }
 
-    .intro-grid {
-      grid-template-columns: 1fr;
-    }
-
+    /* intro-grid stacking moved to smaller breakpoint */
     .value-grid {
       grid-template-columns: repeat(2, 1fr);
     }
@@ -1124,5 +1121,12 @@
   }
   .intro-card-main h3, .sekilas h3 {
     font-size: 16px !important;
+  }
+}
+
+/* ===== Stack Intro Grid on Smaller Tablets and Phones ===== */
+@media(max-width: 900px) {
+  .intro-grid {
+    grid-template-columns: 1fr;
   }
 }
