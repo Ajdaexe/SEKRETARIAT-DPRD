@@ -758,6 +758,9 @@
     .fungsi-grid {
       grid-template-columns: 1fr;
     }
+    .fungsi-item {
+      order: var(--mobile-order);
+    }
 
     .susunan-photo-wrap {
       height: 220px;
