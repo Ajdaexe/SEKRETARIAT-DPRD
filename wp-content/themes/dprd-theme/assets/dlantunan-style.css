@@ -1584,12 +1584,12 @@ footer .contact-item .ic-foot img[alt="Maps"] {
     bottom: 30px;
   }
 
-  .hero-text h2 {
-    font-size: 30px;
+  .hero-text h2, .hero-text-left h2, .figma-hero-text h2 {
+    font-size: 30px !important;
   }
 
-  .hero-text p {
-    font-size: 13.5px;
+  .hero-text p, .hero-text-left p, .figma-hero-text p {
+    font-size: 16px !important;
   }
 
   .layanan-grid {
@@ -1699,20 +1699,20 @@ footer .contact-item .ic-foot img[alt="Maps"] {
     width: calc(100% - 40px) !important;
     bottom: 24px !important;
   }
-  .hero-text h2 {
+  .hero-text h2, .hero-text-left h2, .figma-hero-text h2 {
     font-size: 26px !important;
     margin-bottom: 8px !important;
   }
-  .hero-text p {
+  .hero-text p, .hero-text-left p, .figma-hero-text p {
     font-size: 13.5px !important;
     line-height: 1.5 !important;
   }
 }
 @media(max-width: 600px) {
-  .hero-text h2 {
+  .hero-text h2, .hero-text-left h2, .figma-hero-text h2 {
     font-size: 24px !important;
   }
-  .hero-text p {
+  .hero-text p, .hero-text-left p, .figma-hero-text p {
     font-size: 13px !important;
   }
 }
