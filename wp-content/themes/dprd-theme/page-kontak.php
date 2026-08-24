@@ -16,8 +16,8 @@ get_header();
   margin: 0;
   border-radius: 0;
   overflow: hidden;
-  height: calc(100vh - 96px);
-  min-height: 540px;
+  height: 480px;
+  
   cursor: pointer;
   transition: height 0.2s ease-out;
 }

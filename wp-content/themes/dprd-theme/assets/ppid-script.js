@@ -174,9 +174,9 @@ const dokumenData = [
 
       if (heroSection) {
         if (scrollY <= 0) {
-          heroSection.style.height = 'calc(100vh - 96px)';
+          
         } else {
-          heroSection.style.height = '460px';
+          
         }
       }
     });
