@@ -155,7 +155,7 @@ get_header();
   right: 0;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1024px) {
   .hero {
     height: 380px !important;
     min-height: auto !important;
