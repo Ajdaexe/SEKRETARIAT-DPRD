@@ -520,7 +520,7 @@ get_header();
           <h3>Informasi &amp; Dokumen Terkait</h3>
         </div>
       </div>
-      <div class="dokumen-list" style="max-height: 300px; overflow-y: auto; padding-right: 10px;">
+      <div class="dokumen-list" style="max-height: 210px; overflow-y: auto; padding-right: 10px;">
         <?php
         $default_docs = json_encode([
             ['title' => 'Panduan Penggunaan Portal D\'Lantunan', 'url' => get_template_directory_uri() . '/assets/pdf/DOR.pdf', 'type' => 'PDF', 'date' => '20 Mei 2023']
