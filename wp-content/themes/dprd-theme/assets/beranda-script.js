@@ -99,17 +99,34 @@
       updateSurveyCarousel();
     });
 
-    function triggerSearchFocus() {
+        function triggerSearchFocus() {
+      const e = window.event;
+      if (e && e.target && e.target.tagName === 'INPUT') return;
+      
       const box = document.getElementById('searchBoxAnimated');
-      box.classList.add('active');
-      document.getElementById('globalSearchInput').focus();
+      if (box) {
+        const isActive = box.classList.contains('active');
+        if (isActive) {
+          box.classList.remove('active');
+          const header = document.getElementById('mainHeader');
+          if(header) header.classList.remove('search-active');
+        } else {
+          box.classList.add('active');
+          const header = document.getElementById('mainHeader');
+          if(header) header.classList.add('search-active');
+          const input = document.getElementById('globalSearchInput');
+          if (input) {
+            input.focus();
+          }
+        }
+      }
     }
-
     document.addEventListener('click', function (e) {
       const searchContainer = document.querySelector('.search-container');
       const searchBox = document.getElementById('searchBoxAnimated');
       if (searchContainer && searchBox && !searchContainer.contains(e.target)) {
         searchBox.classList.remove('active');
+          document.getElementById('mainHeader').classList.remove('search-active');
       }
     });
 

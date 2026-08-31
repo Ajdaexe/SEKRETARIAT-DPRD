@@ -9,7 +9,7 @@ get_header();
 ?>
 
   <!-- Hero Section -->
-  <section class="hero" id="heroSection" onclick="openLightbox()">
+  <section class="hero" id="heroSection">
     <?php 
       $hero_bg = get_option('dprd_hero_global_image', 'https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png'); 
       $hero_title = get_option('dprd_hero_ppid_title', 'Layanan Informasi Publik (PPID)');
@@ -397,12 +397,28 @@ get_header();
       }
     });
 
-    function triggerSearchFocus() {
+        function triggerSearchFocus() {
+      const e = window.event;
+      if (e && e.target && e.target.tagName === 'INPUT') return;
+      
       const box = document.getElementById('searchBoxAnimated');
-      box.classList.add('active');
-      document.getElementById('globalSearchInput').focus();
+      if (box) {
+        const isActive = box.classList.contains('active');
+        if (isActive) {
+          box.classList.remove('active');
+          const header = document.getElementById('mainHeader');
+          if(header) header.classList.remove('search-active');
+        } else {
+          box.classList.add('active');
+          const header = document.getElementById('mainHeader');
+          if(header) header.classList.add('search-active');
+          const input = document.getElementById('globalSearchInput');
+          if (input) {
+            input.focus();
+          }
+        }
+      }
     }
-
     document.addEventListener('click', function (e) {
       const searchContainer = document.querySelector('.search-container');
       const searchBox = document.getElementById('searchBoxAnimated');

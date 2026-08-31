@@ -1613,7 +1613,7 @@
     left: 20px !important;
     right: 20px !important; /* Constrain right side so it doesn't hit edge */
     width: calc(100% - 40px) !important; /* Force width within bounds */
-    bottom: 24px !important;
+    bottom: 56px !important;
   }
   .hero-text h2 {
     font-size: 26px !important;
@@ -1856,3 +1856,90 @@
     margin-top: 2px !important;
   }
 }
+
+
+/* PERFECTLY CENTERED MOBILE FOOTER IN A STRAIGHT LINE */
+@media(max-width: 980px) {
+  .footer-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    width: fit-content !important;
+    margin: 0 auto !important;
+    align-items: flex-start !important;
+  }
+  .footer-grid > div {
+    width: 100% !important;
+    text-align: left !important;
+  }
+  .footer-grid > div:first-child {
+    grid-column: auto !important;
+  }
+  .footer-desc {
+    max-width: 260px !important;
+  }
+  .footer-logo {
+    display: flex !important;
+    justify-content: flex-start !important;
+  }
+  .socials {
+    display: flex !important;
+    justify-content: flex-start !important;
+  }
+}
+
+
+
+/* CENTER FOOTER LOGO ON MOBILE */
+@media(max-width: 980px) {
+  .footer-logo {
+    display: flex !important;
+    justify-content: center !important;
+  }
+}
+
+
+
+/* CENTER H6 FOOTER ON MOBILE */
+@media(max-width: 980px) {
+  footer h6 {
+    text-align: center !important;
+  }
+}
+
+
+
+/* REMOVE POINTER CURSOR FROM HERO (LIGHTBOX REMOVED) */
+.hero, section.hero {
+  cursor: default !important;
+}
+
+
+
+/* IPAD / TABLET FOOTER SIDE-BY-SIDE FIX */
+@media(min-width: 768px) and (max-width: 991px) {
+  .footer-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 40px !important;
+    margin: 0 auto !important;
+  }
+  .footer-grid > div {
+    text-align: left !important;
+    width: 100% !important;
+  }
+  .footer-logo {
+    justify-content: flex-start !important;
+  }
+  footer h6 {
+    text-align: left !important;
+  }
+  .footer-desc {
+    max-width: 100% !important;
+  }
+  .socials {
+    justify-content: flex-start !important;
+  }
+}
+

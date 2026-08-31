@@ -9,7 +9,7 @@ get_header();
 ?>
 
 <!-- Hero Section -->
-  <section class="hero" id="heroSection" onclick="openLightbox()">
+  <section class="hero" id="heroSection">
     <?php 
       $hero_bg = get_option('dprd_hero_global_image', 'https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png'); 
       $hero_title = get_option('dprd_hero_beranda_title', 'Beranda');

@@ -167,6 +167,7 @@ body header#mainHeader .logo-wrap h1 {
   font-size: 22px !important;
   font-weight: 800 !important;
   line-height: 1.1 !important;
+  color: #A5182B !important;
 }
 
 body header#mainHeader.scrolled .logo-wrap h1 {
@@ -207,6 +208,80 @@ body header#mainHeader nav a.active {
   color: #990000 !important;
   font-weight: 700 !important;
   border-bottom-color: #990000 !important;
+}
+
+}
+
+/* ==========================================================================
+   GLOBAL SEARCH BOX (ANIMATED)
+   ========================================================================== */
+body header#mainHeader .search-container {
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
+}
+
+body header#mainHeader .search-box-animated {
+  display: flex !important;
+  align-items: center !important;
+  background: transparent !important;
+  border-radius: 30px !important;
+  height: 40px !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  border: 1px solid #dcdcdc !important;
+  width: 40px !important; /* Perfect circle initially */
+  overflow: hidden !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+}
+
+body header#mainHeader .search-box-animated.active {
+  background: #f8f9fa !important;
+  border-color: #ddd !important;
+  width: 250px !important;
+  padding: 0 15px !important;
+  justify-content: flex-start !important;
+  cursor: text !important;
+}
+
+body header#mainHeader .search-btn-icon {
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  display: flex !important;
+}
+
+body header#mainHeader .search-btn-icon img {
+  width: 18px !important;
+  height: 18px !important;
+  object-fit: contain !important;
+}
+
+body header#mainHeader .search-open-icon {
+  display: flex !important;
+}
+
+body header#mainHeader .search-box-animated input {
+  flex-grow: 1 !important;
+  width: 0 !important;
+  opacity: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  font-size: 14px !important;
+  padding: 0 !important;
+  transition: all 0.3s ease !important;
+}
+
+body header#mainHeader .search-box-animated.active input {
+  width: 100% !important;
+  opacity: 1 !important;
+  padding-left: 10px !important;
 }
 
 /* ==========================================================================
@@ -757,3 +832,233 @@ body header#mainHeader nav a.active {
   height: 80px !important;
   object-fit: contain !important;
 }
+
+
+/* ===== FOOTER SMALLER TEXT & ICONS FIX ===== */
+body footer .footer-logo img {
+  width: 32px !important;
+  height: 32px !important;
+}
+body footer .footer-logo h3 {
+  font-size: 13px !important;
+}
+body footer .footer-logo p {
+  font-size: 10px !important;
+}
+body footer p.footer-desc, body footer .footer-desc {
+  font-size: 10px !important;
+  line-height: 1.5 !important;
+}
+body footer h6 {
+  font-size: 12px !important;
+}
+body footer .jam-item b {
+  font-size: 10px !important;
+}
+body footer .jam-item span {
+  font-size: 10px !important;
+}
+body footer .contact-item span, body footer .contact-item a {
+  font-size: 10px !important;
+}
+body footer .jam-item img.icon-img, body footer .jam-item img[alt='Clock'] {
+  width: 12px !important;
+  height: 12px !important;
+}
+body footer .contact-item img.icon-img {
+  width: 12px !important;
+  height: 12px !important;
+}
+body footer .socials span {
+  width: 24px !important;
+  height: 24px !important;
+}
+body footer .socials span .icon-img {
+  width: 10px !important;
+  height: 10px !important;
+}
+body footer .socials svg.icon-img {
+  width: 10px !important;
+  height: 10px !important;
+}
+/* ===== MOBILE NAVBAR SCROLL FIX ===== */
+@media (max-width: 991px) {
+  body header#mainHeader,
+  body header#mainHeader.scrolled {
+    flex-wrap: nowrap !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  /* Smooth transition for logo disappearing */
+  body header#mainHeader .logo-wrap {
+    transition: opacity 0.3s ease, max-width 0.35s ease, margin 0.35s ease !important;
+    opacity: 1 !important;
+    max-width: 220px !important; /* Disesuaikan dengan lebar asli agar tidak ada delay saat animasi selesai */
+    overflow: hidden !important;
+    white-space: nowrap !important;
+  }
+  
+  body header#mainHeader.search-active .logo-wrap {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    max-width: 0 !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+  
+  /* Flexbox positioning for search container to allow smooth transitions */
+  body header#mainHeader .search-container {
+    margin-left: auto !important;
+    transition: flex-grow 0.35s ease !important;
+    flex-grow: 0 !important;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  body header#mainHeader.search-active .search-container {
+    flex-grow: 1 !important;
+  }
+  
+  /* Hapus delay transisi input saat menutup */
+  body header#mainHeader .search-box-animated input {
+    transition: opacity 0.2s ease !important; 
+  }
+  body header#mainHeader.search-active .search-box-animated.active input {
+    transition: opacity 0.3s ease 0.15s !important;
+  }
+  
+  body header#mainHeader.search-active .search-box-animated.active {
+    width: 100% !important;
+  }
+  
+  /* Blur overlay for background when search is active */
+  body header#mainHeader::before {
+    content: '';
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    z-index: -1 !important;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease !important;
+    pointer-events: none !important;
+  }
+  
+  body header#mainHeader.search-active::before {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+}
+
+/* ==========================================================================
+   GLOBAL SEARCH ICON LOGIC
+   ========================================================================== */
+body header#mainHeader .search-box-animated.active .search-open-icon {
+  display: none !important;
+}
+
+body header#mainHeader .search-box-animated.active .search-close-icon {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+}
+
+body header#mainHeader .search-box-animated.active input {
+  flex: 1 !important;
+  width: auto !important;
+  padding-left: 16px !important; /* give space on the left since icon is gone */
+}
+
+
+/* PERFECTLY CENTERED MOBILE FOOTER IN A STRAIGHT LINE */
+@media(max-width: 980px) {
+  .footer-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    width: fit-content !important;
+    margin: 0 auto !important;
+    align-items: flex-start !important;
+  }
+  .footer-grid > div {
+    width: 100% !important;
+    text-align: left !important;
+  }
+  .footer-grid > div:first-child {
+    grid-column: auto !important;
+  }
+  .footer-desc {
+    max-width: 260px !important;
+  }
+  .footer-logo {
+    display: flex !important;
+    justify-content: flex-start !important;
+  }
+  .socials {
+    display: flex !important;
+    justify-content: flex-start !important;
+  }
+}
+
+
+
+/* CENTER FOOTER LOGO ON MOBILE */
+@media(max-width: 980px) {
+  .footer-logo {
+    display: flex !important;
+    justify-content: center !important;
+  }
+}
+
+
+
+/* CENTER H6 FOOTER ON MOBILE */
+@media(max-width: 980px) {
+  footer h6 {
+    text-align: center !important;
+  }
+}
+
+
+
+/* REMOVE POINTER CURSOR FROM HERO (LIGHTBOX REMOVED) */
+.hero, section.hero {
+  cursor: default !important;
+}
+
+
+
+/* IPAD / TABLET FOOTER SIDE-BY-SIDE FIX */
+@media(min-width: 768px) and (max-width: 991px) {
+  .footer-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 40px !important;
+    margin: 0 auto !important;
+  }
+  .footer-grid > div {
+    text-align: left !important;
+    width: 100% !important;
+  }
+  .footer-logo {
+    justify-content: flex-start !important;
+  }
+  footer h6 {
+    text-align: left !important;
+  }
+  .footer-desc {
+    max-width: 100% !important;
+  }
+  .socials {
+    justify-content: flex-start !important;
+  }
+}
+
