@@ -13,6 +13,21 @@ if (!isset($currentPage)) $currentPage = '';
   <?php if(isset($pageStyle) && $pageStyle): ?>
   <link rel="stylesheet" href="<?php echo $pageStyle; ?>">
   <?php endif; ?>
+  <script>
+    function submitGlobalSearch() {
+      var input = document.getElementById('globalSearchInput');
+      if (input && input.value.trim() !== '') {
+        window.location.href = 'search.php?q=' + encodeURIComponent(input.value.trim());
+      }
+    }
+
+    function checkEnterGlobalSearch(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        submitGlobalSearch();
+      }
+    }
+  </script>
 </head>
 
 <body>
@@ -39,8 +54,8 @@ if (!isset($currentPage)) $currentPage = '';
     </nav>
     <div class="search-container">
       <div class="search-box-animated" id="searchBoxAnimated" onclick="triggerSearchFocus()">
-        <button class="search-btn-icon" type="button"><img class="icon-img" src="images/search.png" alt="Cari"></button>
-        <input type="text" id="globalSearchInput" placeholder="Cari dokumen..." onkeyup="handleGlobalSearch(event)">
+        <button class="search-btn-icon" type="button" onclick="submitGlobalSearch()"><img class="icon-img" src="images/search.png" alt="Cari"></button>
+        <input type="text" id="globalSearchInput" placeholder="ketik lalu enter" onkeydown="checkEnterGlobalSearch(event)" onkeyup="if(typeof handleGlobalSearch === 'function') handleGlobalSearch(event)">
       </div>
     </div>
   </header>

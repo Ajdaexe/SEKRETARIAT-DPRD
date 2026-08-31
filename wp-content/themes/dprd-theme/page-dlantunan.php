@@ -9,6 +9,17 @@ get_header();
 ?>
 
 <style>
+/* GUARANTEED HEIGHT FIX TO BYPASS CACHE */
+.dlantunan-master-grid { align-items: stretch !important; }
+.card-panel { height: 100% !important; min-width: 0 !important; }
+.layanan-card h3 { min-height: 70px !important; }
+.layanan-desc { display: block !important; flex-grow: 1 !important; }
+.btn-ajukan { margin-top: auto !important; }
+@media (max-width: 1024px) {
+  .hero-text-left { left: 30px !important; max-width: 440px !important; }
+  .figma-welcome-card { right: 30px !important; }
+}
+
 /* ===== HERO ===== */
 .hero {
   position: relative;
@@ -16,8 +27,8 @@ get_header();
   margin: 0;
   border-radius: 0;
   overflow: hidden;
-  height: calc(100vh - 96px);
-  min-height: 540px;
+  height: 480px;
+  
   cursor: pointer;
   box-shadow: none;
   transition: height 0.2s ease-out, box-shadow 0.3s ease-in-out;
@@ -207,7 +218,7 @@ get_header();
   right: 0;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1024px) {
   .hero {
     height: auto !important;
     min-height: auto !important;
@@ -235,12 +246,12 @@ get_header();
     order: 2 !important;
   }
   .hero-text-left h2 {
-    font-size: 28px !important;
+    font-size: 26px !important;
     line-height: 1.2 !important;
     margin-bottom: 8px !important;
   }
   .hero-text-left p {
-    font-size: 14px !important;
+    font-size: 13.5px !important;
   }
   .figma-welcome-card {
     position: relative !important;
@@ -249,27 +260,47 @@ get_header();
     transform: none !important;
     width: 100% !important;
     z-index: 3 !important;
-    padding: 16px !important;
     order: 1 !important;
+    margin-bottom: 24px !important;
+  }
+}
+@media (max-width: 600px) {
+  .hero-text-left h2 {
+    font-size: 24px !important;
+  }
+  .hero-text-left p {
+    font-size: 13px !important;
+  }
+  .figma-welcome-card {
+    position: relative !important;
+    right: 0 !important;
+    top: 0 !important;
+    transform: none !important;
+    width: 100% !important;
+    z-index: 3 !important;
+    padding: 14px !important;
+    order: 1 !important;
+    margin-bottom: 12px !important;
+  }
+  .figma-welcome-card p {
+    font-size: 11.5px !important;
+    line-height: 1.45 !important;
+    margin-bottom: 8px !important;
   }
   .card-header-row {
     margin-bottom: 8px !important;
+    gap: 10px !important;
   }
   .card-header-row h3 {
-    font-size: 15px !important;
+    font-size: 14px !important;
   }
   .card-icon-bubble {
     width: 32px !important;
     height: 32px !important;
   }
   .card-icon-bubble svg {
-    width: 16px !important;
-    height: 16px !important;
-  }
-  .figma-welcome-card p {
-    font-size: 12px !important;
-    line-height: 1.35 !important;
-    margin-bottom: 6px !important;
+    width: 14px !important;
+    height: 14px !important;
   }
   .batik-user-divider-container {
     padding: 0 16px !important;
@@ -283,9 +314,11 @@ get_header();
   }
 
   /* GRID AND OVERFLOW FIXES */
+  .dlantunan-master-grid,
   .layanan-grid,
   .video-grid {
     grid-template-columns: 1fr !important;
+    grid-auto-rows: auto !important;
     gap: 16px !important;
   }
   .foto-grid {
@@ -294,9 +327,11 @@ get_header();
   }
   .dokumen-card,
   .alur-card,
-  .layanan-card {
+  .layanan-card,
+  .card-panel {
     padding: 16px !important;
     box-sizing: border-box !important;
+    height: auto !important;
   }
   
   .dokumen-list {
@@ -309,6 +344,15 @@ get_header();
     gap: 10px !important;
     box-sizing: border-box !important;
     width: 100% !important;
+  }
+  
+  .layanan-card h3 {
+    min-height: auto !important;
+    margin-bottom: 8px !important;
+  }
+  .layanan-card .layanan-desc {
+    min-height: auto !important;
+    margin-bottom: 14px !important;
   }
 }
 
@@ -324,31 +368,7 @@ get_header();
   .alur-card {
     order: 1 !important;
   }
-}
 
-@media (max-width: 980px) {
-  .pdf-icon-badge {
-    width: 32px !important;
-    height: 32px !important;
-  }
-  .file-info {
-    min-width: 0 !important; /* ensures truncation works */
-  }
-  .file-title {
-    font-size: 12px !important;
-  }
-  .file-meta {
-    font-size: 10.5px !important;
-  }
-  .btn-download {
-    width: 30px !important;
-    height: 30px !important;
-  }
-  .btn-download img {
-    width: 16px !important;
-    height: 16px !important;
-  }
-  
   /* ALUR LAYANAN FIX - JADIKAN GRID */
   .alur-step {
     display: grid !important;
@@ -384,6 +404,30 @@ get_header();
     grid-column: 2 / 4 !important;
     grid-row: 2 !important;
     margin: 0 !important;
+  }
+}
+
+@media (max-width: 980px) {
+  .pdf-icon-badge {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .file-info {
+    min-width: 0 !important; /* ensures truncation works */
+  }
+  .file-title {
+    font-size: 12px !important;
+  }
+  .file-meta {
+    font-size: 10.5px !important;
+  }
+  .btn-download {
+    width: 30px !important;
+    height: 30px !important;
+  }
+  .btn-download img {
+    width: 16px !important;
+    height: 16px !important;
   }
 }
 </style>
@@ -464,7 +508,7 @@ get_header();
 
 <!-- ===== 3 LAYANAN CARDS ===== -->
 <section class="layanan-section">
-  <div class="wrap layanan-grid" style="padding:0; max-width:none;">
+  <div class="wrap dlantunan-master-grid" style="padding:0; max-width:none;">
     
     <?php
     $icons = array('tas kerja.svg', 'document.svg', 'user account.svg');
@@ -491,23 +535,16 @@ get_header();
             <img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/<?php echo $icon; ?>" alt="<?php echo esc_attr( wp_strip_all_tags($clean_title) ); ?> Icon" onerror="this.onerror=null; this.src='<?php echo get_template_directory_uri(); ?>/assets/images/<?php echo $fallback; ?>';">
           </div>
           <h3><?php echo wp_kses_post( nl2br($clean_title) ); ?></h3>
-          <div style="font-size: 14px; line-height: 1.6; color: #555; margin-bottom: 24px; flex-grow: 1;">
+          <div class="layanan-desc" style="font-size: 14px; line-height: 1.6; color: #555; margin-bottom: 24px; flex-grow: 1;">
             <?php echo wp_kses_post( wpautop( $desc ) ); ?>
           </div>
           <a class="btn-ajukan" href="<?php echo esc_url($url); ?>" target="_blank" rel="noopener">
             Ajukan Permohonan <span class="arrow-icon">&rsaquo;</span>
           </a>
         </div>
-        <?php
+    <?php
     }
     ?>
-
-  </div>
-</section>
-
-<!-- ===== INFORMASI & DOKUMEN TERKAIT + ALUR LAYANAN ===== -->
-<section class="mid-info-section">
-  <div class="wrap mid-info-grid" style="padding:0; max-width:none;">
 
     <!-- Kolom Kiri: Informasi & Dokumen Terkait -->
     <div class="card-panel dokumen-card">
@@ -519,7 +556,7 @@ get_header();
           <h3>Informasi &amp; Dokumen Terkait</h3>
         </div>
       </div>
-      <div class="dokumen-list" style="max-height: 300px; overflow-y: auto; padding-right: 10px;">
+      <div class="dokumen-list" style="max-height: 210px; overflow-y: auto; padding-right: 10px;">
         <?php
         $default_docs = json_encode([
             ['title' => 'Panduan Penggunaan Portal D\'Lantunan', 'url' => get_template_directory_uri() . '/assets/pdf/DOR.pdf', 'type' => 'PDF', 'date' => '20 Mei 2023']

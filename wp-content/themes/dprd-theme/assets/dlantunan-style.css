@@ -373,6 +373,7 @@ section {
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-card);
   padding: 26px 28px;
+  height: 100%;
   transition: transform var(--transition-smooth), box-shadow var(--transition-smooth), border-color var(--transition-smooth);
 }
 
@@ -551,13 +552,16 @@ section {
 /* ==========================================================================
    LAYANAN SECTION (3 CARDS GRID)
    ========================================================================== */
-.layanan-grid {
+.dlantunan-master-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 1fr;
   gap: 24px;
+  align-items: stretch;
 }
 
 .layanan-card {
+  grid-column: span 2;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -595,9 +599,17 @@ section {
   color: var(--merah);
   margin-bottom: 10px;
   line-height: 1.35;
-  min-height: 46px;
+  min-height: 70px;
   display: flex;
   align-items: center;
+}
+
+.layanan-desc {
+  min-height: 90px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .layanan-card p {
@@ -1153,6 +1165,10 @@ section {
   transform: scale(1);
 }
 
+.dokumen-card, .alur-card {
+  grid-column: span 3;
+}
+
 /* ==========================================================================
    CTA BANNER SECTION
    ========================================================================== */
@@ -1283,7 +1299,7 @@ footer {
   right: 50% !important;
   margin-left: -50vw !important;
   margin-right: -50vw !important;
-  margin-top: 0 !important;
+  margin-top: 56px !important;
   padding: 50px 40px 30px !important;
   background: #ffffff !important;
   border-top: 1px solid var(--border-color, #ececec) !important;
@@ -1548,10 +1564,52 @@ footer .contact-item .ic-foot img[alt="Maps"] {
    RESPONSIVE MEDIA QUERIES
    ========================================================================== */
 @media (max-width: 1024px) {
+  .hero-text {
+    left: 24px !important;
+    bottom: 30px !important;
+  }
 
+  .hero-text h2, .hero-text-left h2, .figma-hero-text h2 {
+    font-size: 30px !important;
+  }
 
-  .layanan-grid {
+  .hero-text p, .hero-text-left p, .figma-hero-text p {
+    font-size: 16px !important;
+  }
+
+  .figma-welcome-card {
+    width: 280px !important;
+    padding: 16px 20px !important;
+    right: 20px !important;
+  }
+  .figma-welcome-card h3 {
+    font-size: 16px !important;
+    margin-bottom: 8px !important;
+  }
+  .figma-welcome-card p {
+    font-size: 11.5px !important;
+    line-height: 1.4 !important;
+    margin-bottom: 8px !important;
+  }
+  .figma-welcome-card .icon-circle.red-bubble {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  .figma-welcome-card .icon-circle.red-bubble .icon-img {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .dlantunan-master-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .layanan-card, .dokumen-card {
+    grid-column: span 1;
+  }
+
+  .alur-card {
+    grid-column: span 2;
   }
 
   .foto-grid {
@@ -1579,21 +1637,12 @@ footer .contact-item .ic-foot img[alt="Maps"] {
     height: 340px;
   }
 
-  .hero-text {
-    left: 24px;
-    bottom: 30px;
-  }
-
-  .hero-text h2 {
-    font-size: 30px;
-  }
-
-  .hero-text p {
-    font-size: 13.5px;
-  }
-
-  .layanan-grid {
+  .dlantunan-master-grid {
     grid-template-columns: 1fr;
+  }
+
+  .layanan-card, .dokumen-card, .alur-card {
+    grid-column: span 1;
   }
 
   .video-grid {
@@ -1638,7 +1687,7 @@ footer .contact-item .ic-foot img[alt="Maps"] {
   }
 
   .footer-grid {
-    grid-template-columns: 1fr;
+    
   }
 
   .footer-col-border {
@@ -1699,20 +1748,20 @@ footer .contact-item .ic-foot img[alt="Maps"] {
     width: calc(100% - 40px) !important;
     bottom: 24px !important;
   }
-  .hero-text h2 {
+  .hero-text h2, .hero-text-left h2, .figma-hero-text h2 {
     font-size: 26px !important;
     margin-bottom: 8px !important;
   }
-  .hero-text p {
+  .hero-text p, .hero-text-left p, .figma-hero-text p {
     font-size: 13.5px !important;
     line-height: 1.5 !important;
   }
 }
 @media(max-width: 600px) {
-  .hero-text h2 {
+  .hero-text h2, .hero-text-left h2, .figma-hero-text h2 {
     font-size: 24px !important;
   }
-  .hero-text p {
+  .hero-text p, .hero-text-left p, .figma-hero-text p {
     font-size: 13px !important;
   }
 }
@@ -1846,7 +1895,7 @@ footer .contact-item .ic-foot img[alt="Maps"] {
 }
 
 /* FOOTER GRID 2-COLUMNS FOR CONTACT & HOURS ON MOBILE */
-@media(max-width: 980px) {
+@media(max-width: 768px) {
   .footer-grid {
     grid-template-columns: 1fr 1fr !important;
     gap: 16px !important;
@@ -1858,7 +1907,7 @@ footer .contact-item .ic-foot img[alt="Maps"] {
 }
 
 /* FIX FOOTER JAM LAYANAN BALANCING MOBILE */
-@media(max-width: 980px) {
+@media(max-width: 768px) {
   .jam-item {
     gap: 8px !important;
     margin-bottom: 8px !important;
@@ -1895,3 +1944,38 @@ footer .contact-item .ic-foot img[alt="Maps"] {
     margin-top: 2px !important;
   }
 }
+
+/* FIX SECTION TITLE SIZING MOBILE */
+@media(max-width: 980px) {
+  .section-title {
+    font-size: 18px !important;
+    margin-bottom: 12px !important;
+  }
+}
+@media(max-width: 600px) {
+  .section-title {
+    font-size: 16px !important;
+  }
+}
+
+/* FIX BODY TEXT SIZING MOBILE */
+@media(max-width: 1024px) {
+  .layanan-card > div, .alur-step p, .video-desc p, .alur-head p, .dokumen-head p, .dokumen-item span {
+    font-size: 12.5px !important;
+  }
+  .layanan-card h3, .dokumen-head h3, .alur-head h3, .video-card-title {
+    font-size: 15px !important;
+  }
+}
+@media(max-width: 600px) {
+  .layanan-card > div, .alur-step p, .video-desc p, .alur-head p, .dokumen-head p {
+    font-size: 12.5px !important;
+  }
+  .layanan-card h3, .dokumen-head h3, .alur-head h3, .video-card-title {
+    font-size: 15px !important;
+  }
+}
+
+
+
+

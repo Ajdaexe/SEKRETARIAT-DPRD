@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Tema Kustom DPRD functions and definitions
  *
@@ -47,6 +47,10 @@ function tema_kustom_dprd_scripts() {
     if ( is_page_template('page-sakip.php') || is_page('sakip') ) {
         wp_enqueue_style( 'tema-kustom-sakip', get_template_directory_uri() . '/assets/sakip-style.css', array(), time() );
     }
+    if ( is_search() ) {
+        wp_enqueue_style( 'tema-kustom-beranda', get_template_directory_uri() . '/assets/beranda-style.css', array(), time() );
+        wp_enqueue_style( 'tema-kustom-search', get_template_directory_uri() . '/assets/search-style.css', array(), time() );
+    }
 
     // Scripts
     wp_enqueue_script( 'tema-kustom-script', get_template_directory_uri() . '/assets/script.js', array(), null, true );
@@ -94,15 +98,14 @@ function dprd_dynamic_cta_css() {
 }
 add_action( 'wp_head', 'dprd_dynamic_cta_css' );
 
-/**
- * AJAX Handler for Live Search
- */
-function tema_kustom_live_search() {
-    $keyword = isset( $_POST['keyword'] ) ? sanitize_text_field( $_POST['keyword'] ) : '';
-    $keyword_lower = strtolower( $keyword );
-    
+function dprd_get_smart_search_results( $keyword ) {
+    $keyword_lower = strtolower( trim( $keyword ) );
     $results = array();
     
+    if ( empty( $keyword_lower ) ) {
+        return $results;
+    }
+
     // 1. Smart Keyword Mapping
     if ( strpos( $keyword_lower, 'sekretariat' ) !== false || strpos( $keyword_lower, 'profil' ) !== false || strpos( $keyword_lower, 'dprd' ) !== false ) {
         $results[] = array(
@@ -126,7 +129,7 @@ function tema_kustom_live_search() {
             'url'   => home_url( '/profile/#tugas-fungsi' )
         );
     }
-    if ( strpos( $keyword_lower, 'kontak' ) !== false || strpos( $keyword_lower, 'alamat' ) !== false || strpos( $keyword_lower, 'telepon' ) !== false ) {
+    if ( strpos( $keyword_lower, 'kontak' ) !== false || strpos( $keyword_lower, 'alamat' ) !== false || strpos( $keyword_lower, 'telepon' ) !== false || strpos( $keyword_lower, 'email' ) !== false ) {
         $results[] = array(
             'title' => 'Informasi Kontak',
             'desc'  => 'Halaman Kontak Resmi Sekretariat',
@@ -164,8 +167,15 @@ function tema_kustom_live_search() {
         );
     }
     
-    // 2. Optional: Query CPT Dokumen if they are available later.
-    // We will leave it to the smart mapping for now as requested.
+    return $results;
+}
+
+/**
+ * AJAX Handler for Live Search
+ */
+function tema_kustom_live_search() {
+    $keyword = isset( $_POST['keyword'] ) ? sanitize_text_field( $_POST['keyword'] ) : '';
+    $results = dprd_get_smart_search_results( $keyword );
 
     wp_send_json_success( $results );
     wp_die();

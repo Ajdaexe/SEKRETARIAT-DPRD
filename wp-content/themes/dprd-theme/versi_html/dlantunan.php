@@ -6,6 +6,16 @@ $currentPage = "dlantunan";
 include 'header.php';
 ?>
 
+<style>
+/* GUARANTEED HEIGHT FIX TO BYPASS CACHE */
+.layanan-grid { align-items: stretch !important; }
+.mid-info-grid { align-items: stretch !important; }
+.card-panel { height: 100% !important; min-width: 0 !important; }
+.layanan-card h3 { min-height: 70px !important; }
+.layanan-card p { display: block !important; flex-grow: 1 !important; }
+.btn-ajukan { margin-top: auto !important; }
+</style>
+
 <!-- Hero Section (Figma 1:1 Perfect Layout) -->
 <div class="figma-hero-wrapper" id="heroSection" onclick="openHeroLightbox()" style="position:relative; width:calc(100% - 80px); max-width:1180px; margin:30px auto 0; min-height:420px; border-radius:24px; overflow:hidden; box-shadow:0 12px 36px rgba(0,0,0,0.12); background-image:url('https://data.purbalinggakab.go.id/uploads/group/2023-05-30-023142.2793854qv8rx1b.png'); background-size:cover; background-position:center 60%; display:flex; align-items:center; justify-content:space-between; padding:40px 48px; gap:32px; cursor:pointer;">
   <div class="figma-hero-overlay" style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.25) 100%); pointer-events:none; z-index:1;"></div>
