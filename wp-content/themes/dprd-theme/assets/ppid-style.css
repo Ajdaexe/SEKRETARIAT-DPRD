@@ -190,8 +190,8 @@
       margin: 0;
       border-radius: 0;
       overflow: hidden;
-      height: calc(100vh - 96px);
-      min-height: 540px;
+      height: 480px;
+      
       cursor: pointer;
       transition: height 0.2s ease-out;
     }
@@ -965,16 +965,11 @@
       }
 
       .footer-grid {
-        grid-template-columns: 1fr;
+        
         gap: 32px;
       }
 
-      .footer-col-border {
-        border-left: none;
-        padding-left: 0;
-        border-top: 1px solid var(--border);
-        padding-top: 24px;
-      }
+      
     }
 
     /* Full Viewport Desktop Edge Batik Motifs */
@@ -1076,7 +1071,7 @@
     left: 20px !important;
     right: 20px !important; 
     width: calc(100% - 40px) !important;
-    bottom: 56px !important;
+    bottom: 24px !important;
   }
   .hero-text h2 {
     font-size: 26px !important;
@@ -1426,7 +1421,7 @@
 }
 
 /* FOOTER GRID 2-COLUMNS FOR CONTACT & HOURS ON MOBILE */
-@media(max-width: 980px) {
+@media(max-width: 768px) {
   .footer-grid {
     grid-template-columns: 1fr 1fr !important;
     gap: 16px !important;
@@ -1438,7 +1433,7 @@
 }
 
 /* FIX FOOTER JAM LAYANAN BALANCING MOBILE */
-@media(max-width: 980px) {
+@media(max-width: 768px) {
   .jam-item {
     gap: 8px !important;
     margin-bottom: 8px !important;
@@ -1480,54 +1475,26 @@
   }
 }
 
-
-/* PERFECTLY CENTERED MOBILE FOOTER IN A STRAIGHT LINE */
+/* UNIFORM MOBILE TEXT SIZING */
 @media(max-width: 980px) {
-  .footer-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    width: fit-content !important;
-    margin: 0 auto !important;
-    align-items: flex-start !important;
+  .info-card h3, .doc-head h3, .section-title {
+    font-size: 18px !important;
+    margin-bottom: 12px !important;
   }
-  .footer-grid > div {
-    width: 100% !important;
-    text-align: left !important;
+  .info-card p, .info-card li, .doc-meta {
+    font-size: 13.5px !important;
   }
-  .footer-grid > div:first-child {
-    grid-column: auto !important;
+}
+@media(max-width: 600px) {
+  .info-card h3, .doc-head h3, .section-title {
+    font-size: 16px !important;
   }
-  .footer-desc {
-    max-width: 260px !important;
-  }
-  .footer-logo {
-    display: flex !important;
-    justify-content: flex-start !important;
-  }
-  .socials {
-    display: flex !important;
-    justify-content: flex-start !important;
+  .info-card p, .info-card li, .doc-meta {
+    font-size: 12.5px !important;
   }
 }
 
 
-
-/* CENTER FOOTER LOGO ON MOBILE */
-@media(max-width: 980px) {
-  .footer-logo {
-    display: flex !important;
-    justify-content: center !important;
-  }
-}
-
-
-
-/* CENTER H6 FOOTER ON MOBILE */
-@media(max-width: 980px) {
-  footer h6 {
-    text-align: center !important;
-  }
-}
 
 
 
@@ -1557,40 +1524,7 @@ table tbody td {
   }
 }
 
-
-
 /* REMOVE POINTER CURSOR FROM HERO (LIGHTBOX REMOVED) */
 .hero, section.hero {
   cursor: default !important;
 }
-
-
-
-/* IPAD / TABLET FOOTER SIDE-BY-SIDE FIX */
-@media(min-width: 768px) and (max-width: 991px) {
-  .footer-grid {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    gap: 40px !important;
-    margin: 0 auto !important;
-  }
-  .footer-grid > div {
-    text-align: left !important;
-    width: 100% !important;
-  }
-  .footer-logo {
-    justify-content: flex-start !important;
-  }
-  footer h6 {
-    text-align: left !important;
-  }
-  .footer-desc {
-    max-width: 100% !important;
-  }
-  .socials {
-    justify-content: flex-start !important;
-  }
-}
-
