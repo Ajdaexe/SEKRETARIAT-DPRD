@@ -373,6 +373,7 @@ section {
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-card);
   padding: 26px 28px;
+  height: 100%;
   transition: transform var(--transition-smooth), box-shadow var(--transition-smooth), border-color var(--transition-smooth);
 }
 
@@ -554,8 +555,9 @@ section {
 .dlantunan-master-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 1fr;
   gap: 24px;
-  align-items: start;
+  align-items: stretch;
 }
 
 .layanan-card {
@@ -597,9 +599,17 @@ section {
   color: var(--merah);
   margin-bottom: 10px;
   line-height: 1.35;
-  min-height: 46px;
+  min-height: 70px;
   display: flex;
   align-items: center;
+}
+
+.layanan-desc {
+  min-height: 90px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .layanan-card p {
@@ -1289,7 +1299,7 @@ footer {
   right: 50% !important;
   margin-left: -50vw !important;
   margin-right: -50vw !important;
-  margin-top: 0 !important;
+  margin-top: 56px !important;
   padding: 50px 40px 30px !important;
   background: #ffffff !important;
   border-top: 1px solid var(--border-color, #ececec) !important;
@@ -1677,7 +1687,7 @@ footer .contact-item .ic-foot img[alt="Maps"] {
   }
 
   .footer-grid {
-    grid-template-columns: 1fr;
+    
   }
 
   .footer-col-border {
@@ -1885,7 +1895,7 @@ footer .contact-item .ic-foot img[alt="Maps"] {
 }
 
 /* FOOTER GRID 2-COLUMNS FOR CONTACT & HOURS ON MOBILE */
-@media(max-width: 980px) {
+@media(max-width: 768px) {
   .footer-grid {
     grid-template-columns: 1fr 1fr !important;
     gap: 16px !important;
@@ -1897,7 +1907,7 @@ footer .contact-item .ic-foot img[alt="Maps"] {
 }
 
 /* FIX FOOTER JAM LAYANAN BALANCING MOBILE */
-@media(max-width: 980px) {
+@media(max-width: 768px) {
   .jam-item {
     gap: 8px !important;
     margin-bottom: 8px !important;
@@ -1965,3 +1975,7 @@ footer .contact-item .ic-foot img[alt="Maps"] {
     font-size: 15px !important;
   }
 }
+
+
+
+

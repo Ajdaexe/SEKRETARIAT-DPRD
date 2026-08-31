@@ -327,7 +327,6 @@ body header#mainHeader nav a.active {
   
   /* Footer Mobile */
   .footer-grid {
-    grid-template-columns: 1fr !important;
     gap: 30px !important;
   }
   
@@ -453,207 +452,10 @@ body header#mainHeader nav a.active {
 }
 
 /* FOOTER GRID 2-COLUMNS FOR CONTACT & HOURS ON MOBILE */
-@media(max-width: 1024px) {
-  .footer-grid {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 16px !important;
-  }
-  .footer-grid > div:first-child {
-    grid-column: 1 / -1 !important;
-    text-align: left;
-  }
-}
-
-/* FIX FOOTER JAM LAYANAN BALANCING MOBILE */
-@media(max-width: 1024px) {
-  .jam-item {
-    gap: 8px !important;
-    margin-bottom: 8px !important;
-  }
-  .jam-item div {
-    display: flex;
-    flex-direction: column;
-    gap: 2px !important;
-  }
-  .jam-item b {
-    font-size: 11px !important;
-    font-weight: 600 !important;
-  }
-  .jam-item span {
-    font-size: 10px !important;
-  }
-  .jam-item img.icon-img, .jam-item img[alt='Clock'] {
-    width: 14px !important;
-    height: 14px !important;
-    margin-top: 2px !important;
-  }
-  /* Ensure contact-item also matches the scale */
-  .contact-item {
-    gap: 8px !important;
-    margin-bottom: 8px !important;
-    font-size: 11px !important;
-  }
-  .contact-item span, .contact-item a {
-    font-size: 10px !important;
-  }
-  .contact-item img.icon-img {
-    width: 14px !important;
-    height: 14px !important;
-    margin-top: 2px !important;
-  }
-}
-
-/* ===== GLOBAL CTA BANNER SMALLER OVERRIDE ===== */
-.cta-banner {
-  min-height: 80px !important;
-  padding: 16px 30px !important;
-}
-.cta-left {
-  gap: 14px !important;
-  body header#mainHeader nav a {
-    width: 100% !important;
-    padding: 12px 0 !important;
-    border-bottom: 1px solid #f1f5f9 !important;
-  }
-
-  body header#mainHeader nav a:last-child {
-    border-bottom: none !important;
-  }
-  
-  /* Footer Mobile */
-  .footer-grid {
-    grid-template-columns: 1fr !important;
-    gap: 30px !important;
-  }
-  
-  footer {
-    padding: 30px 20px 20px !important;
-  }
-  
-  /* Hero Mobile Fixes */
-  section.hero {
-    height: 380px !important;
-    min-height: auto !important;
-  }
-  
-  section.hero img#heroImage, section.hero img {
-    height: 100% !important;
-    object-fit: cover !important;
-  }
-}
-
-/* SUPER COMPACT CTA AND FOOTER FOR MOBILE */
 @media(max-width: 768px) {
-  /* CTA Extra Small */
-  .cta-section {
-    margin: 16px 12px 0 !important;
-  }
-  .cta-banner {
-    padding: 16px 12px !important;
-    gap: 12px !important;
-  }
-  .cta-left {
-    gap: 8px !important;
-  }
-  .cta-left .icon-circle {
-    width: 36px !important;
-    height: 36px !important;
-  }
-  .cta-left .icon-circle img {
-    width: 16px !important;
-    height: 16px !important;
-  }
-  .cta-left h3 {
-    font-size: 14px !important;
-    line-height: 1.3 !important;
-  }
-  .btn-outline {
-    padding: 8px 16px !important;
-    font-size: 12px !important;
-  }
-  .btn-outline::after {
-    font-size: 16px !important;
-  }
-
-  /* Footer Extra Small */
-  footer {
-    padding: 24px 16px 12px !important;
-    margin-top: 32px !important;
-  }
-  .footer-grid {
-    gap: 20px !important;
-  }
-  .footer-logo img {
-    width: 36px !important;
-    height: 36px !important;
-  }
-  .footer-logo h3 {
-    font-size: 15px !important;
-  }
-  .footer-logo p {
-    font-size: 10px !important;
-  }
-  .footer-desc {
-    font-size: 11.5px !important;
-    line-height: 1.4 !important;
-    margin-bottom: 12px !important;
-  }
-  footer h6 {
-    font-size: 14px !important;
-    margin-bottom: 10px !important;
-  }
-  .contact-item, .jam-item {
-    font-size: 11.5px !important;
-    margin-bottom: 8px !important;
-    gap: 8px !important;
-  }
-  .jam-item b {
-    font-size: 11.5px !important;
-  }
-  .contact-item .ic-foot, .jam-item .ic-foot {
-    width: 18px !important;
-    height: 18px !important;
-  }
-  .contact-item .ic-foot img, .jam-item .ic-foot img {
-    width: 12px !important;
-    max-width: 12px !important;
-    height: 12px !important;
-    max-height: 12px !important;
-  }
-  .jam-item img.icon-img,
-  .jam-item img[alt='Clock'],
-  .jam-item .icon-img {
-      width: 16px !important;
-      height: 16px !important;
-      max-width: 16px !important;
-      max-height: 16px !important;
-  }
-  .socials span {
-    width: 26px !important;
-    height: 26px !important;
-  }
-  .socials span .icon-img {
-    width: 11px !important;
-    height: 11px !important;
-  }
-  .socials svg.icon-img {
-    width: 11px !important;
-    height: 11px !important;
-  }
-  .copyright {
-    padding: 10px !important;
-    font-size: 10px !important;
-    margin-top: 20px !important;
-  }
-}
-
-/* FOOTER GRID 2-COLUMNS FOR CONTACT & HOURS ON MOBILE */
-@media(max-width: 1024px) {
   .footer-grid {
     grid-template-columns: 1fr 1fr !important;
     gap: 16px !important;
-    max-width: 350px !important;
-    margin: 0 auto !important;
   }
   .footer-grid > div:first-child {
     grid-column: 1 / -1 !important;
@@ -662,7 +464,7 @@ body header#mainHeader nav a.active {
 }
 
 /* FIX FOOTER JAM LAYANAN BALANCING MOBILE */
-@media(max-width: 1024px) {
+@media(max-width: 768px) {
   .jam-item {
     gap: 8px !important;
     margin-bottom: 8px !important;

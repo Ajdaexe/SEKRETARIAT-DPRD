@@ -127,6 +127,26 @@ get_header();
   right: 0;
 }
 
+@media (max-width: 1024px) {
+  .hero {
+    height: 380px !important;
+    min-height: auto !important;
+  }
+  .hero-text {
+    left: 24px;
+    bottom: 30px;
+    max-width: 100%;
+  }
+  .hero-text h2 {
+    font-size: 30px !important;
+    line-height: 1.2;
+    margin-bottom: 16px !important;
+  }
+  .hero-text p {
+    font-size: 16px !important;
+  }
+}
+
 @media (max-width: 980px) {
   .hero {
     height: 380px !important;

@@ -781,16 +781,11 @@
     }
 
     .footer-grid {
-      grid-template-columns: 1fr;
+      
       gap: 32px;
     }
 
-    .footer-col-border {
-      border-left: none;
-      padding-left: 0;
-      border-top: 1px solid var(--border);
-      padding-top: 24px;
-    }
+    
   }
 
   /* ===== BATIK ORNAMENT STYLES ===== */
@@ -1038,7 +1033,7 @@
 }
 
 /* FOOTER GRID 2-COLUMNS FOR CONTACT & HOURS ON MOBILE */
-@media(max-width: 1024px) {
+@media(max-width: 768px) {
   .footer-grid {
     grid-template-columns: 1fr 1fr !important;
     gap: 16px !important;
@@ -1050,7 +1045,7 @@
 }
 
 /* FIX FOOTER JAM LAYANAN BALANCING MOBILE */
-@media(max-width: 1024px) {
+@media(max-width: 768px) {
   .jam-item {
     gap: 8px !important;
     margin-bottom: 8px !important;
@@ -1233,7 +1228,7 @@
 }
 
 /* FOOTER GRID 2-COLUMNS FOR CONTACT & HOURS ON MOBILE */
-@media(max-width: 1024px) {
+@media(max-width: 768px) {
   .footer-grid {
     grid-template-columns: 1fr 1fr !important;
     gap: 16px !important;
@@ -1245,7 +1240,7 @@
 }
 
 /* FIX FOOTER JAM LAYANAN BALANCING MOBILE */
-@media(max-width: 1024px) {
+@media(max-width: 768px) {
   .jam-item {
     gap: 8px !important;
     margin-bottom: 8px !important;
@@ -1332,3 +1327,7 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+
+
