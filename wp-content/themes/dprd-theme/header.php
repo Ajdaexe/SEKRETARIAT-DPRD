@@ -31,8 +31,9 @@
     </nav>
     <div class="search-container">
       <div class="search-box-animated" id="searchBoxAnimated" onclick="triggerSearchFocus()">
-        <button class="search-btn-icon" type="button"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/search.png" alt="Cari"></button>
-        <input type="text" id="globalSearchInput" placeholder="Cari dokumen..." onkeyup="handleGlobalSearch(event)">
+        <button class="search-btn-icon" type="button" onclick="submitGlobalSearch()"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/search.png" alt="Cari"></button>
+        <input type="text" id="globalSearchInput" placeholder="ketik lalu enter" onkeydown="checkEnterGlobalSearch(event)" onkeyup="if(typeof handleGlobalSearch === 'function') handleGlobalSearch(event)">
+        <button class="close-search-btn" type="button" onclick="closeGlobalSearch(event)">&times;</button>
       </div>
     </div>
     
@@ -44,8 +45,62 @@
     </button>
   </header>
 
+  <div class="search-blur-overlay" id="searchBlurOverlay" onclick="closeGlobalSearch()"></div>
+
   <!-- Motif Batik Full Viewport Desktop Edge -->
   <style>
+    .search-blur-overlay {
+      position: fixed;
+      top: 80px; /* height of header */
+      left: 0;
+      width: 100%;
+      height: calc(100vh - 80px);
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 998;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .search-blur-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .search-box-animated.active {
+      width: 400px !important;
+      max-width: calc(100vw - 120px) !important;
+      background: #fff;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      z-index: 999;
+    }
+    .search-box-animated .close-search-btn {
+      display: none;
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: #999;
+      cursor: pointer;
+    }
+    .search-box-animated.active .close-search-btn {
+      display: block;
+    }
+    .search-box-animated.active input {
+      padding-right: 40px !important; /* Make room for X */
+    }
+    @media (max-width: 768px) {
+      .search-box-animated.active {
+        position: absolute;
+        right: 15px;
+        top: 20px;
+        width: calc(100vw - 30px) !important;
+      }
+    }
+
     .batik-desktop-edge {
       height: 550px !important;
       opacity: 0.9 !important;
@@ -82,6 +137,41 @@
 
         leftBatik.style.top = (targetCenter - offset) + 'px';
         rightBatik.style.top = (targetCenter - offset) + 'px';
+      }
+    }
+
+    function triggerSearchFocus() {
+      var box = document.getElementById('searchBoxAnimated');
+      var input = document.getElementById('globalSearchInput');
+      var overlay = document.getElementById('searchBlurOverlay');
+      if (box && input && overlay) {
+        box.classList.add('active');
+        overlay.classList.add('active');
+        input.focus();
+      }
+    }
+
+    function closeGlobalSearch(e) {
+      if (e) e.stopPropagation();
+      var box = document.getElementById('searchBoxAnimated');
+      var overlay = document.getElementById('searchBlurOverlay');
+      if (box && overlay) {
+        box.classList.remove('active');
+        overlay.classList.remove('active');
+      }
+    }
+    
+    function submitGlobalSearch() {
+      var input = document.getElementById('globalSearchInput');
+      if (input && input.value.trim() !== '') {
+        window.location.href = '<?php echo home_url("/"); ?>?s=' + encodeURIComponent(input.value.trim());
+      }
+    }
+
+    function checkEnterGlobalSearch(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        submitGlobalSearch();
       }
     }
     

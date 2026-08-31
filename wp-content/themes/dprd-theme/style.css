@@ -105,6 +105,7 @@ footer {
    ========================================================================== */
 html, body {
   overflow-x: clip !important;
+  font-family: 'Poppins', sans-serif !important;
 }
 
 body header#mainHeader {
@@ -112,10 +113,10 @@ body header#mainHeader {
   top: 0 !important;
   z-index: 9999 !important;
   background: #ffffff !important;
-  border-bottom: none !important;
-  box-shadow: none !important;
-  padding-top: 16px !important;
-  padding-bottom: 16px !important;
+  border-bottom: 1px solid #ececec !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+  padding-top: 22px !important;
+  padding-bottom: 22px !important;
   padding-left: 40px !important;
   padding-right: 40px !important;
   margin-top: 0 !important;
@@ -128,9 +129,9 @@ body header#mainHeader {
 }
 
 body header#mainHeader.scrolled {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08) !important;
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
   padding-left: 40px !important;
   padding-right: 40px !important;
   margin-top: 0 !important;
@@ -167,6 +168,7 @@ body header#mainHeader .logo-wrap h1 {
   font-size: 22px !important;
   font-weight: 800 !important;
   line-height: 1.1 !important;
+  color: #A5182B !important;
 }
 
 body header#mainHeader.scrolled .logo-wrap h1 {
@@ -186,7 +188,7 @@ body header#mainHeader nav {
   margin-top: 0 !important; /* Center vertically */
   display: flex !important;
   align-items: center !important;
-  gap: 32px !important; /* Consistent spacing */
+  gap: 34px !important; /* Consistent spacing */
 }
 
 body header#mainHeader.scrolled nav {
@@ -195,18 +197,21 @@ body header#mainHeader.scrolled nav {
 }
 
 body header#mainHeader nav a {
+  font-family: 'Poppins', sans-serif !important;
   font-size: 15px !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   color: #333 !important;
+  text-decoration: none !important;
   padding-bottom: 6px !important;
   border-bottom: 3px solid transparent !important;
+  transition: color 0.2s ease, border-color 0.2s ease, font-weight 0.2s ease !important;
 }
 
 body header#mainHeader nav a:hover,
 body header#mainHeader nav a.active {
-  color: #990000 !important;
-  font-weight: 700 !important;
-  border-bottom-color: #990000 !important;
+  color: #A5182B !important;
+  font-weight: 600 !important;
+  border-bottom-color: #A5182B !important;
 }
 
 /* ==========================================================================
@@ -558,4 +563,67 @@ body header#mainHeader nav a.active {
   flex: 0 0 auto !important;
   height: 80px !important;
   object-fit: contain !important;
+}
+
+/* ==========================================================================
+   GLOBAL SEARCH BAR ANIMATION (HEADER)
+   ========================================================================== */
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-box-animated {
+  display: flex;
+  align-items: center;
+  width: 42px;
+  height: 42px;
+  background: transparent;
+  border: 2px solid #ececec;
+  border-radius: 50px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0 10px;
+}
+.search-box-animated.active {
+  width: 280px;
+  border-color: #A5182B;
+  box-shadow: 0 4px 15px rgba(165, 24, 43, 0.08);
+  background: #fff;
+}
+.search-box-animated .search-btn-icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.search-box-animated .icon-img {
+  width: 18px;
+  height: 18px;
+  filter: brightness(0) saturate(100%);
+  transition: filter 0.3s ease;
+}
+.search-box-animated.active .icon-img {
+  filter: brightness(0) saturate(100%) invert(18%) sepia(85%) saturate(4500%) hue-rotate(340deg) brightness(85%) contrast(90%);
+}
+.search-box-animated input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 14px;
+  background: transparent;
+  padding-left: 10px;
+  color: #1f1f1f;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.1s;
+}
+.search-box-animated.active input {
+  opacity: 1;
 }

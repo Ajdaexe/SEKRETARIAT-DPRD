@@ -1,0 +1,205 @@
+/* 
+   ==========================================================================
+   SEARCH PAGE STYLES
+   ========================================================================== 
+*/
+
+:root {
+  --merah: #8B1E1E;
+  --merah-light: #FBEAEA;
+  --teks-primary: #333333;
+  --teks-secondary: #666666;
+  --border-color: #E5E5E5;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: #FAFAFA;
+  color: var(--teks-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Container Utama Pencarian */
+.search-page-container {
+  max-width: 800px;
+  margin: 0 auto 60px;
+  padding: 0 20px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Form Pencarian Besar di Halaman Search */
+.search-page-form {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 50px;
+  position: relative;
+}
+
+.search-page-form input {
+  width: 100%;
+  padding: 16px 60px 16px 24px;
+  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+  border: 2px solid var(--merah, #8B1E1E);
+  border-radius: 40px;
+  outline: none;
+  color: var(--teks-primary, #333);
+  transition: box-shadow 0.3s ease;
+}
+
+.search-page-form input:focus {
+  box-shadow: 0 4px 15px rgba(139, 30, 30, 0.15);
+}
+
+.search-page-form button {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-page-form button img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+/* State Kosong (Empty State) */
+.search-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.empty-icon-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #EAC4C4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.empty-icon-circle img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.search-empty-state h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--teks-primary, #333);
+  margin-bottom: 8px;
+}
+
+.search-empty-state p {
+  font-size: 15px;
+  color: var(--teks-primary, #333);
+  max-width: 450px;
+  line-height: 1.6;
+  margin: 0 auto;
+}
+
+/* Hasil Pencarian (Bila Ada) */
+.search-results-list {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.search-result-item {
+  background: #fff;
+  border: 1px solid var(--border-color, #ececec);
+  border-radius: 12px;
+  padding: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.search-result-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border-color: rgba(139, 30, 30, 0.3);
+}
+
+.search-result-item h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--merah, #8B1E1E);
+}
+
+.search-result-item p {
+  font-size: 14px;
+  color: var(--teks-secondary, #555);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.search-result-meta {
+  font-size: 12px;
+  color: #888;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.search-result-meta span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.search-result-meta img {
+  width: 14px;
+  height: 14px;
+  opacity: 0.6;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+  .search-page-container {
+    margin-bottom: 40px;
+  }
+  .search-page-form input {
+    font-size: 16px;
+    padding: 14px 50px 14px 20px;
+  }
+  .search-page-form button img {
+    width: 20px;
+    height: 20px;
+  }
+  .search-empty-state h2 {
+    font-size: 20px;
+  }
+  .search-empty-state p {
+    font-size: 14px;
+  }
+}
