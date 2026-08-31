@@ -92,14 +92,18 @@
     .search-box-animated.active input {
       padding-right: 40px !important; /* Make room for X */
     }
-    @media (max-width: 768px) {
-      .search-box-animated.active {
-        position: absolute;
-        right: 15px;
-        top: 20px;
-        width: calc(100vw - 30px) !important;
+      @media (max-width: 991px) {
+        .search-box-animated.active {
+          position: absolute !important;
+          left: 16px !important;
+          right: 64px !important;
+          top: 50% !important;
+          transform: translateY(-50%) !important;
+          width: auto !important;
+          max-width: none !important;
+          z-index: 999 !important;
+        }
       }
-    }
 
     .batik-desktop-edge {
       height: 550px !important;
