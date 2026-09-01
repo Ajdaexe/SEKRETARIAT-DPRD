@@ -30,7 +30,7 @@
       <a href="<?php echo dprd_get_page_url('dlantunan'); ?>" class="<?php echo is_page('dlantunan') ? 'active' : ''; ?>">D'Lantunan</a>
     </nav>
     <div class="search-container">
-      <div class="search-box-animated" id="searchBoxAnimated" onclick="triggerSearchFocus(event)">
+      <div class="search-box-animated" id="searchBoxAnimated" onclick="triggerSearchFocus()">
         <button class="search-btn-icon" type="button" onclick="submitGlobalSearch()"><img class="icon-img" src="<?php echo get_template_directory_uri(); ?>/assets/images/search.png" alt="Cari"></button>
         <input type="text" id="globalSearchInput" placeholder="ketik lalu enter" onkeydown="checkEnterGlobalSearch(event)">
         <button class="close-search-btn" type="button" onclick="closeGlobalSearch(event)">&times;</button>
@@ -45,7 +45,7 @@
     </button>
   </header>
 
-  <div class="search-blur-overlay" id="searchBlurOverlay" onclick="closeGlobalSearch(event)"></div>
+  <div class="search-blur-overlay" id="searchBlurOverlay" onclick="closeGlobalSearch()"></div>
 
   <!-- Motif Batik Full Viewport Desktop Edge -->
   <style>
@@ -61,7 +61,7 @@
       z-index: 998;
       opacity: 0;
       visibility: hidden;
-      transition: none;
+      transition: all 0.3s ease;
     }
     .search-blur-overlay.active {
       opacity: 1;
@@ -90,20 +90,20 @@
       display: block;
     }
     .search-box-animated.active input {
-      padding-right: 40px !important;
+      padding-right: 40px !important; /* Make room for X */
     }
-    @media (max-width: 991px) {
-      .search-box-animated.active {
-        position: absolute !important;
-        left: 16px !important;
-        right: 64px !important;
-        top: 50% !important;
-        transform: translateY(-50%) !important;
-        width: auto !important;
-        max-width: none !important;
-        z-index: 999 !important;
+      @media (max-width: 991px) {
+        .search-box-animated.active {
+          position: absolute !important;
+          left: 16px !important;
+          right: 64px !important;
+          top: 50% !important;
+          transform: translateY(-50%) !important;
+          width: auto !important;
+          max-width: none !important;
+          z-index: 999 !important;
+        }
       }
-    }
 
     .batik-desktop-edge {
       height: 550px !important;
@@ -126,6 +126,7 @@
   <img src="<?php echo get_template_directory_uri(); ?>/assets/images/motif kanan.svg" alt="Motif Batik Kanan Desktop" class="batik-desktop-edge batik-desktop-edge-right" id="batik-edge-right">
   
   <script>
+    // Pastikan motif batik selalu berada tepat di perbatasan antara foto hero dan konten putih
     function adjustBatikPosition() {
       var hero = document.querySelector('.hero');
       var leftBatik = document.getElementById('batik-edge-left');
@@ -133,8 +134,9 @@
       
       if (hero && leftBatik && rightBatik) {
         var offset = leftBatik.offsetHeight / 2;
-        if (!offset || offset < 10) offset = 275;
+        if (!offset || offset < 10) offset = 275; // Fallback jika gambar belum ter-render
 
+        // Kita selalu kunci titik tengah batik pada perbatasan persis garis bawah foto hero
         var targetCenter = hero.offsetTop + hero.offsetHeight;
 
         leftBatik.style.top = (targetCenter - offset) + 'px';
@@ -142,45 +144,27 @@
       }
     }
 
-    function triggerSearchFocus(e) {
-      if (e) {
-        if (e.preventDefault) e.preventDefault();
-        if (e.stopPropagation) e.stopPropagation();
-      }
-      if (e && e.target && e.target.tagName === 'INPUT') return;
+    function triggerSearchFocus() {
       var box = document.getElementById('searchBoxAnimated');
       var input = document.getElementById('globalSearchInput');
       var overlay = document.getElementById('searchBlurOverlay');
-      if (box) {
-        if (box.classList.contains('active')) {
-          closeGlobalSearch(e);
-        } else {
-          box.classList.add('active');
-          if (overlay) overlay.classList.add('active');
-          if (input) {
-            try {
-              input.focus({ preventScroll: true });
-            } catch(err) {
-              input.focus();
-            }
-          }
-        }
+      if (box && input && overlay) {
+        box.classList.add('active');
+        overlay.classList.add('active');
+        input.focus();
       }
     }
 
     function closeGlobalSearch(e) {
-      if (e) {
-        if (e.preventDefault) e.preventDefault();
-        if (e.stopPropagation) e.stopPropagation();
-      }
+      if (e) e.stopPropagation();
       var box = document.getElementById('searchBoxAnimated');
       var overlay = document.getElementById('searchBlurOverlay');
-      if (box) {
+      if (box && overlay) {
         box.classList.remove('active');
-        if (overlay) overlay.classList.remove('active');
+        overlay.classList.remove('active');
       }
     }
-
+    
     function submitGlobalSearch() {
       var input = document.getElementById('globalSearchInput');
       if (input && input.value.trim() !== '') {
