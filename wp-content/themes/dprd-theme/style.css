@@ -594,7 +594,7 @@ body header#mainHeader .search-box-animated {
   align-items: center !important;
   background: transparent !important;
   border-radius: 4px !important;
-  height: 40px !important;
+url(c:/Users/Asus/AppData/Local/Packages/MicrosoftWindows.Client.CBS_cw5n1h2txyewy/TempState/ScreenClip/{811C1501-4BFC-4A1B-9458-802B157F7624\}.png)  height: 40px !important;
   padding: 0 !important;
   cursor: pointer !important;
   transition: all 0.3s ease !important;
@@ -818,4 +818,10 @@ body header#mainHeader:has(.search-box-animated.active)::before {
     white-space: nowrap !important;
     transition: none !important;
   }
+}
+
+/* SEARCH OVERLAY SCROLL LOCK */
+body.search-overlay-open {
+  overflow: hidden !important;
+  touch-action: none !important;
 }

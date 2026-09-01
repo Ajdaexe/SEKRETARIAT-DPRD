@@ -144,14 +144,25 @@
       }
     }
 
-    function triggerSearchFocus() {
+    var savedGlobalScrollY = 0;
+
+    function triggerSearchFocus(e) {
+      if (e && e.target && e.target.tagName === 'INPUT') return;
       var box = document.getElementById('searchBoxAnimated');
       var input = document.getElementById('globalSearchInput');
       var overlay = document.getElementById('searchBlurOverlay');
-      if (box && input && overlay) {
-        box.classList.add('active');
-        overlay.classList.add('active');
-        input.focus();
+      if (box) {
+        if (box.classList.contains('active')) {
+          closeGlobalSearch(e);
+        } else {
+          savedGlobalScrollY = window.scrollY || window.pageYOffset;
+          box.classList.add('active');
+          if (overlay) overlay.classList.add('active');
+          document.body.classList.add('search-overlay-open');
+          if (input) {
+            input.focus();
+          }
+        }
       }
     }
 
@@ -159,9 +170,10 @@
       if (e) e.stopPropagation();
       var box = document.getElementById('searchBoxAnimated');
       var overlay = document.getElementById('searchBlurOverlay');
-      if (box && overlay) {
+      if (box) {
         box.classList.remove('active');
-        overlay.classList.remove('active');
+        if (overlay) overlay.classList.remove('active');
+        document.body.classList.remove('search-overlay-open');
       }
     }
     
@@ -177,7 +189,22 @@
         e.preventDefault();
         submitGlobalSearch();
       }
-    document.addEventListener('DOMContentLoaded', adjustBatikPosition);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      adjustBatikPosition();
+      
+      var input = document.getElementById('globalSearchInput');
+      if (input) {
+        input.addEventListener('input', function() {
+          var box = document.getElementById('searchBoxAnimated');
+          if (box && box.classList.contains('active')) {
+            window.scrollTo(0, savedGlobalScrollY);
+          }
+        });
+      }
+    });
+
     window.addEventListener('load', adjustBatikPosition); // Pastikan dijalankan lagi setelah gambar loading
     window.addEventListener('resize', adjustBatikPosition);
   </script>
