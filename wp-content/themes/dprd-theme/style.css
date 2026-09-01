@@ -107,17 +107,13 @@ html, body {
   overflow-x: clip !important;
 }
 
-body header#mainHeader {
+body header#mainHeader,
+body header#mainHeader.scrolled {
   position: sticky !important;
   top: 0 !important;
   z-index: 9999 !important;
   background: #ffffff !important;
   border-bottom: none !important;
-  box-shadow: none !important;
-  padding-top: 16px !important;
-  padding-bottom: 16px !important;
-  padding-left: 40px !important;
-  padding-right: 40px !important;
   margin-top: 0 !important;
   height: auto !important;
   min-height: auto !important;
@@ -125,18 +121,65 @@ body header#mainHeader {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
+  transition: box-shadow 0.3s ease !important;
+}
+
+body header#mainHeader {
+  box-shadow: none !important;
 }
 
 body header#mainHeader.scrolled {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
-  padding-top: 16px !important;
-  padding-bottom: 16px !important;
-  padding-left: 40px !important;
-  padding-right: 40px !important;
-  margin-top: 0 !important;
-  height: auto !important;
-  min-height: auto !important;
-  max-height: none !important;
+}
+
+/* Desktop Header Dimensions */
+@media (min-width: 992px) {
+  body header#mainHeader,
+  body header#mainHeader.scrolled {
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+  }
+  body header#mainHeader .logo-wrap img,
+  body header#mainHeader.scrolled .logo-wrap img {
+    width: 52px !important;
+    height: 52px !important;
+  }
+  body header#mainHeader .logo-wrap h1,
+  body header#mainHeader.scrolled .logo-wrap h1 {
+    font-size: 22px !important;
+  }
+}
+
+/* Mobile & Tablet Header Dimensions (Identical before & after scroll) */
+@media (max-width: 991px) {
+  body header#mainHeader,
+  body header#mainHeader.scrolled {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  body header#mainHeader .logo-wrap,
+  body header#mainHeader.scrolled .logo-wrap {
+    max-width: none !important;
+  }
+  body header#mainHeader .logo-wrap img,
+  body header#mainHeader.scrolled .logo-wrap img {
+    width: 44px !important;
+    height: 44px !important;
+  }
+  body header#mainHeader .logo-wrap h1,
+  body header#mainHeader.scrolled .logo-wrap h1 {
+    font-size: 17px !important;
+    white-space: nowrap !important;
+  }
+  body header#mainHeader .logo-wrap p,
+  body header#mainHeader.scrolled .logo-wrap p {
+    font-size: 12px !important;
+    white-space: nowrap !important;
+  }
 }
 
 body header#mainHeader .logo-wrap {
@@ -150,32 +193,6 @@ body header#mainHeader .logo-text h1,
 body header#mainHeader .logo-text p {
   margin: 0 !important;
   padding: 0 !important;
-}
-
-body header#mainHeader .logo-wrap img {
-  width: 52px !important;
-  height: 52px !important;
-  transition: none !important;
-}
-
-body header#mainHeader.scrolled .logo-wrap img {
-  width: 52px !important;
-  height: 52px !important;
-}
-
-body header#mainHeader .logo-wrap h1 {
-  font-size: 22px !important;
-  font-weight: 800 !important;
-  line-height: 1.1 !important;
-}
-
-body header#mainHeader.scrolled .logo-wrap h1 {
-  font-size: 22px !important;
-}
-
-body header#mainHeader .logo-wrap p {
-  font-size: 13px !important;
-  font-weight: 500 !important;
 }
 
 body header#mainHeader nav {

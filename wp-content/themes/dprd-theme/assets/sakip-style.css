@@ -55,7 +55,7 @@
     }
 
     header.scrolled {
-      padding: 12px 40px; 
+      padding: 22px 40px; 
       box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
     }
 
@@ -68,12 +68,11 @@
     .logo-wrap img {
       width: 52px;
       height: 52px;
-      transition: width 0.3s ease, height 0.3s ease;
     }
 
     header.scrolled .logo-wrap img {
-      width: 42px;
-      height: 42px;
+      width: 52px;
+      height: 52px;
     }
 
     .logo-wrap h1 {
@@ -81,11 +80,10 @@
       font-weight: 800;
       color: var(--merah);
       line-height: 1.1;
-      transition: font-size 0.3s ease;
     }
 
     header.scrolled .logo-wrap h1 {
-      font-size: 19px;
+      font-size: 22px;
     }
 
     .logo-wrap p {

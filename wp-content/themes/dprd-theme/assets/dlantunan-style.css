@@ -202,7 +202,7 @@ header {
 }
 
 header.scrolled {
-  padding: 12px 40px;
+  padding: 22px 40px;
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
 }
 
@@ -221,13 +221,12 @@ header.scrolled {
   width: 52px;
   height: 52px;
   object-fit: contain;
-  transition: width 0.3s ease, height 0.3s ease;
 }
 
 header.scrolled .logo-wrap img,
 header.scrolled .logo-img {
-  width: 42px;
-  height: 42px;
+  width: 52px;
+  height: 52px;
 }
 
 .logo-wrap:hover img,
@@ -241,12 +240,11 @@ header.scrolled .logo-img {
   font-weight: 800;
   color: var(--merah);
   line-height: 1.1;
-  transition: font-size 0.3s ease;
 }
 
 header.scrolled .logo-wrap h1,
 header.scrolled .logo-text h1 {
-  font-size: 19px;
+  font-size: 22px;
 }
 
 .logo-wrap p,
