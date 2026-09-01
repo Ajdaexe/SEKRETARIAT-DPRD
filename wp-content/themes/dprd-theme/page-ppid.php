@@ -356,7 +356,7 @@ get_header();
       showAll = !showAll;
       applyFilters();
       if (!showAll) {
-        document.getElementById('docCard').scrollIntoView({ behavior: 'smooth' });
+        // document.getElementById('docCard').scrollIntoView({ behavior: 'smooth' });
       }
     }
 

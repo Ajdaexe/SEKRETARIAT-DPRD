@@ -177,8 +177,6 @@
         e.preventDefault();
         submitGlobalSearch();
       }
-    }
-    
     document.addEventListener('DOMContentLoaded', adjustBatikPosition);
     window.addEventListener('load', adjustBatikPosition); // Pastikan dijalankan lagi setelah gambar loading
     window.addEventListener('resize', adjustBatikPosition);
