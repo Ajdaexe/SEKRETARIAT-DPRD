@@ -262,6 +262,9 @@ const dokumenData = [
         doc.kategori.toLowerCase().includes(keyword)
       );
       renderSakipCards(filtered);
+      if(keyword.length > 0) {
+        document.querySelector('.sakip-filter-bar').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
 
     window.addEventListener('scroll', function() {
