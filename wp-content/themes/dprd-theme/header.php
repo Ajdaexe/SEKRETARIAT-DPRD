@@ -177,27 +177,7 @@
         e.preventDefault();
         submitGlobalSearch();
       }
-    }
-    
-    document.addEventListener('DOMContentLoaded', function() {
-      adjustBatikPosition();
-      
-      const searchBox = document.getElementById('searchBoxAnimated');
-      if (searchBox) {
-        const observer = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.attributeName === 'class') {
-              if (searchBox.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
-              } else {
-                document.body.style.overflow = '';
-              }
-            }
-          });
-        });
-        observer.observe(searchBox, { attributes: true });
-      }
-    });
+    document.addEventListener('DOMContentLoaded', adjustBatikPosition);
     window.addEventListener('load', adjustBatikPosition); // Pastikan dijalankan lagi setelah gambar loading
     window.addEventListener('resize', adjustBatikPosition);
   </script>

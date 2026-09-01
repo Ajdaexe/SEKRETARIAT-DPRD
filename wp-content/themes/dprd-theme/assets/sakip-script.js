@@ -263,7 +263,7 @@ const dokumenData = [
       );
       renderSakipCards(filtered);
       if(keyword.length > 0) {
-        document.querySelector('.sakip-filter-bar').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // document.querySelector('.sakip-filter-bar').scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
 
