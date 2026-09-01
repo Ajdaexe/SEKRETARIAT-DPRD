@@ -739,17 +739,8 @@ body header#mainHeader:has(.search-box-animated.active)::before {
     overflow: hidden !important;
     white-space: nowrap !important;
   }
-  
-  /* Sembunyikan logo saat search aktif di mobile */
-  body header#mainHeader:has(.search-box-animated.active) .logo-wrap {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    max-width: 0 !important;
-    margin: 0 !important;
-    transition: none !important;
-  }
 
-  /* Biarkan container pencarian mengisi sisa ruang */
+  /* Biarkan container pencarian disebelah kanan */
   body header#mainHeader .search-container {
     margin-left: auto !important;
     transition: none !important;
@@ -758,17 +749,7 @@ body header#mainHeader:has(.search-box-animated.active)::before {
     justify-content: flex-end;
   }
 
-  /* Saat search aktif, perluas kontainer ke 100% dari sisa ruang (yang sebelumnya ditempati logo) */
-  body header#mainHeader:has(.search-box-animated.active) .search-container {
-    flex-grow: 1 !important;
-    width: 100% !important;
-    transition: none !important;
-  }
-
-  /* Pastikan search box melar memenuhi container */
   body header#mainHeader .search-box-animated.active {
-    width: 100% !important;
-    max-width: 100% !important;
     transition: none !important;
   }
 }
