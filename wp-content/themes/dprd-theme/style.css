@@ -593,7 +593,7 @@ body header#mainHeader .search-box-animated {
   display: flex !important;
   align-items: center !important;
   background: transparent !important;
-  border-radius: 30px !important;
+  border-radius: 4px !important;
   height: 40px !important;
   padding: 0 !important;
   cursor: pointer !important;
