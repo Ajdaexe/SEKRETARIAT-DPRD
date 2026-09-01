@@ -139,10 +139,10 @@ footer h6 {
   .contact-item {
     gap: 8px !important;
     margin-bottom: 8px !important;
-    font-size: 11px !important;
+    font-size: 13px !important;
   }
   .contact-item span, .contact-item a {
-    font-size: 10px !important;
+    font-size: 13px !important;
   }
   .contact-item img.icon-img {
     width: 12px !important;
