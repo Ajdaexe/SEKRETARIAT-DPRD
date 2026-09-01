@@ -1,0 +1,47 @@
+
+/* ==========================================================================
+   MOBILE SEARCH BOX EXPANSION (HIDES LOGO)
+   ========================================================================== */
+@media (max-width: 991px) {
+  body header#mainHeader {
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+  }
+
+  body header#mainHeader .logo-wrap {
+    transition: opacity 0.3s ease, max-width 0.35s ease, margin 0.35s ease !important;
+    opacity: 1 !important;
+    max-width: 300px !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+  }
+  
+  /* Sembunyikan logo saat search aktif di mobile */
+  body header#mainHeader:has(.search-box-animated.active) .logo-wrap {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    max-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Biarkan container pencarian mengisi sisa ruang */
+  body header#mainHeader .search-container {
+    margin-left: auto !important;
+    transition: flex-grow 0.35s ease, width 0.35s ease !important;
+    flex-grow: 0 !important;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* Saat search aktif, perluas kontainer ke 100% dari sisa ruang (yang sebelumnya ditempati logo) */
+  body header#mainHeader:has(.search-box-animated.active) .search-container {
+    flex-grow: 1 !important;
+    width: 100% !important;
+  }
+
+  /* Pastikan search box melar memenuhi container */
+  body header#mainHeader .search-box-animated.active {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}

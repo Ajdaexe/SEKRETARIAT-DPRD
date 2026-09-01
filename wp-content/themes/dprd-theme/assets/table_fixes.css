@@ -1,0 +1,31 @@
+
+/* TABLE SPACING ADJUSTMENT FOR BETTER READABILITY */
+table thead th {
+  padding: 18px 16px !important;
+}
+table tbody td {
+  padding: 28px 16px !important;
+}
+
+@media(max-width: 980px) {
+  table thead th {
+    padding: 16px 12px !important;
+  }
+  table tbody td {
+    padding: 20px 12px !important;
+  }
+}
+
+@media(max-width: 600px) {
+  table thead th {
+    padding: 14px 10px !important;
+  }
+  table tbody td {
+    padding: 16px 10px !important;
+  }
+}
+
+/* REMOVE POINTER CURSOR FROM HERO (LIGHTBOX REMOVED) */
+.hero, section.hero {
+  cursor: default !important;
+}

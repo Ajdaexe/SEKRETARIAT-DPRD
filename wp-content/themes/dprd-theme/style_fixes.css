@@ -1,0 +1,121 @@
+/* ==========================================================================
+   NEW HEADER & SEARCH FIXES
+   ========================================================================== */
+body header#mainHeader .logo-wrap h1 {
+  font-size: 22px !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+  color: #A5182B !important;
+}
+
+body header#mainHeader.scrolled .logo-wrap h1 {
+  font-size: 19px !important;
+}
+
+body header#mainHeader .search-box-animated {
+  display: flex !important;
+  align-items: center !important;
+  background: transparent !important;
+  border-radius: 30px !important;
+  height: 40px !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  border: 1px solid #dcdcdc !important;
+  width: 40px !important;
+}
+
+body header#mainHeader .search-box-animated.active {
+  background: #f8f9fa !important;
+  border-color: #ddd !important;
+  width: 250px !important;
+  padding: 0 15px !important;
+  justify-content: flex-start !important;
+  cursor: text !important;
+}
+
+body header#mainHeader .search-btn-icon {
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  display: flex !important;
+  width: 38px !important;
+  height: 38px !important;
+}
+
+body header#mainHeader .search-box-animated input {
+  flex-grow: 1 !important;
+  width: 0 !important;
+  opacity: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  font-size: 14px !important;
+  padding: 0 !important;
+  transition: all 0.3s ease !important;
+}
+
+body header#mainHeader .search-box-animated.active input {
+  width: 100% !important;
+  opacity: 1 !important;
+  padding-left: 10px !important;
+}
+
+/* ==========================================================================
+   TABLET FIX (Prevent Nav Overlap)
+   ========================================================================== */
+@media (max-width: 1220px) {
+  body header#mainHeader .logo-wrap h1 {
+    font-size: 18px !important;
+  }
+  
+  body header#mainHeader .search-box-animated input {
+    transition: opacity 0.2s ease !important; 
+  }
+  body header#mainHeader.search-active .search-box-animated.active input {
+    transition: opacity 0.3s ease 0.15s !important;
+  }
+  
+  body header#mainHeader.search-active .search-box-animated.active {
+    width: 100% !important;
+  }
+}
+
+/* ==========================================================================
+   GLOBAL SEARCH ICON LOGIC
+   ========================================================================== */
+body header#mainHeader .search-box-animated.active .search-open-icon {
+  display: none !important;
+}
+
+body header#mainHeader .search-box-animated.active .search-close-icon {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+}
+
+body header#mainHeader .search-box-animated.active input {
+  flex: 1 !important;
+  width: auto !important;
+  padding-left: 16px !important; /* give space on the left since icon is gone */
+}
+
+/* Hero Mobile Fixes */
+section.hero {
+  height: 380px !important;
+  min-height: auto !important;
+}
+
+section.hero img#heroImage, section.hero img {
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+/* REMOVE POINTER CURSOR FROM HERO (LIGHTBOX REMOVED) */
+.hero, section.hero {
+  cursor: default !important;
+}

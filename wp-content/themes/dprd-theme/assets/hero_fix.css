@@ -1,0 +1,5 @@
+
+/* REMOVE POINTER CURSOR FROM HERO (LIGHTBOX REMOVED) */
+.hero, section.hero {
+  cursor: default !important;
+}
