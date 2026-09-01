@@ -140,13 +140,34 @@ body {
   border: 1px solid var(--border-color, #ececec);
   border-radius: 12px;
   padding: 20px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+
+/* Garis aksen merah di sebelah kiri yang muncul saat hover */
+.search-result-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background-color: var(--merah, #8B1E1E);
+  transition: width 0.3s ease;
+  z-index: 0;
 }
 
 .search-result-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-  border-color: rgba(139, 30, 30, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(139, 30, 30, 0.08);
+  border-color: rgba(139, 30, 30, 0.4);
+  background-color: #FDF9F7;
+}
+
+.search-result-item:hover::before {
+  width: 4px;
 }
 
 .search-result-item h3 {
@@ -154,6 +175,34 @@ body {
   font-weight: 600;
   margin-bottom: 8px;
   color: var(--merah, #8B1E1E);
+  position: relative;
+  z-index: 2;
+  transition: color 0.2s ease;
+}
+
+.search-result-item:hover h3 {
+  color: #721414;
+}
+
+.search-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.search-badge {
+  background-color: #FCEFE9;
+  color: #7d1220;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .search-result-item p {
@@ -161,6 +210,8 @@ body {
   color: var(--teks-secondary, #555);
   line-height: 1.5;
   margin-bottom: 12px;
+  position: relative;
+  z-index: 2;
 }
 
 .search-result-meta {
@@ -169,6 +220,8 @@ body {
   display: flex;
   gap: 12px;
   align-items: center;
+  position: relative;
+  z-index: 2;
 }
 
 .search-result-meta span {

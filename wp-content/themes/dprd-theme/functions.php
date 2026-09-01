@@ -111,7 +111,8 @@ function dprd_get_smart_search_results( $keyword ) {
         $results[] = array(
             'title' => 'Profil Sekretariat DPRD',
             'desc'  => 'Halaman Profil Utama Instansi',
-            'url'   => home_url( '/profile/' )
+            'url'   => home_url( '/profile/' ),
+            'badge' => 'PROFIL'
         );
     }
     
@@ -119,42 +120,48 @@ function dprd_get_smart_search_results( $keyword ) {
         $results[] = array(
             'title' => 'Visi dan Misi Sekretariat',
             'desc'  => 'Halaman Profil - Bagian Visi & Misi',
-            'url'   => home_url( '/profile/#visi-misi' )
+            'url'   => home_url( '/profile/#visi-misi' ),
+            'badge' => 'PROFIL'
         );
     }
     if ( strpos( $keyword_lower, 'tugas' ) !== false || strpos( $keyword_lower, 'fungsi' ) !== false || strpos( $keyword_lower, 'tupoksi' ) !== false ) {
         $results[] = array(
             'title' => 'Tugas Pokok dan Fungsi',
             'desc'  => 'Halaman Profil - Bagian Tupoksi',
-            'url'   => home_url( '/profile/#tugas-fungsi' )
+            'url'   => home_url( '/profile/#tugas-fungsi' ),
+            'badge' => 'PROFIL'
         );
     }
     if ( strpos( $keyword_lower, 'kontak' ) !== false || strpos( $keyword_lower, 'alamat' ) !== false || strpos( $keyword_lower, 'telepon' ) !== false || strpos( $keyword_lower, 'email' ) !== false ) {
         $results[] = array(
             'title' => 'Informasi Kontak',
             'desc'  => 'Halaman Kontak Resmi Sekretariat',
-            'url'   => home_url( '/kontak/' )
+            'url'   => home_url( '/kontak/' ),
+            'badge' => 'KONTAK'
         );
     }
-    if ( strpos( $keyword_lower, 'berkala' ) !== false || strpos( $keyword_lower, 'serta merta' ) !== false || strpos( $keyword_lower, 'setiap saat' ) !== false || strpos( $keyword_lower, 'ppid' ) !== false ) {
+    if ( strpos( $keyword_lower, 'dokumen' ) !== false || strpos( $keyword_lower, 'berkala' ) !== false || strpos( $keyword_lower, 'serta merta' ) !== false || strpos( $keyword_lower, 'setiap saat' ) !== false || strpos( $keyword_lower, 'ppid' ) !== false ) {
         $results[] = array(
             'title' => 'Layanan Informasi Publik (PPID)',
             'desc'  => 'Halaman Dokumen PPID Sekretariat DPRD',
-            'url'   => home_url( '/ppid/' )
+            'url'   => home_url( '/ppid/' ),
+            'badge' => 'PPID'
         );
     }
     if ( strpos( $keyword_lower, 'sakip' ) !== false || strpos( $keyword_lower, 'kinerja' ) !== false ) {
         $results[] = array(
             'title' => 'Dokumen SAKIP',
             'desc'  => 'Halaman Sistem Akuntabilitas Kinerja Instansi Pemerintah',
-            'url'   => home_url( '/sakip/' )
+            'url'   => home_url( '/sakip/' ),
+            'badge' => 'SAKIP'
         );
     }
     if ( strpos( $keyword_lower, 'lantunan' ) !== false || strpos( $keyword_lower, 'magang' ) !== false || strpos( $keyword_lower, 'penelitian' ) !== false || strpos( $keyword_lower, 'kunjungan' ) !== false ) {
         $results[] = array(
             'title' => 'Layanan D\'Lantunan',
             'desc'  => 'Halaman Pengajuan Layanan Publik',
-            'url'   => dprd_get_page_url( 'dlantunan' )
+            'url'   => dprd_get_page_url( 'dlantunan' ),
+            'badge' => 'D\'LANTUNAN'
         );
     }
     
@@ -163,7 +170,8 @@ function dprd_get_smart_search_results( $keyword ) {
         $results[] = array(
             'title' => 'Dokumen ' . ucwords( $keyword ),
             'desc'  => 'Lihat dokumen selengkapnya di tabel dokumen PPID',
-            'url'   => dprd_get_page_url( 'ppid' )
+            'url'   => dprd_get_page_url( 'ppid' ),
+            'badge' => 'PPID'
         );
     }
     
@@ -2517,6 +2525,37 @@ function dprd_track_dokumen_download() {
     }
 }
 add_action( 'template_redirect', 'dprd_track_dokumen_download' );
+
+// ==========================================
+// REDIRECT EMPTY SINGLE PAGES
+// ==========================================
+function dprd_redirect_empty_single() {
+    if ( is_singular('dokumen') ) {
+        $grup = get_post_meta(get_the_ID(), '_dokumen_grup', true);
+        if (strtolower($grup) === 'sakip') {
+            wp_redirect( home_url('/sakip/') );
+        } else {
+            wp_redirect( home_url('/ppid/') );
+        }
+        exit;
+    }
+    if ( is_singular('layanan_dlantunan') ) {
+        wp_redirect( home_url('/dlantunan/') );
+        exit;
+    }
+}
+add_action( 'template_redirect', 'dprd_redirect_empty_single' );
+
+// ==========================================
+// INCLUDE CPT IN SEARCH
+// ==========================================
+function dprd_include_cpt_search( $query ) {
+    if ( ! is_admin() && $query->is_main_query() && $query->is_search ) {
+        // Sertakan custom post type di hasil pencarian bawaan WP
+        $query->set( 'post_type', array( 'post', 'page', 'berita', 'dokumen', 'layanan_dlantunan' ) );
+    }
+}
+add_action( 'pre_get_posts', 'dprd_include_cpt_search' );
 
 // Include Footer Settings
 require get_template_directory() . '/footer-settings.php';
