@@ -593,11 +593,11 @@ body header#mainHeader .search-box-animated {
   display: flex !important;
   align-items: center !important;
   background: transparent !important;
-  border-radius: 4px !important;
-url(c:/Users/Asus/AppData/Local/Packages/MicrosoftWindows.Client.CBS_cw5n1h2txyewy/TempState/ScreenClip/{811C1501-4BFC-4A1B-9458-802B157F7624\}.png)  height: 40px !important;
+  border-radius: 30px !important;
+  height: 40px !important;
   padding: 0 !important;
   cursor: pointer !important;
-  transition: all 0.3s ease !important;
+  transition: none !important;
   border: 1px solid #dcdcdc !important;
   width: 40px !important;
 }
@@ -632,7 +632,7 @@ body header#mainHeader .search-box-animated input {
   outline: none !important;
   font-size: 14px !important;
   padding: 0 !important;
-  transition: all 0.3s ease !important;
+  transition: none !important;
 }
 
 body header#mainHeader .search-box-animated.active input {
@@ -733,7 +733,7 @@ body header#mainHeader:has(.search-box-animated.active)::before {
   }
 
   body header#mainHeader .logo-wrap {
-    transition: opacity 0.3s ease, max-width 0.35s ease, margin 0.35s ease !important;
+    transition: none !important;
     opacity: 1 !important;
     max-width: 300px !important;
     overflow: hidden !important;
@@ -746,12 +746,13 @@ body header#mainHeader:has(.search-box-animated.active)::before {
     pointer-events: none !important;
     max-width: 0 !important;
     margin: 0 !important;
+    transition: none !important;
   }
 
   /* Biarkan container pencarian mengisi sisa ruang */
   body header#mainHeader .search-container {
     margin-left: auto !important;
-    transition: flex-grow 0.35s ease, width 0.35s ease !important;
+    transition: none !important;
     flex-grow: 0 !important;
     display: flex;
     justify-content: flex-end;
@@ -761,12 +762,14 @@ body header#mainHeader:has(.search-box-animated.active)::before {
   body header#mainHeader:has(.search-box-animated.active) .search-container {
     flex-grow: 1 !important;
     width: 100% !important;
+    transition: none !important;
   }
 
   /* Pastikan search box melar memenuhi container */
   body header#mainHeader .search-box-animated.active {
     width: 100% !important;
     max-width: 100% !important;
+    transition: none !important;
   }
 }
 

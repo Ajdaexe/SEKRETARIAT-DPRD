@@ -144,8 +144,6 @@
       }
     }
 
-    var savedGlobalScrollY = 0;
-
     function triggerSearchFocus(e) {
       if (e && e.target && e.target.tagName === 'INPUT') return;
       var box = document.getElementById('searchBoxAnimated');
@@ -155,10 +153,8 @@
         if (box.classList.contains('active')) {
           closeGlobalSearch(e);
         } else {
-          savedGlobalScrollY = window.scrollY || window.pageYOffset;
           box.classList.add('active');
           if (overlay) overlay.classList.add('active');
-          document.body.classList.add('search-overlay-open');
           if (input) {
             input.focus();
           }
@@ -173,7 +169,6 @@
       if (box) {
         box.classList.remove('active');
         if (overlay) overlay.classList.remove('active');
-        document.body.classList.remove('search-overlay-open');
       }
     }
     
@@ -191,20 +186,7 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-      adjustBatikPosition();
-      
-      var input = document.getElementById('globalSearchInput');
-      if (input) {
-        input.addEventListener('input', function() {
-          var box = document.getElementById('searchBoxAnimated');
-          if (box && box.classList.contains('active')) {
-            window.scrollTo(0, savedGlobalScrollY);
-          }
-        });
-      }
-    });
-
+    document.addEventListener('DOMContentLoaded', adjustBatikPosition);
     window.addEventListener('load', adjustBatikPosition); // Pastikan dijalankan lagi setelah gambar loading
     window.addEventListener('resize', adjustBatikPosition);
   </script>
