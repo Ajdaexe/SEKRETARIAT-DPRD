@@ -789,31 +789,37 @@
       }
       
       .ikm-top {
-        flex-direction: row;
-        padding-bottom: 12px;
+        flex-direction: column;
+        padding-bottom: 0;
       }
 
       .ikm-top-left {
-        border-right: 1px solid #c9a3a6;
-        border-bottom: none;
-        padding-right: 12px;
-        padding-bottom: 0;
-        margin-bottom: 0;
-        flex: 1.2;
+        border-right: none;
+        border-bottom: 1px solid #c9a3a6;
+        padding-right: 0;
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+        width: 100%;
+        flex: none;
       }
       
       .ikm-top-right {
-        flex: 0.8;
+        flex: none;
+        width: 100%;
+        padding-bottom: 16px;
       }
 
       .ikm-bottom {
-        flex-direction: row;
-        text-align: left;
-        padding-top: 12px;
+        flex-direction: column;
+        text-align: center;
+        padding-top: 0;
       }
       
       .ikm-bottom-left {
-        padding-right: 12px;
+        padding-right: 0;
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: center;
       }
       
       .ikm-bottom-right {
