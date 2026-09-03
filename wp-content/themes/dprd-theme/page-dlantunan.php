@@ -278,14 +278,14 @@ get_header();
     transform: none !important;
     width: 100% !important;
     z-index: 3 !important;
-    padding: 14px !important;
+    padding: 12px !important;
     order: 1 !important;
-    margin-bottom: 12px !important;
+    margin-bottom: 14px !important;
   }
   .figma-welcome-card p {
     font-size: 11.5px !important;
     line-height: 1.45 !important;
-    margin-bottom: 8px !important;
+    margin-bottom: 6px !important;
   }
   .card-header-row {
     margin-bottom: 8px !important;
@@ -327,9 +327,13 @@ get_header();
   }
   .dokumen-card,
   .alur-card,
-  .layanan-card,
   .card-panel {
     padding: 16px !important;
+    box-sizing: border-box !important;
+    height: auto !important;
+  }
+  .layanan-card {
+    padding: 18px 22px !important;
     box-sizing: border-box !important;
     height: auto !important;
   }
@@ -428,6 +432,126 @@ get_header();
   .btn-download img {
     width: 16px !important;
     height: 16px !important;
+  }
+}
+
+/* MOBILE FONT SIZE: LAYANAN → CTA (compact) */
+@media (max-width: 768px) {
+  /* Heading utama card & section */
+  .layanan-card h3 {
+    font-size: 13px !important;
+    line-height: 1.3 !important;
+    min-height: auto !important;
+  }
+
+  .dokumen-head h3 {
+    font-size: 12.5px !important;
+  }
+
+  .alur-head h3 {
+    font-size: 13px !important;
+  }
+
+  .section-title {
+    font-size: 14px !important;
+  }
+
+  .video-card-title {
+    font-size: 12.5px !important;
+  }
+
+  /* Body / deskripsi */
+  .layanan-desc,
+  .layanan-desc p,
+  .layanan-card > div {
+    font-size: 11px !important;
+    line-height: 1.5 !important;
+  }
+
+  .alur-head p {
+    font-size: 10.5px !important;
+  }
+
+  .alur-step h4 {
+    font-size: 11.5px !important;
+  }
+
+  .alur-step p {
+    font-size: 10.5px !important;
+    line-height: 1.45 !important;
+  }
+
+  .video-desc p {
+    font-size: 11px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Dokumen list items */
+  .file-title {
+    font-size: 11px !important;
+  }
+
+  .file-meta {
+    font-size: 9.5px !important;
+  }
+
+  /* Tombol */
+  .btn-ajukan {
+    font-size: 11px !important;
+    padding: 8px 16px !important;
+  }
+
+  /* CTA Banner */
+  .cta-left h3 {
+    font-size: 12px !important;
+    line-height: 1.3 !important;
+  }
+
+  .btn-outline {
+    font-size: 11px !important;
+    padding: 8px 16px !important;
+  }
+
+  .btn-outline::after {
+    font-size: 16px !important;
+  }
+
+  /* Icon circles lebih kecil */
+  .layanan-card .icon-circle {
+    width: 34px !important;
+    height: 34px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .head-icon-box {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .step-icon-box {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .step-number-bubble {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 10px !important;
+  }
+
+  .pdf-icon-badge {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .cta-left .icon-circle {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .cta-left .icon-circle img {
+    width: 14px !important;
+    height: 14px !important;
   }
 }
 </style>

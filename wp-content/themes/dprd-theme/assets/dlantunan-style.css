@@ -477,7 +477,7 @@ section {
 /* EFEK HOVER HALUS & ELEGAN */
 .figma-welcome-card:hover {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
-  transform: translateY(-4px) !important;
+  transform: translateY(calc(-50% - 4px)) !important;
 }
 
 .figma-welcome-card .icon-circle.red-bubble {
