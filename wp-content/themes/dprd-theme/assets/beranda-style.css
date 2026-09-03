@@ -797,8 +797,8 @@
         border-right: none;
         border-bottom: 1px solid #c9a3a6;
         padding-right: 0;
-        padding-bottom: 16px;
-        margin-bottom: 16px;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
         width: 100%;
         flex: none;
       }
@@ -806,7 +806,7 @@
       .ikm-top-right {
         flex: none;
         width: 100%;
-        padding-bottom: 16px;
+        padding-bottom: 0;
       }
 
       .ikm-bottom {
