@@ -893,3 +893,24 @@ body header#mainHeader:has(.search-box-animated.active)::before {
     transition: none !important;
   }
 }
+
+/* FIX CTA BANNER MOBILE PADDING OVERRIDE */
+@media (max-width: 768px) {
+  .cta-banner {
+    padding: 24px 20px !important;
+    text-align: center;
+  }
+  .cta-banner .cta-left h3 {
+    max-width: 240px !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+  }
+  .cta-banner .btn-outline {
+    width: 240px !important;
+    box-sizing: border-box !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+}
