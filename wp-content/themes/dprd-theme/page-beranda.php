@@ -209,7 +209,7 @@ get_header();
             <div style="position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; background: rgba(0,0,0,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/instagram.svg" alt="IG" style="width: 16px; height: 16px; filter: brightness(0) invert(1);">
             </div>
-            <div style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 40px 16px 16px; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); color: #fff; font-size: 15px; font-weight: 600; line-height: 1.3;">
+            <div class="galeri-item-title" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 40px 16px 16px; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); color: #fff; line-height: 1.3;">
                 <?php echo esc_html($title); ?>
             </div>
         </a>
@@ -220,6 +220,10 @@ get_header();
     </div>
     <style>
         .galeri-item:hover img { transform: scale(1.08); }
+        .galeri-item-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
 
         /* Kustomisasi scrollbar agar rapi */
         .galeri-grid::-webkit-scrollbar { height: 8px; }
@@ -264,6 +268,10 @@ get_header();
 
         /* MOBILE (<= 768px): Max 2x2 = 4 items */
         @media(max-width: 768px) {
+            .galeri-item-title {
+                font-size: 10px;
+                font-weight: 200;
+            }
             .galeri-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
