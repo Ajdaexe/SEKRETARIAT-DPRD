@@ -1633,7 +1633,7 @@
     left: 20px !important;
     right: 20px !important; /* Constrain right side so it doesn't hit edge */
     width: calc(100% - 40px) !important; /* Force width within bounds */
-    bottom: 24px !important;
+    bottom: 64px !important; /* Increased by 40px */
   }
   .hero-text h2 {
     font-size: 26px !important;
