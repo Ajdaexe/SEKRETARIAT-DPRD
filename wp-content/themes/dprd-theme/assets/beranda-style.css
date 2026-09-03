@@ -777,10 +777,10 @@
         font-size: 11px;
       }
       .ikm-badge {
-        width: 100px;
+        width: 120px;
       }
       .badge-grade {
-        font-size: 40px;
+        font-size: 48px;
       }
       .ikm-qr {
         width: 80px;
@@ -790,7 +790,7 @@
       
       .ikm-top {
         flex-direction: column;
-        padding-bottom: 0;
+        padding-bottom: 20px;
       }
 
       .ikm-top-left {
@@ -812,7 +812,7 @@
       .ikm-bottom {
         flex-direction: column;
         text-align: center;
-        padding-top: 0;
+        padding-top: 20px;
       }
       
       .ikm-bottom-left {
